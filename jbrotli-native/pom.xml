@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.meteogroup.jbrotli</groupId>
+    <artifactId>jbrotli-parent</artifactId>
+    <version>0.2.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>jbrotli-native</artifactId>
+  <packaging>pom</packaging>
+
+  <profiles>
+
+    <!--
+    Using the os/arch names as Java Native Access (jna) lib does - so to choose as module names.
+    See also: https://github.com/java-native-access/jna
+    -->
+
+    <profile>
+      <id>win32-x86</id>
+      <activation>
+        <os>
+          <family>Windows</family>
+          <arch>x86</arch>
+        </os>
+      </activation>
+      <modules>
+        <module>win32-x86</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>win32-x86-64</id>
+      <activation>
+        <os>
+          <family>Windows</family>
+          <arch>amd64</arch>
+        </os>
+      </activation>
+      <modules>
+        <module>win32-x86-64</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>darwin</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <modules>
+        <module>darwin</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>linux-x86</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <arch>x86</arch>
+        </os>
+      </activation>
+      <modules>
+        <module>linux-x86</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>linux-x86-64</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <arch>amd64</arch>
+        </os>
+      </activation>
+      <modules>
+        <module>linux-x86-64</module>
+      </modules>
+    </profile>
+
+  </profiles>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
+
+</project>
