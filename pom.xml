@@ -10,7 +10,7 @@
   <packaging>pom</packaging>
 
   <description>Java bindings for Brotli: a new compression algorithm for the internet.</description>
-  <url>https://github.com/nitram509/jbrotli</url>
+  <url>https://github.com/MeteoGroup/jbrotli</url>
 
   <modules>
     <module>jbrotli</module>
@@ -19,9 +19,6 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <bintray.subject>nitram509</bintray.subject>
-    <bintray.repo>jbrotli</bintray.repo>
-    <bintray.package>snapshots</bintray.package>
   </properties>
 
   <dependencyManagement>
@@ -109,18 +106,11 @@
   </profiles>
 
   <scm>
-    <url>scm:git:git@github.com:nitram509/jbrotli.git</url>
-    <connection>scm:git:git@github.com:nitram509/jbrotli.git</connection>
-    <developerConnection>scm:git:git@github.com:nitram509/jbrotli.git</developerConnection>
+    <url>scm:git:git@github.com:MeteoGroup/jbrotli.git</url>
+    <connection>scm:git:git@github.com:MeteoGroup/jbrotli.git</connection>
+    <developerConnection>scm:git:git@github.com:MeteoGroup/jbrotli.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
-
-  <distributionManagement>
-    <repository>
-      <id>bintray-nitram509-jbrotli-snapshots</id>
-      <url>https://api.bintray.com/maven/${bintray.subject}/${bintray.repo}/${bintray.package}/;publish=1</url>
-    </repository>
-  </distributionManagement>
 
   <licenses>
     <license>
