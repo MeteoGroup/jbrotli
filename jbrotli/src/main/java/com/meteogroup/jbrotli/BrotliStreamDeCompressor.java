@@ -20,6 +20,7 @@ import java.io.Closeable;
 import java.nio.ByteBuffer;
 
 import static com.meteogroup.jbrotli.BrotliError.DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
+import static com.meteogroup.jbrotli.BrotliError.DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
 import static com.meteogroup.jbrotli.BrotliErrorChecker.assertBrotliOk;
 
 public final class BrotliStreamDeCompressor implements Closeable {
@@ -61,18 +62,18 @@ public final class BrotliStreamDeCompressor implements Closeable {
     long errorCodeOrSizeInformation = deCompressBytes(in, inPosition, inLength, out, outPosition, outLength);
 
     lastErrorCode = extractErrorCode(errorCodeOrSizeInformation);
-    if (lastErrorCode != DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT) {
-      return assertBrotliOk(extractSizeInformation(errorCodeOrSizeInformation));
+    if (lastErrorCode == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT || lastErrorCode == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT) {
+      return extractSizeInformation(errorCodeOrSizeInformation);
     }
-    return extractSizeInformation(errorCodeOrSizeInformation);
+    return assertBrotliOk(extractSizeInformation(errorCodeOrSizeInformation));
   }
 
   private byte extractErrorCode(long errorCodeOrSizeInformation) {
-    return (byte)((errorCodeOrSizeInformation & 0xff00000000000000L) >> 56);
+    return (byte) ((errorCodeOrSizeInformation & 0xff00000000000000L) >> 56);
   }
 
   private int extractSizeInformation(long errorCodeOrSizeInformation) {
-    return ((int)(errorCodeOrSizeInformation & 0x00000000ffffffffL));
+    return ((int) (errorCodeOrSizeInformation & 0x00000000ffffffffL));
   }
 
   /**
@@ -80,6 +81,13 @@ public final class BrotliStreamDeCompressor implements Closeable {
    */
   public boolean needsMoreInput() {
     return lastErrorCode == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
+  }
+
+  /**
+   * @return true, if decompressor needs more output buffer to store decompressed bytes
+   */
+  public boolean needsMoreOutput() {
+    return lastErrorCode == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
   }
 
   /**
@@ -130,5 +138,4 @@ public final class BrotliStreamDeCompressor implements Closeable {
   private native long deCompressBytes(byte[] inArray, int inPosition, int inLength, byte[] outArray, int outPosition, int outLength);
 
   private native int deCompressByteBuffer(ByteBuffer inByteBuffer, int inPosition, int inLength, ByteBuffer outByteBuffer, int outPosition, int outLength);
-
 }

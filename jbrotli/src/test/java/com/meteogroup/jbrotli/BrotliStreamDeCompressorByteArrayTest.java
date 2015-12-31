@@ -106,14 +106,44 @@ public class BrotliStreamDeCompressorByteArrayTest {
   public void decompress_using_multiple_input_data_fragments() throws Exception {
     // setup
     byte[] out = new byte[A_BYTES.length];
-    int part1 = A_BYTES_COMPRESSED.length / 2;
+    int lengthPart1 = A_BYTES_COMPRESSED.length / 2;
 
     // when
-    int length1 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, part1, out, 0, out.length);
-    int length2 = decompressor.deCompress(A_BYTES_COMPRESSED, part1, A_BYTES_COMPRESSED.length - part1, out, length1, out.length - length1);
+    int length1 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, lengthPart1, out, 0, out.length);
+    assertThat(decompressor.needsMoreInput()).isTrue();
+
+    // when
+    int length2 = decompressor.deCompress(A_BYTES_COMPRESSED, lengthPart1, A_BYTES_COMPRESSED.length - lengthPart1, out, length1, out.length - length1);
+    assertThat(decompressor.needsMoreInput()).isFalse();
 
     // then
     assertThat(length1 + length2).isEqualTo(A_BYTES.length);
     assertThat(out).isEqualTo(A_BYTES);
+  }
+
+  @Test
+  public void decompress_using_multiple_output_data_fragments() throws Exception {
+    // setup
+    byte[] out1 = new byte[A_BYTES.length / 2];
+    byte[] out2 = new byte[A_BYTES.length / 2 + A_BYTES.length % 2];
+
+    // when
+    int length1 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, A_BYTES_COMPRESSED.length, out1, 0, out1.length);
+    assertThat(decompressor.needsMoreOutput()).isTrue();
+
+    // when
+    int length2 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, 0, out2, 0, out2.length);
+    assertThat(decompressor.needsMoreOutput()).isFalse();
+
+    // then
+    assertThat(length1 + length2).isEqualTo(A_BYTES.length);
+    assertThat(concat(out1, out2)).isEqualTo(A_BYTES);
+  }
+
+  private byte[] concat(byte[] bytes1, byte[] bytes2) {
+    byte[] result = new byte[bytes1.length + bytes2.length];
+    System.arraycopy(bytes1, 0, result, 0, bytes1.length);
+    System.arraycopy(bytes2, 0, result, bytes1.length, bytes2.length);
+    return result;
   }
 }

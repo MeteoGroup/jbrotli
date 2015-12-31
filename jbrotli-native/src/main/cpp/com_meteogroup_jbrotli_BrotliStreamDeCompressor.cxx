@@ -138,8 +138,6 @@ JNIEXPORT jlong JNICALL Java_com_meteogroup_jbrotli_BrotliStreamDeCompressor_deC
     return NULL;
   }
 
-  if (inLength == 0) return 0;
-
   BrotliState *brotliState = (BrotliState*) GetLongFieldAsPointer(env, thisObj, brotliDeCompressorStateRefId);
   if (NULL == brotliState || env->ExceptionCheck()) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamDeCompressor wasn't initialised. You need to create a new object before start decompressing.");
@@ -173,6 +171,7 @@ JNIEXPORT jlong JNICALL Java_com_meteogroup_jbrotli_BrotliStreamDeCompressor_deC
       break;
     case BROTLI_RESULT_NEEDS_MORE_OUTPUT:
       errorCode = com_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
+      total_out = available_out;
       break;
   }
 
