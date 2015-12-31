@@ -118,16 +118,16 @@ JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamDeCompressor_free
 /*
  * Class:     com_meteogroup_jbrotli_BrotliStreamDeCompressor
  * Method:    deCompressBytes
- * Signature: ([BII[BII)I
+ * Signature: ([BII[BII)L
  */
-JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressBytes(JNIEnv *env,
-                                                                                         jobject thisObj,
-                                                                                         jbyteArray inByteArray,
-                                                                                         jint inPosition,
-                                                                                         jint inLength,
-                                                                                         jbyteArray outByteArray,
-                                                                                         jint outPosition,
-                                                                                         jint outLength) {
+JNIEXPORT jlong JNICALL Java_com_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressBytes(JNIEnv *env,
+                                                                                             jobject thisObj,
+                                                                                             jbyteArray inByteArray,
+                                                                                             jint inPosition,
+                                                                                             jint inLength,
+                                                                                             jbyteArray outByteArray,
+                                                                                             jint outPosition,
+                                                                                             jint outLength) {
 
   if (inPosition < 0 || inLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: input array position and length must be greater than zero.");
@@ -163,11 +163,22 @@ JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamDeCompressor_deCo
   env->ReleasePrimitiveArrayCritical(inByteArray, inBufPtr, 0);
   if (env->ExceptionCheck()) return com_meteogroup_jbrotli_BrotliError_DECOMPRESS_ReleasePrimitiveArrayCritical_INBUF;
 
-  if (brotliResult == BROTLI_RESULT_ERROR) return com_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_ERROR;
-  if (brotliResult == BROTLI_RESULT_NEEDS_MORE_INPUT) return com_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
-  if (brotliResult == BROTLI_RESULT_NEEDS_MORE_OUTPUT) return com_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
+  int64_t errorCode = 0;
+  switch (brotliResult) {
+    case BROTLI_RESULT_ERROR:
+      errorCode = com_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_ERROR;
+      break;
+    case BROTLI_RESULT_NEEDS_MORE_INPUT:
+      errorCode = com_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
+      break;
+    case BROTLI_RESULT_NEEDS_MORE_OUTPUT:
+      errorCode = com_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
+      break;
+  }
 
-  return total_out;
+  jlong errorCodeOrSizeInformation = (errorCode) << 56;
+  errorCodeOrSizeInformation = errorCodeOrSizeInformation | (total_out & 0x00000000ffffffffL);
+  return errorCodeOrSizeInformation;
 }
 
 /*

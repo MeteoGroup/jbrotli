@@ -103,14 +103,14 @@ public class BrotliStreamDeCompressorByteArrayTest {
   }
 
   @Test
-  public void decompress_using_multiple_fragments() throws Exception {
+  public void decompress_using_multiple_input_data_fragments() throws Exception {
     // setup
     byte[] out = new byte[A_BYTES.length];
     int part1 = A_BYTES_COMPRESSED.length / 2;
 
     // when
     int length1 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, part1, out, 0, out.length);
-    int length2 = decompressor.deCompress(A_BYTES_COMPRESSED, part1, A_BYTES.length - part1, out, length1, out.length - length1);
+    int length2 = decompressor.deCompress(A_BYTES_COMPRESSED, part1, A_BYTES_COMPRESSED.length - part1, out, length1, out.length - length1);
 
     // then
     assertThat(length1 + length2).isEqualTo(A_BYTES.length);

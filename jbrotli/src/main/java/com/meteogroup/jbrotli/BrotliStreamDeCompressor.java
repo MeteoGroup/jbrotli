@@ -31,7 +31,7 @@ public final class BrotliStreamDeCompressor implements Closeable {
   // will be used from native code to store native decompressor state object
   private final long brotliDeCompressorState = 0;
 
-  private int errorCodeOrSizeInformation = 0;
+  private int lastErrorCode = 0;
 
   /**
    * @throws BrotliException
@@ -58,19 +58,28 @@ public final class BrotliStreamDeCompressor implements Closeable {
     if (inPosition + inLength > in.length) {
       throw new IllegalArgumentException("The source position + length must me smaller then the source byte array's length.");
     }
-    errorCodeOrSizeInformation = deCompressBytes(in, inPosition, inLength, out, outPosition, outLength);
-    if (errorCodeOrSizeInformation == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT) {
-      return errorCodeOrSizeInformation;
-    } else {
-      return assertBrotliOk(errorCodeOrSizeInformation);
+    long errorCodeOrSizeInformation = deCompressBytes(in, inPosition, inLength, out, outPosition, outLength);
+
+    lastErrorCode = extractErrorCode(errorCodeOrSizeInformation);
+    if (lastErrorCode != DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT) {
+      return assertBrotliOk(extractSizeInformation(errorCodeOrSizeInformation));
     }
+    return extractSizeInformation(errorCodeOrSizeInformation);
+  }
+
+  private byte extractErrorCode(long errorCodeOrSizeInformation) {
+    return (byte)((errorCodeOrSizeInformation & 0xff00000000000000L) >> 56);
+  }
+
+  private int extractSizeInformation(long errorCodeOrSizeInformation) {
+    return ((int)(errorCodeOrSizeInformation & 0x00000000ffffffffL));
   }
 
   /**
    * @return true, if decompressor needs more input bytes to decompress
    */
   public boolean needsMoreInput() {
-    return errorCodeOrSizeInformation == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
+    return lastErrorCode == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
   }
 
   /**
@@ -108,7 +117,7 @@ public final class BrotliStreamDeCompressor implements Closeable {
 
   @Override
   public void close() throws BrotliException {
-    errorCodeOrSizeInformation = 0;
+    lastErrorCode = 0;
     assertBrotliOk(freeNativeResources());
   }
 
@@ -118,7 +127,7 @@ public final class BrotliStreamDeCompressor implements Closeable {
 
   private native int freeNativeResources();
 
-  private native int deCompressBytes(byte[] inArray, int inPosition, int inLength, byte[] outArray, int outPosition, int outLength);
+  private native long deCompressBytes(byte[] inArray, int inPosition, int inLength, byte[] outArray, int outPosition, int outLength);
 
   private native int deCompressByteBuffer(ByteBuffer inByteBuffer, int inPosition, int inLength, ByteBuffer outByteBuffer, int outPosition, int outLength);
 
