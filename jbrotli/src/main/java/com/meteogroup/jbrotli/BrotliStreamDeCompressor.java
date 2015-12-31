@@ -19,6 +19,7 @@ package com.meteogroup.jbrotli;
 import java.io.Closeable;
 import java.nio.ByteBuffer;
 
+import static com.meteogroup.jbrotli.BrotliError.DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
 import static com.meteogroup.jbrotli.BrotliErrorChecker.assertBrotliOk;
 
 public final class BrotliStreamDeCompressor implements Closeable {
@@ -27,12 +28,17 @@ public final class BrotliStreamDeCompressor implements Closeable {
     assertBrotliOk(initJavaFieldIdCache());
   }
 
-  public BrotliStreamDeCompressor() {
-    assertBrotliOk(initBrotliDeCompressor());
-  }
-
   // will be used from native code to store native decompressor state object
   private final long brotliDeCompressorState = 0;
+
+  private int errorCodeOrSizeInformation = 0;
+
+  /**
+   * @throws BrotliException
+   */
+  public BrotliStreamDeCompressor() throws BrotliException {
+    assertBrotliOk(initBrotliDeCompressor());
+  }
 
   /**
    * @param in  input byte array
@@ -52,7 +58,19 @@ public final class BrotliStreamDeCompressor implements Closeable {
     if (inPosition + inLength > in.length) {
       throw new IllegalArgumentException("The source position + length must me smaller then the source byte array's length.");
     }
-    return assertBrotliOk(deCompressBytes(in, inPosition, inLength, out, outPosition, outLength));
+    errorCodeOrSizeInformation = deCompressBytes(in, inPosition, inLength, out, outPosition, outLength);
+    if (errorCodeOrSizeInformation == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT) {
+      return errorCodeOrSizeInformation;
+    } else {
+      return assertBrotliOk(errorCodeOrSizeInformation);
+    }
+  }
+
+  /**
+   * @return true, if decompressor needs more input bytes to decompress
+   */
+  public boolean needsMoreInput() {
+    return errorCodeOrSizeInformation == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
   }
 
   /**
@@ -90,6 +108,7 @@ public final class BrotliStreamDeCompressor implements Closeable {
 
   @Override
   public void close() throws BrotliException {
+    errorCodeOrSizeInformation = 0;
     assertBrotliOk(freeNativeResources());
   }
 

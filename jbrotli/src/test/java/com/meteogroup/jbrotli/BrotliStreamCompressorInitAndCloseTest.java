@@ -17,6 +17,7 @@
 package com.meteogroup.jbrotli;
 
 import org.scijava.nativelib.NativeLoader;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -36,6 +37,11 @@ public class BrotliStreamCompressorInitAndCloseTest {
   @BeforeMethod
   public void setUp() throws Exception {
     compressor = new BrotliStreamCompressor(Brotli.DEFAULT_PARAMETER);
+  }
+
+  @AfterMethod
+  public void tearDown() throws Exception {
+    compressor.close();
   }
 
   @Test
