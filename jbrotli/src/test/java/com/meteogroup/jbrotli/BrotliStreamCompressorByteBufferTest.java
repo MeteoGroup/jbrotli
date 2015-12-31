@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 import java.nio.ByteBuffer;
 
 import static com.meteogroup.jbrotli.BrotliCompressorTest.*;
+import static com.meteogroup.jbrotli.BufferTestHelper.getByteArray;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BrotliStreamCompressorByteBufferTest {
@@ -60,9 +61,7 @@ public class BrotliStreamCompressorByteBufferTest {
     ByteBuffer outBuffer = compressor.compress(inBuffer, true);
 
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
-    byte[] buf = new byte[A_BYTES_COMPRESSED.length];
-    outBuffer.get(buf);
-    assertThat(buf).startsWith(A_BYTES_COMPRESSED);
+    assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
   }
 
   @Test
@@ -82,9 +81,7 @@ public class BrotliStreamCompressorByteBufferTest {
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
 
     // then
-    byte[] buf = new byte[A_BYTES_COMPRESSED.length];
-    outBuffer.get(buf);
-    assertThat(buf).startsWith(A_BYTES_COMPRESSED);
+    assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
   }
 
   @Test
@@ -108,9 +105,7 @@ public class BrotliStreamCompressorByteBufferTest {
     assertThat(outBuffer.limit()).isEqualTo(A_BYTES_COMPRESSED.length);
     assertThat(outBuffer.position()).isEqualTo(0);
     // then
-    byte[] buf = new byte[A_BYTES_COMPRESSED.length];
-    outBuffer.get(buf);
-    assertThat(buf).startsWith(A_BYTES_COMPRESSED);
+    assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
   }
 
   //
@@ -124,9 +119,7 @@ public class BrotliStreamCompressorByteBufferTest {
     ByteBuffer outBuffer = compressor.compress(inBuffer, true);
 
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
-    byte[] buf = new byte[outBuffer.capacity()];
-    outBuffer.get(buf);
-    assertThat(buf).isEqualTo(A_BYTES_COMPRESSED);
+    assertThat(getByteArray(outBuffer)).isEqualTo(A_BYTES_COMPRESSED);
   }
 
   @Test
@@ -144,9 +137,7 @@ public class BrotliStreamCompressorByteBufferTest {
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
 
     // then
-    byte[] buf = new byte[A_BYTES_COMPRESSED.length];
-    outBuffer.get(buf);
-    assertThat(buf).startsWith(A_BYTES_COMPRESSED);
+    assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
   }
 
   @Test
@@ -169,9 +160,7 @@ public class BrotliStreamCompressorByteBufferTest {
     assertThat(outBuffer.limit()).isEqualTo(A_BYTES_COMPRESSED.length);
     assertThat(outBuffer.position()).isEqualTo(0);
     // then
-    byte[] buf = new byte[A_BYTES_COMPRESSED.length];
-    outBuffer.get(buf);
-    assertThat(buf).startsWith(A_BYTES_COMPRESSED);
+    assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
   }
 
   @Test
@@ -195,9 +184,7 @@ public class BrotliStreamCompressorByteBufferTest {
     assertThat(outBuffer.limit()).isEqualTo(A_BYTES_COMPRESSED.length);
     assertThat(outBuffer.position()).isEqualTo(0);
     // then
-    byte[] buf = new byte[A_BYTES_COMPRESSED.length];
-    outBuffer.get(buf);
-    assertThat(buf).startsWith(A_BYTES_COMPRESSED);
+    assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
   }
 
 }
