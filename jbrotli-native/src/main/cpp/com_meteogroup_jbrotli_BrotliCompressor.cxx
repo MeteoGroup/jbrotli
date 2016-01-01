@@ -14,39 +14,6 @@
  * limitations under the License.
  */
 
-/* exporting methods */
-#if (__GNUC__ >= 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
-#  ifndef GCC_HASCLASSVISIBILITY
-#    define GCC_HASCLASSVISIBILITY
-#  endif
-#endif
-
-/* Deal with Apple's deprecated 'AssertMacros.h' from Carbon-framework */
-#if defined(__APPLE__) && !defined(__ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORES)
-# define __ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORES 0
-#endif
-
-/* Intel's compiler complains if a variable which was never initialised is
- * cast to void, which is a common idiom which we use to indicate that we
- * are aware a variable isn't used.  So we just silence that warning.
- * See: https://github.com/swig/swig/issues/192 for more discussion.
- */
-#ifdef __INTEL_COMPILER
-# pragma warning disable 592
-#endif
-
-/* Fix for jlong on some versions of gcc on Windows */
-#if defined(__GNUC__) && !defined(__INTEL_COMPILER)
-typedef long long __int64;
-#endif
-
-/* Fix for jlong on 64-bit x86 Solaris */
-#if defined(__x86_64)
-# ifdef _LP64
-#   undef _LP64
-# endif
-#endif
-
 #include <jni.h>
 #include <stdlib.h>
 #include <string.h>
