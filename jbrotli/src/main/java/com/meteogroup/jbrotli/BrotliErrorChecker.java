@@ -16,7 +16,7 @@
 
 package com.meteogroup.jbrotli;
 
-public class BrotliErrorChecker {
+class BrotliErrorChecker {
 
   /**
    * @param errorCode errorCode

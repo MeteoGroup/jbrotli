@@ -16,7 +16,7 @@
 
 package com.meteogroup.jbrotli;
 
-public class BrotliError {
+class BrotliError {
 
   public static final byte NATIVE_ERROR = -1;
   public static final byte NATIVE_GET_FIELD_ID_ERROR = -2;
