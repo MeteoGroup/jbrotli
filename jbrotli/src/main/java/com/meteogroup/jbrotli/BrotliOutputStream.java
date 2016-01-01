@@ -22,7 +22,7 @@ import java.io.OutputStream;
 public class BrotliOutputStream extends OutputStream {
 
   private final BrotliStreamCompressor brotliStreamCompressor;
-  private OutputStream outputStream;
+  private final OutputStream outputStream;
 
   public BrotliOutputStream(OutputStream outputStream) {
     this(outputStream, Brotli.DEFAULT_PARAMETER);
