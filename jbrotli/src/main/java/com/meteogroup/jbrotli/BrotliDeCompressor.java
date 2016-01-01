@@ -80,7 +80,7 @@ public final class BrotliDeCompressor {
     } else if (in.hasArray() && out.hasArray()) {
       outLength = assertBrotliOk(deCompressBytes(in.array(), inPosition + in.arrayOffset(), inRemain, out.array(), outPosition + out.arrayOffset(), outRemain));
     } else {
-      throw new UnsupportedOperationException("Not supported ByteBuffer implementation. Both (input and output) buffer has to be of the same type. Use either direct BB or wrapped byte arrays. You may raise an issue on Github too ;-)");
+      throw new UnsupportedOperationException("Not supported ByteBuffer implementation. Both (input and output) buffer has to be of the same type. Use either direct BB or wrapped byte arrays. You may raise an issue on GitHub too ;-)");
     }
     in.position(inLimit);
     out.limit(outPosition + outLength);

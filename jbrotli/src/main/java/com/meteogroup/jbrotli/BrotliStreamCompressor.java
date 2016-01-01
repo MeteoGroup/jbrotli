@@ -89,7 +89,7 @@ public final class BrotliStreamCompressor implements Closeable {
     } else if (in.hasArray()) {
       out = ByteBuffer.wrap(compressBytes(in.array(), inPosition + in.arrayOffset(), inRemain, doFlush));
     } else {
-      throw new UnsupportedOperationException("Not supported ByteBuffer implementation. Use either direct BB or wrapped byte arrays. You may raise an issue on Github too ;-)");
+      throw new UnsupportedOperationException("Not supported ByteBuffer implementation. Use either direct BB or wrapped byte arrays. You may raise an issue on GitHub too ;-)");
     }
     in.position(inLimit);
     return out;
