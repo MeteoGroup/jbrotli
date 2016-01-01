@@ -22,7 +22,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static com.meteogroup.jbrotli.BrotliCompressorTest.*;
+import static com.meteogroup.jbrotli.BrotliCompressorTest.A_BYTES;
+import static com.meteogroup.jbrotli.BrotliCompressorTest.A_BYTES_COMPRESSED;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BrotliStreamCompressorByteArrayTest {
@@ -103,4 +104,15 @@ public class BrotliStreamCompressorByteArrayTest {
     assertThat(out).isEqualTo(A_BYTES_COMPRESSED);
   }
 
+  @Test(expectedExceptions = IllegalArgumentException.class,
+      expectedExceptionsMessageRegExp = "BrotliStreamCompressor, input byte array length is larger than allowed input block size. Slice the input into smaller chunks.")
+  public void using_larger_input_buffer_throws_exception() throws Exception {
+    // given
+    byte[] tmpBuffer = new byte[compressor.getMaxInputBufferSize() + 1];
+
+    // when
+    compressor.compress(tmpBuffer, true);
+
+    // expected exception
+  }
 }

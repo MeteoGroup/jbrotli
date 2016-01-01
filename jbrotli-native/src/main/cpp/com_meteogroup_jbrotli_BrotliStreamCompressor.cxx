@@ -37,7 +37,7 @@ static jfieldID brotliCompressorInstanceRefID;
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_initJavaFieldIdCache(JNIEnv *env,
-                                                                                            jclass cls) {
+                                                                                               jclass cls) {
   brotliCompressorInstanceRefID = env->GetFieldID(cls, "brotliCompressorInstanceRef", "J");
   if (NULL == brotliCompressorInstanceRefID) {
     return com_meteogroup_jbrotli_BrotliError_NATIVE_GET_FIELD_ID_ERROR;
@@ -51,11 +51,11 @@ JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_initJa
  * Signature: (IIII)I
  */
 JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_initBrotliCompressor(JNIEnv *env,
-                                                                                            jobject thisObj,
-                                                                                            jint mode,
-                                                                                            jint quality,
-                                                                                            jint lgwin,
-                                                                                            jint lgblock) {
+                                                                                               jobject thisObj,
+                                                                                               jint mode,
+                                                                                               jint quality,
+                                                                                               jint lgwin,
+                                                                                               jint lgblock) {
   brotli::BrotliParams params = mapToBrotliParams(env, mode, quality, lgwin, lgblock);
 
   brotli::BrotliCompressor *compressor = (brotli::BrotliCompressor*) GetLongFieldAsPointer(env, thisObj, brotliCompressorInstanceRefID);
@@ -74,7 +74,7 @@ JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_initBr
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_freeNativeResources(JNIEnv *env,
-                                                                                           jobject thisObj) {
+                                                                                              jobject thisObj) {
   brotli::BrotliCompressor *compressor = (brotli::BrotliCompressor*) GetLongFieldAsPointer(env, thisObj, brotliCompressorInstanceRefID);
   if (NULL != compressor) {
     delete compressor;
@@ -90,7 +90,7 @@ JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_freeNa
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_getInputBlockSize(JNIEnv *env,
-                                                                                         jobject thisObj) {
+                                                                                            jobject thisObj) {
   brotli::BrotliCompressor *compressor = (brotli::BrotliCompressor*) GetLongFieldAsPointer(env, thisObj, brotliCompressorInstanceRefID);
   if (NULL == compressor) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor was already closed. You need to create a new object before getInputBlockSize.");
@@ -105,11 +105,11 @@ JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_getInp
  * Signature: ([BIIZ)[B
  */
 JNIEXPORT jbyteArray JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_compressBytes(JNIEnv *env,
-                                                                                           jobject thisObj,
-                                                                                           jbyteArray inByteArray,
-                                                                                           jint inPosition,
-                                                                                           jint inLength,
-                                                                                           jboolean doFlush) {
+                                                                                              jobject thisObj,
+                                                                                              jbyteArray inByteArray,
+                                                                                              jint inPosition,
+                                                                                              jint inLength,
+                                                                                              jboolean doFlush) {
 
   if (inPosition < 0 || inLength < 0) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: input array position and length must be greater than zero.");
@@ -119,6 +119,11 @@ JNIEXPORT jbyteArray JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_
   brotli::BrotliCompressor *compressor = (brotli::BrotliCompressor*) GetLongFieldAsPointer(env, thisObj, brotliCompressorInstanceRefID);
   if (NULL == compressor) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor was already closed. You need to create a new object before start compressing.");
+    return NULL;
+  }
+
+  if (compressor->input_block_size() < inLength) {
+    env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "BrotliStreamCompressor, input byte array length is larger than allowed input block size. Slice the input into smaller chunks.");
     return NULL;
   }
 
@@ -156,11 +161,11 @@ JNIEXPORT jbyteArray JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_
  * Signature: (Ljava/nio/ByteBuffer;IIZ)Ljava/nio/ByteBuffer;
  */
 JNIEXPORT jobject JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_compressByteBuffer(JNIEnv *env,
-                                                                                             jobject thisObj,
-                                                                                             jobject inBuf,
-                                                                                             jint inPosition,
-                                                                                             jint inLength,
-                                                                                             jboolean doFlush) {
+                                                                                                jobject thisObj,
+                                                                                                jobject inBuf,
+                                                                                                jint inPosition,
+                                                                                                jint inLength,
+                                                                                                jboolean doFlush) {
 
   if (inPosition < 0 || inLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: input ByteBuffer position and length must be greater than zero.");
@@ -170,6 +175,11 @@ JNIEXPORT jobject JNICALL Java_com_meteogroup_jbrotli_BrotliStreamCompressor_com
   brotli::BrotliCompressor *compressor = (brotli::BrotliCompressor *) GetLongFieldAsPointer(env, thisObj, brotliCompressorInstanceRefID);
   if (NULL == compressor) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor was already closed. You need to create a new object before start compressing.");
+    return NULL;
+  }
+
+  if (compressor->input_block_size() < inLength) {
+    env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "BrotliStreamCompressor, input ByteBuffer size is larger than allowed input block size. Slice the input into smaller chunks.");
     return NULL;
   }
 

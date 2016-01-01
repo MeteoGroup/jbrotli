@@ -24,9 +24,9 @@ import org.testng.annotations.Test;
 
 import java.nio.ByteBuffer;
 
-import static com.meteogroup.jbrotli.BrotliCompressorTest.*;
-import static com.meteogroup.jbrotli.BufferTestHelper.createFilledByteArray;
-import static com.meteogroup.jbrotli.BufferTestHelper.getByteArray;
+import static com.meteogroup.jbrotli.BrotliCompressorTest.A_BYTES;
+import static com.meteogroup.jbrotli.BrotliCompressorTest.A_BYTES_COMPRESSED;
+import static com.meteogroup.jbrotli.BufferTestHelper.*;
 import static java.nio.ByteBuffer.wrap;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -110,6 +110,18 @@ public class BrotliStreamCompressorByteBufferTest {
     assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
   }
 
+  @Test(expectedExceptions = IllegalArgumentException.class,
+      expectedExceptionsMessageRegExp = "BrotliStreamCompressor, input ByteBuffer size is larger than allowed input block size. Slice the input into smaller chunks.")
+  public void compress_with_array_direct_ByteBuffer_using_larger_input_buffer_throws_exception() throws Exception {
+    // given
+    ByteBuffer tmpBuffer = wrapDirect(new byte[compressor.getMaxInputBufferSize() + 1]);
+
+    // when
+    compressor.compress(tmpBuffer, true);
+
+    // expected exception
+  }
+
   //
   // *** array wrapped ByteBuffer **********
 
@@ -187,6 +199,18 @@ public class BrotliStreamCompressorByteBufferTest {
     assertThat(outBuffer.position()).isEqualTo(0);
     // then
     assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
+  }
+
+  @Test(expectedExceptions = IllegalArgumentException.class,
+      expectedExceptionsMessageRegExp = "BrotliStreamCompressor, input byte array length is larger than allowed input block size. Slice the input into smaller chunks.")
+  public void compress_with_array_wrapped_ByteBuffer_using_larger_input_buffer_throws_exception() throws Exception {
+    // given
+    ByteBuffer tmpBuffer = wrap(new byte[compressor.getMaxInputBufferSize() + 1]);
+
+    // when
+    compressor.compress(tmpBuffer, true);
+
+    // expected exception
   }
 
 }
