@@ -68,14 +68,6 @@ public final class BrotliStreamDeCompressor implements Closeable {
     return assertBrotliOk(extractSizeInformation(errorCodeOrSizeInformation));
   }
 
-  private byte extractErrorCode(long errorCodeOrSizeInformation) {
-    return (byte) ((errorCodeOrSizeInformation & 0xff00000000000000L) >> 56);
-  }
-
-  private int extractSizeInformation(long errorCodeOrSizeInformation) {
-    return ((int) (errorCodeOrSizeInformation & 0x00000000ffffffffL));
-  }
-
   /**
    * @return true, if decompressor needs more input bytes to decompress
    */
@@ -104,17 +96,34 @@ public final class BrotliStreamDeCompressor implements Closeable {
     if (inRemain < 0)
       throw new IllegalArgumentException("The source (in) position must me smaller then the source ByteBuffer's limit.");
 
-//    ByteBuffer out;
-    if (in.isDirect()) {
-//      out = deCompressByteBuffer(in, inPosition, inRemain, doFlush);
-    } else if (in.hasArray()) {
-//      out = ByteBuffer.wrap(deCompressBytes(in.array(), inPosition + in.arrayOffset(), inRemain, doFlush));
+    int outPosition = out.position();
+    int outRemain = out.limit() - outPosition;
+    if (outRemain < 0)
+      throw new IllegalArgumentException("The destination (out) position must me smaller then the destination ByteBuffer's limit.");
+
+    long errorCodeOrSizeInformation = 0;
+    if (in.isDirect() && out.isDirect()) {
+      errorCodeOrSizeInformation = deCompressByteBuffer(in, inPosition, inRemain, out, outPosition, outRemain);
+    } else if (in.hasArray() && out.hasArray()) {
+      errorCodeOrSizeInformation = deCompressBytes(in.array(), inPosition + in.arrayOffset(), inRemain, out.array(), outPosition + out.arrayOffset(), outRemain);
     } else {
-      throw new UnsupportedOperationException("Not supported ByteBuffer implementation. Use either direct BB or wrapped byte arrays. You may raise an issue on Github too ;-)");
+      throw new UnsupportedOperationException("Not supported ByteBuffer implementation. Both (input and output) buffer has to be of the same type. Use either direct BB or wrapped byte arrays. You may raise an issue on GitHub too ;-)");
+    }
+
+    lastErrorCode = extractErrorCode(errorCodeOrSizeInformation);
+    switch (lastErrorCode) {
+      case DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT:
+        break;
+      case DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT:
+        out.limit(outPosition + extractSizeInformation(errorCodeOrSizeInformation));
+        break;
+      default:
+        out.limit(outPosition + extractSizeInformation(errorCodeOrSizeInformation));
+        assertBrotliOk(lastErrorCode);
+        break;
     }
     in.position(inLimit);
-//    return out;
-    return 0;
+    return extractSizeInformation(errorCodeOrSizeInformation);
   }
 
   @Override
@@ -129,6 +138,14 @@ public final class BrotliStreamDeCompressor implements Closeable {
     assertBrotliOk(freeNativeResources());
   }
 
+  private static byte extractErrorCode(long errorCodeOrSizeInformation) {
+    return (byte) ((errorCodeOrSizeInformation & 0xff00000000000000L) >> 56);
+  }
+
+  private static int extractSizeInformation(long errorCodeOrSizeInformation) {
+    return ((int) (errorCodeOrSizeInformation & 0x00000000ffffffffL));
+  }
+
   private native static int initJavaFieldIdCache();
 
   private native int initBrotliDeCompressor();
@@ -137,5 +154,5 @@ public final class BrotliStreamDeCompressor implements Closeable {
 
   private native long deCompressBytes(byte[] inArray, int inPosition, int inLength, byte[] outArray, int outPosition, int outLength);
 
-  private native int deCompressByteBuffer(ByteBuffer inByteBuffer, int inPosition, int inLength, ByteBuffer outByteBuffer, int outPosition, int outLength);
+  private native long deCompressByteBuffer(ByteBuffer inByteBuffer, int inPosition, int inLength, ByteBuffer outByteBuffer, int outPosition, int outLength);
 }

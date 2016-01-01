@@ -42,9 +42,9 @@ JNIEXPORT jlong JNICALL Java_com_meteogroup_jbrotli_BrotliStreamDeCompressor_deC
 /*
  * Class:     com_meteogroup_jbrotli_BrotliStreamDeCompressor
  * Method:    deCompressByteBuffer
- * Signature: (Ljava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)I
+ * Signature: (Ljava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)J
  */
-JNIEXPORT jint JNICALL Java_com_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressByteBuffer
+JNIEXPORT jlong JNICALL Java_com_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressByteBuffer
   (JNIEnv *, jobject, jobject, jint, jint, jobject, jint, jint);
 
 #ifdef __cplusplus
