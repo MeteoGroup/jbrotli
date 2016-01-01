@@ -55,7 +55,7 @@ public class BrotliDeCompressorTest {
   @Test
   public void decompress_with_byte_array_using_position_and_length_on_input() throws Exception {
     // setup
-    byte[] in = createFilledByteArray(100, 'x');
+    byte[] in = BufferTestHelper.createFilledByteArray(100, 'x');
     byte[] out = new byte[100];
 
     // when
@@ -151,7 +151,7 @@ public class BrotliDeCompressorTest {
     // setup
     ByteBuffer inBuffer = ByteBuffer.allocateDirect(100);
     ByteBuffer outBuffer = ByteBuffer.allocateDirect(100);
-    inBuffer.put(createFilledByteArray(100, 'x'));
+    inBuffer.put(BufferTestHelper.createFilledByteArray(100, 'x'));
 
     // given
     int testPosition = 23;
@@ -226,7 +226,7 @@ public class BrotliDeCompressorTest {
   @Test
   public void decompress_with_byte_array_wrapped_ByteBuffer_using_position_and_length_on_input() throws Exception {
     // setup
-    ByteBuffer inBuffer = ByteBuffer.wrap(createFilledByteArray(100, 'x'));
+    ByteBuffer inBuffer = ByteBuffer.wrap(BufferTestHelper.createFilledByteArray(100, 'x'));
     ByteBuffer outBuffer = ByteBuffer.allocate(100);
 
     // given
@@ -281,7 +281,7 @@ public class BrotliDeCompressorTest {
   @Test
   public void decompress_with_byte_array_wrapped_ByteBuffer_using_arrayOffset_and_length_on_input() throws Exception {
     // setup
-    ByteBuffer inBuffer = ByteBuffer.wrap(createFilledByteArray(100, 'x'));
+    ByteBuffer inBuffer = ByteBuffer.wrap(BufferTestHelper.createFilledByteArray(100, 'x'));
     ByteBuffer outBuffer = ByteBuffer.allocate(100);
 
     // given

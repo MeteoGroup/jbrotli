@@ -17,16 +17,42 @@
 package com.meteogroup.jbrotli;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+
+import static java.util.Arrays.copyOfRange;
 
 class BufferTestHelper {
 
+  static byte[] concat(byte[] bytes1, byte[] bytes2) {
+    byte[] result = new byte[bytes1.length + bytes2.length];
+    System.arraycopy(bytes1, 0, result, 0, bytes1.length);
+    System.arraycopy(bytes2, 0, result, bytes1.length, bytes2.length);
+    return result;
+  }
+
+  static byte[] concat(ByteBuffer outPart1, ByteBuffer outPart2) {
+    return concat(getByteArray(outPart1), getByteArray(outPart2));
+  }
+
   static byte[] getByteArray(ByteBuffer byteBuffer) {
     if (byteBuffer.hasArray()) {
-      return byteBuffer.array();
+      return copyOfRange(byteBuffer.array(), byteBuffer.position() + byteBuffer.arrayOffset(), byteBuffer.limit() + byteBuffer.arrayOffset());
     }
     byte[] result = new byte[byteBuffer.limit() - byteBuffer.position()];
     byteBuffer.get(result);
     return result;
   }
 
+  static ByteBuffer wrapDirect(byte[] bytes) {
+    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(bytes.length);
+    byteBuffer.put(bytes);
+    byteBuffer.position(0);
+    return byteBuffer;
+  }
+
+  static byte[] createFilledByteArray(int len, char fillChar) {
+    byte[] tmpXXX = new byte[len];
+    Arrays.fill(tmpXXX, (byte) fillChar);
+    return tmpXXX;
+  }
 }

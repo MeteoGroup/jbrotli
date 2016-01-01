@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 
 import static com.meteogroup.jbrotli.BrotliCompressorTest.*;
+import static com.meteogroup.jbrotli.BufferTestHelper.concat;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BrotliStreamDeCompressorByteArrayTest {
@@ -74,7 +75,7 @@ public class BrotliStreamDeCompressorByteArrayTest {
   @Test
   public void decompress_with_byte_array_using_position_and_length_on_input() throws Exception {
     // setup
-    byte[] in = createFilledByteArray(100, 'x');
+    byte[] in = BufferTestHelper.createFilledByteArray(100, 'x');
     byte[] out = new byte[100];
 
     // when
@@ -140,10 +141,4 @@ public class BrotliStreamDeCompressorByteArrayTest {
     assertThat(concat(out1, out2)).isEqualTo(A_BYTES);
   }
 
-  private byte[] concat(byte[] bytes1, byte[] bytes2) {
-    byte[] result = new byte[bytes1.length + bytes2.length];
-    System.arraycopy(bytes1, 0, result, 0, bytes1.length);
-    System.arraycopy(bytes2, 0, result, bytes1.length, bytes2.length);
-    return result;
-  }
 }

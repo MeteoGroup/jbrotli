@@ -25,7 +25,9 @@ import org.testng.annotations.Test;
 import java.nio.ByteBuffer;
 
 import static com.meteogroup.jbrotli.BrotliCompressorTest.*;
+import static com.meteogroup.jbrotli.BufferTestHelper.createFilledByteArray;
 import static com.meteogroup.jbrotli.BufferTestHelper.getByteArray;
+import static java.nio.ByteBuffer.wrap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BrotliStreamCompressorByteBufferTest {
@@ -113,7 +115,7 @@ public class BrotliStreamCompressorByteBufferTest {
 
   @Test
   public void compress_with_array_wrapped_ByteBuffer_and_flushing() throws Exception {
-    ByteBuffer inBuffer = ByteBuffer.wrap(A_BYTES);
+    ByteBuffer inBuffer = wrap(A_BYTES);
 
     // when
     ByteBuffer outBuffer = compressor.compress(inBuffer, true);
@@ -124,7 +126,7 @@ public class BrotliStreamCompressorByteBufferTest {
 
   @Test
   public void compress_with_array_wrapped_ByteBuffer_without_flushing() throws Exception {
-    ByteBuffer inBuffer = ByteBuffer.wrap(A_BYTES);
+    ByteBuffer inBuffer = wrap(A_BYTES);
 
     // when
     ByteBuffer outBuffer = compressor.compress(inBuffer, false);
@@ -132,7 +134,7 @@ public class BrotliStreamCompressorByteBufferTest {
     assertThat(outBuffer.capacity()).isEqualTo(0);
 
     // when
-    outBuffer = compressor.compress(ByteBuffer.wrap(new byte[0]), true);
+    outBuffer = compressor.compress(wrap(new byte[0]), true);
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
 
@@ -143,7 +145,7 @@ public class BrotliStreamCompressorByteBufferTest {
   @Test
   public void compress_with_array_wrapped_ByteBuffer_using_position_and_length() throws Exception {
     // setup
-    ByteBuffer inBuffer = ByteBuffer.wrap(createFilledByteArray(100, 'x'));
+    ByteBuffer inBuffer = wrap(createFilledByteArray(100, 'x'));
 
     // given
     int testPosition = 23;
@@ -166,7 +168,7 @@ public class BrotliStreamCompressorByteBufferTest {
   @Test
   public void compress_with_array_wrapped_ByteBuffer_using_arrayOffset_and_length() throws Exception {
     // setup
-    ByteBuffer inBuffer = ByteBuffer.wrap(createFilledByteArray(100, 'x'));
+    ByteBuffer inBuffer = wrap(createFilledByteArray(100, 'x'));
 
     // given
     int testPosition = 23;

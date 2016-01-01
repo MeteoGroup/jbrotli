@@ -24,6 +24,12 @@ import org.testng.annotations.Test;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
+import static com.meteogroup.jbrotli.BufferTestHelper.createFilledByteArray;
+import static com.meteogroup.jbrotli.BufferTestHelper.getByteArray;
+import static com.meteogroup.jbrotli.BufferTestHelper.wrapDirect;
+import static java.nio.ByteBuffer.allocate;
+import static java.nio.ByteBuffer.allocateDirect;
+import static java.nio.ByteBuffer.wrap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BrotliCompressorTest {
@@ -128,25 +134,20 @@ public class BrotliCompressorTest {
 
   @Test
   public void compress_with_direct_ByteBuffer() throws Exception {
-    ByteBuffer inBuffer = ByteBuffer.allocateDirect(A_BYTES.length);
-    inBuffer.put(A_BYTES);
-    inBuffer.position(0);
-    ByteBuffer outBuffer = ByteBuffer.allocateDirect(10);
+    ByteBuffer inBuffer = wrapDirect(A_BYTES);
+    ByteBuffer outBuffer = allocateDirect(10);
     int outLength = compressor.compress(Brotli.DEFAULT_PARAMETER, inBuffer, outBuffer);
 
     // then
     assertThat(outLength).isEqualTo(10);
-    // then
-    byte[] buf = new byte[10];
-    outBuffer.get(buf);
-    assertThat(buf).startsWith(A_BYTES_COMPRESSED);
+    assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
   }
 
   @Test
   public void compress_with_direct_ByteBuffer_using_position_and_limit_on_input_buffer() throws Exception {
     // setup
-    ByteBuffer inBuffer = ByteBuffer.allocateDirect(100);
-    ByteBuffer outBuffer = ByteBuffer.allocateDirect(A_BYTES_COMPRESSED.length);
+    ByteBuffer inBuffer = allocateDirect(100);
+    ByteBuffer outBuffer = allocateDirect(A_BYTES_COMPRESSED.length);
     inBuffer.put(createFilledByteArray(100, 'x'));
 
     // given
@@ -173,8 +174,8 @@ public class BrotliCompressorTest {
   @Test
   public void compress_with_direct_ByteBuffer_using_position_and_limit_on_output_buffer() throws Exception {
     // setup
-    ByteBuffer inBuffer = ByteBuffer.allocateDirect(A_BYTES.length);
-    ByteBuffer outBuffer = ByteBuffer.allocateDirect(100);
+    ByteBuffer inBuffer = allocateDirect(A_BYTES.length);
+    ByteBuffer outBuffer = allocateDirect(100);
     inBuffer.put(A_BYTES);
     inBuffer.position(0);
 
@@ -202,8 +203,8 @@ public class BrotliCompressorTest {
 
   @Test
   public void compress_with_byte_array_wrapped_ByteBuffer() throws Exception {
-    ByteBuffer inBuffer = ByteBuffer.wrap(A_BYTES);
-    ByteBuffer outBuffer = ByteBuffer.allocate(10);
+    ByteBuffer inBuffer = wrap(A_BYTES);
+    ByteBuffer outBuffer = allocate(10);
     int outLength = compressor.compress(Brotli.DEFAULT_PARAMETER, inBuffer, outBuffer);
 
     // then
@@ -217,8 +218,8 @@ public class BrotliCompressorTest {
   @Test
   public void compress_with_byte_array_wrapped_ByteBuffer_using_position_and_limit_on_input_buffer() throws Exception {
     // setup
-    ByteBuffer inBuffer = ByteBuffer.wrap(createFilledByteArray(100, 'x'));
-    ByteBuffer outBuffer = ByteBuffer.allocate(A_BYTES_COMPRESSED.length);
+    ByteBuffer inBuffer = wrap(createFilledByteArray(100, 'x'));
+    ByteBuffer outBuffer = allocate(A_BYTES_COMPRESSED.length);
 
     // given
     int testPosition = 23;
@@ -244,8 +245,8 @@ public class BrotliCompressorTest {
   @Test
   public void compress_with_byte_array_wrapped_ByteBuffer_using_arrayOffset_and_limit_on_input_buffer() throws Exception {
     // setup
-    ByteBuffer inBuffer = ByteBuffer.wrap(createFilledByteArray(100, 'x'));
-    ByteBuffer outBuffer = ByteBuffer.allocate(A_BYTES_COMPRESSED.length);
+    ByteBuffer inBuffer = wrap(createFilledByteArray(100, 'x'));
+    ByteBuffer outBuffer = allocate(A_BYTES_COMPRESSED.length);
 
     // given
     int testPosition = 23;
@@ -272,8 +273,8 @@ public class BrotliCompressorTest {
   @Test
   public void compress_with_byte_array_wrapped_ByteBuffer_using_position_and_limit_on_output_buffer() throws Exception {
     // setup
-    ByteBuffer inBuffer = ByteBuffer.wrap(A_BYTES);
-    ByteBuffer outBuffer = ByteBuffer.allocate(100);
+    ByteBuffer inBuffer = wrap(A_BYTES);
+    ByteBuffer outBuffer = allocate(100);
 
     // given
     int testPosition = 23;
@@ -289,16 +290,14 @@ public class BrotliCompressorTest {
     assertThat(outBuffer.limit()).isEqualTo(testPosition + outLength);
     assertThat(inBuffer.position()).isEqualTo(A_BYTES.length);
     // then
-    byte[] buf = new byte[A_BYTES_COMPRESSED.length];
-    outBuffer.get(buf);
-    assertThat(buf).isEqualTo(A_BYTES_COMPRESSED);
+    assertThat(getByteArray(outBuffer)).isEqualTo(A_BYTES_COMPRESSED);
   }
 
   @Test
   public void compress_with_byte_array_wrapped_ByteBuffer_using_arrayOffset_and_limit_on_output_buffer() throws Exception {
     // setup
-    ByteBuffer inBuffer = ByteBuffer.wrap(A_BYTES);
-    ByteBuffer outBuffer = ByteBuffer.allocate(100);
+    ByteBuffer inBuffer = wrap(A_BYTES);
+    ByteBuffer outBuffer = allocate(100);
 
     // given
     int testPosition = 23;
@@ -315,14 +314,7 @@ public class BrotliCompressorTest {
     assertThat(outBuffer.limit()).isEqualTo(outLength);
     assertThat(inBuffer.position()).isEqualTo(A_BYTES.length);
     // then
-    byte[] buf = new byte[A_BYTES_COMPRESSED.length];
-    outBuffer.get(buf);
-    assertThat(buf).isEqualTo(A_BYTES_COMPRESSED);
+    assertThat(getByteArray(outBuffer)).isEqualTo(A_BYTES_COMPRESSED);
   }
 
-  static byte[] createFilledByteArray(int len, char fillChar) {
-    byte[] tmpXXX = new byte[len];
-    Arrays.fill(tmpXXX, (byte) fillChar);
-    return tmpXXX;
-  }
 }
