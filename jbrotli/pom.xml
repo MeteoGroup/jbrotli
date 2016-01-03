@@ -34,7 +34,6 @@
           <groupId>com.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-win32-x86-amd64</artifactId>
           <version>0.2.0-SNAPSHOT</version>
-          <scope>runtime</scope>
         </dependency>
       </dependencies>
     </profile>
@@ -52,7 +51,6 @@
           <groupId>com.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-win32-x86</artifactId>
           <version>0.2.0-SNAPSHOT</version>
-          <scope>runtime</scope>
         </dependency>
       </dependencies>
     </profile>
@@ -69,7 +67,6 @@
           <groupId>com.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-darwin</artifactId>
           <version>0.2.0-SNAPSHOT</version>
-          <scope>runtime</scope>
         </dependency>
       </dependencies>
     </profile>
@@ -87,7 +84,6 @@
           <groupId>com.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-linux-x86-amd64</artifactId>
           <version>0.2.0-SNAPSHOT</version>
-          <scope>runtime</scope>
         </dependency>
       </dependencies>
     </profile>
@@ -105,7 +101,6 @@
           <groupId>com.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-linux-x86</artifactId>
           <version>0.2.0-SNAPSHOT</version>
-          <scope>runtime</scope>
         </dependency>
       </dependencies>
     </profile>
@@ -122,10 +117,12 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
