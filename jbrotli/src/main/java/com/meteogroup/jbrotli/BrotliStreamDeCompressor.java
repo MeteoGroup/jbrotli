@@ -35,7 +35,7 @@ public final class BrotliStreamDeCompressor implements Closeable {
   private int lastErrorCode = 0;
 
   /**
-   * @throws BrotliException
+   * @throws BrotliException in case of something in native code went wrong
    */
   public BrotliStreamDeCompressor() throws BrotliException {
     assertBrotliOk(initBrotliDeCompressor());
@@ -44,16 +44,20 @@ public final class BrotliStreamDeCompressor implements Closeable {
   /**
    * @param in  input byte array
    * @param out output byte array
+   * @return length of decompressed byte array
    */
   public final int deCompress(byte[] in, byte[] out) {
     return deCompress(in, 0, in.length, out, 0, out.length);
   }
 
   /**
-   * @param in         input byte array
-   * @param inPosition position to start decompress from
-   * @param inLength   length in byte to decompress
-   * @return decompressed byte array
+   * @param in          input byte array
+   * @param inPosition  position to start decompress from
+   * @param inLength    length in byte to decompress
+   * @param out         output byte array
+   * @param outPosition output position
+   * @param outLength   output length
+   * @return length of decompressed byte array
    */
   public final int deCompress(byte[] in, int inPosition, int inLength, byte[] out, int outPosition, int outLength) throws BrotliException {
     if (inPosition + inLength > in.length) {
@@ -88,6 +92,7 @@ public final class BrotliStreamDeCompressor implements Closeable {
    *
    * @param in  input buffer
    * @param out output buffer
+   * @return length of the decompressed bytes
    */
   public final int deCompress(ByteBuffer in, ByteBuffer out) throws BrotliException {
     int inPosition = in.position();

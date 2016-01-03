@@ -26,7 +26,7 @@ public final class BrotliDeCompressor {
    * @param in  compressed input
    * @param out output buffer
    * @return output buffer length
-   * @throws BrotliException
+   * @throws BrotliException in case of something in native code went wrong
    */
   public final int deCompress(byte[] in, byte[] out) throws BrotliException {
     return deCompress(in, 0, in.length, out, 0, out.length);
@@ -40,7 +40,7 @@ public final class BrotliDeCompressor {
    * @param outPosition output position
    * @param outLength   output length
    * @return output buffer length
-   * @throws BrotliException
+   * @throws BrotliException in case of something in native code went wrong
    */
   public final int deCompress(byte[] in, int inPosition, int inLength, byte[] out, int outPosition, int outLength) throws BrotliException {
     if (inPosition + inLength > in.length) {
@@ -59,7 +59,7 @@ public final class BrotliDeCompressor {
    * @param in  compressed input
    * @param out output buffer
    * @return output buffer length
-   * @throws BrotliException
+   * @throws BrotliException in case of something in native code went wrong
    */
   public final int deCompress(ByteBuffer in, ByteBuffer out) throws BrotliException {
     int inPosition = in.position();

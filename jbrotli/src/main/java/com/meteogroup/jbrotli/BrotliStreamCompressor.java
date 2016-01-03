@@ -39,7 +39,7 @@ public final class BrotliStreamCompressor implements Closeable {
 
   /**
    * @param parameter parameter to use for this compressor
-   * @throws BrotliException
+   * @throws BrotliException  in case of something in native code went wrong
    */
   public BrotliStreamCompressor(Brotli.Parameter parameter) throws BrotliException {
     assertBrotliOk(initBrotliCompressor(parameter.getMode().mode, parameter.getQuality(), parameter.getLgwin(), parameter.getLgblock()));

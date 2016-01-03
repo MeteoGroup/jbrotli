@@ -45,21 +45,6 @@
   </dependencyManagement>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>2.3.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>2.1.2</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
     <plugins>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
@@ -81,6 +66,7 @@
         <plugins>
           <plugin>
             <artifactId>maven-source-plugin</artifactId>
+            <version>2.4</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -92,6 +78,7 @@
           </plugin>
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.10.3</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>

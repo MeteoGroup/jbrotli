@@ -27,20 +27,22 @@ public final class BrotliCompressor {
    * @param in        input
    * @param out       output
    * @return output buffer length
-   * @throws BrotliException
+   * @throws BrotliException in case of something in native code went wrong
    */
   public final int compress(Brotli.Parameter parameter, byte[] in, byte[] out) throws BrotliException {
     return compress(parameter, in, 0, in.length, out, 0, out.length);
   }
 
   /**
-   * @param parameter  parameter
-   * @param in         input
-   * @param inPosition input position
-   * @param inLength   input length
-   * @param out        output
+   * @param parameter   parameter
+   * @param in          input
+   * @param inPosition  input position
+   * @param inLength    input length
+   * @param out         output
+   * @param outPosition output position
+   * @param outLength   output length
    * @return output buffer length
-   * @throws BrotliException
+   * @throws BrotliException in case of something in native code went wrong
    */
   public final int compress(Brotli.Parameter parameter, byte[] in, int inPosition, int inLength, byte[] out, int outPosition, int outLength) throws BrotliException {
     if (inPosition + inLength > in.length) {
@@ -55,7 +57,7 @@ public final class BrotliCompressor {
   /**
    * One may use {@link ByteBuffer#position(int)} and {@link ByteBuffer#limit(int)} to adjust
    * how the buffers are used for reading and writing.
-   * <p>
+   * <p>&nbsp;</p>
    * There are two types of ByteBuffer: a) direct ones and b) byte array wrapped ones.
    * This implementation supports both. Both (input and output) buffer has to be of the same type.
    *
@@ -63,7 +65,7 @@ public final class BrotliCompressor {
    * @param in        input
    * @param out       output
    * @return output buffer length
-   * @throws BrotliException
+   * @throws BrotliException in case of something in native code went wrong
    */
   public final int compress(Brotli.Parameter parameter, ByteBuffer in, ByteBuffer out) throws BrotliException {
     int inPosition = in.position();
