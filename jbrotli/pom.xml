@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.meteogroup.jbrotli</groupId>
     <artifactId>jbrotli-parent</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -33,7 +33,7 @@
         <dependency>
           <groupId>com.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-win32-x86-amd64</artifactId>
-          <version>0.2.0-SNAPSHOT</version>
+          <version>0.2.0</version>
         </dependency>
       </dependencies>
     </profile>
@@ -50,7 +50,7 @@
         <dependency>
           <groupId>com.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-win32-x86</artifactId>
-          <version>0.2.0-SNAPSHOT</version>
+          <version>0.2.0</version>
         </dependency>
       </dependencies>
     </profile>
@@ -66,7 +66,7 @@
         <dependency>
           <groupId>com.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-darwin</artifactId>
-          <version>0.2.0-SNAPSHOT</version>
+          <version>0.2.0</version>
         </dependency>
       </dependencies>
     </profile>
@@ -83,7 +83,7 @@
         <dependency>
           <groupId>com.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-linux-x86-amd64</artifactId>
-          <version>0.2.0-SNAPSHOT</version>
+          <version>0.2.0</version>
         </dependency>
       </dependencies>
     </profile>
@@ -100,7 +100,7 @@
         <dependency>
           <groupId>com.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-linux-x86</artifactId>
-          <version>0.2.0-SNAPSHOT</version>
+          <version>0.2.0</version>
         </dependency>
       </dependencies>
     </profile>
