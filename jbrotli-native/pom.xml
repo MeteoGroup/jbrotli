@@ -35,7 +35,7 @@
     </profile>
 
     <profile>
-      <id>win32-x86-64</id>
+      <id>win32-x86-amd64</id>
       <activation>
         <os>
           <family>Windows</family>
@@ -43,7 +43,7 @@
         </os>
       </activation>
       <modules>
-        <module>win32-x86-64</module>
+        <module>win32-x86-amd64</module>
       </modules>
     </profile>
 
@@ -73,7 +73,7 @@
     </profile>
 
     <profile>
-      <id>linux-x86-64</id>
+      <id>linux-x86-amd64</id>
       <activation>
         <os>
           <family>unix</family>
@@ -81,7 +81,7 @@
         </os>
       </activation>
       <modules>
-        <module>linux-x86-64</module>
+        <module>linux-x86-amd64</module>
       </modules>
     </profile>
 

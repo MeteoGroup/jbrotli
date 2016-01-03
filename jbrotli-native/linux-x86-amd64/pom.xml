@@ -11,7 +11,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>jbrotli-native-win32-x86-64</artifactId>
+  <artifactId>jbrotli-native-linux-x86-amd64</artifactId>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -52,7 +52,7 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>build.bat</executable>
+              <executable>build.sh</executable>
               <workingDirectory>${project.basedir}</workingDirectory>
             </configuration>
           </execution>
@@ -60,6 +60,7 @@
       </plugin>
     </plugins>
   </build>
+
 
   <licenses>
     <license>

@@ -85,7 +85,7 @@ Currently the following platforms and architectures are tested:
 ### Build native libs
 
 The jbrotli-native Maven modules are configured to automatically be activated on your platform.
-E.g. on Windows with a 64bit JDK the module 'win32-x86-64' will be picked up.
+E.g. on Windows with a 64bit JDK the module 'win32-x86-amd64' will be picked up.
 If you want to build the 32bit version on Windows, you also need the 32bit JDK installed
 and to setup different ENV variables for your Windows SDK (or Visual Studio).
 See build.bat files for more details.
@@ -105,7 +105,7 @@ Each native module contains a small build script.
 E.g. for Windows 64bit, you may use this ...
 
 ```bash
-cd jbrotli-native/win32-x86-64
+cd jbrotli-native/win32-x86-amd64
 build.bat
 ```
 
@@ -123,7 +123,7 @@ javah -v -d jbrotli-native/src/main/cpp -classpath jbrotli/target/classes com.me
 
 Example for Linux 64bit
 ```bash
-cd jbrotli-native/linux-x86-64
+cd jbrotli-native/linux-x86-amd64
 mvn install
 cd ../..
 mvn -pl jbrotli-native install
