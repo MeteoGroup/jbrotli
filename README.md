@@ -27,7 +27,33 @@ It was developed by Google and released in September 2015 via this blog post:
 [Introducing Brotli: a new compression algorithm for the internet](http://google-opensource.blogspot.de/2015/09/introducing-brotli-new-compression.html)
 
 
-## Example compression code snippet
+## Using jbrotli
+
+##### Maven
+jbrotli releases are available at [bintray](https://bintray.com/nitram509/jbrotli/jbrotli/)
+
+Add these lines to your project's pom.xml
+```
+  <dependencies>
+    <dependency>
+      <groupId>com.meteogroup.jbrotli</groupId>
+      <artifactId>jbrotli</artifactId>
+      <version>0.2.0</version>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>bintray-nitram509-jbrotli</id>
+      <url>https://api.bintray.com/maven/nitram509/jbrotli/jbrotli</url>
+    </repository>
+  </repositories>
+```
+
+jbrotli's pom.xml will automatically select the native library,
+depending on your platform's operating system family and *arch type* (Java property ```os.arch```).
+For a list of supported platforms look for released ```jbrotli-native-*``` artifacts at 
+[bintray repository](https://bintray.com/nitram509/jbrotli/jbrotli#files/com/meteogroup/jbrotli)
 
 ##### Example of regular BrotliCompressor with custom dictionary
 
