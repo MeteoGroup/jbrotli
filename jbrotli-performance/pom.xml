@@ -20,118 +20,11 @@
     <jmh.version>1.11.2</jmh.version>
   </properties>
 
-  <profiles>
-    <profile>
-      <id>win32-x86-amd64</id>
-      <activation>
-        <os>
-          <family>Windows</family>
-          <arch>amd64</arch>
-        </os>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.meteogroup.jbrotli</groupId>
-          <artifactId>jbrotli-native-win32-x86-amd64</artifactId>
-          <version>0.2.0-SNAPSHOT</version>
-          <scope>runtime</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
-    <profile>
-      <id>win32-x86</id>
-      <activation>
-        <os>
-          <family>Windows</family>
-          <arch>x86</arch>
-        </os>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.meteogroup.jbrotli</groupId>
-          <artifactId>jbrotli-native-win32-x86</artifactId>
-          <version>0.2.0-SNAPSHOT</version>
-          <scope>runtime</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
-    <profile>
-      <id>darwin</id>
-      <activation>
-        <os>
-          <family>mac</family>
-        </os>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.meteogroup.jbrotli</groupId>
-          <artifactId>jbrotli-native-darwin</artifactId>
-          <version>0.2.0-SNAPSHOT</version>
-          <scope>runtime</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
-    <profile>
-      <id>linux-x86-amd64</id>
-      <activation>
-        <os>
-          <family>unix</family>
-          <arch>amd64</arch>
-        </os>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.meteogroup.jbrotli</groupId>
-          <artifactId>jbrotli-native-linux-x86-amd64</artifactId>
-          <version>0.2.0-SNAPSHOT</version>
-          <scope>runtime</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
-    <profile>
-      <id>linux-x86</id>
-      <activation>
-        <os>
-          <family>unix</family>
-          <arch>x86</arch>
-        </os>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.meteogroup.jbrotli</groupId>
-          <artifactId>jbrotli-native-linux-x86</artifactId>
-          <version>0.2.0-SNAPSHOT</version>
-          <scope>runtime</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
-  </profiles>
-
   <dependencies>
-
     <dependency>
       <groupId>com.meteogroup.jbrotli</groupId>
       <artifactId>jbrotli</artifactId>
       <version>0.2.0-SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.scijava</groupId>
-      <artifactId>native-lib-loader</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
     </dependency>
 
     <dependency>
