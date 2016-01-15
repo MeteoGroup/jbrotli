@@ -10,7 +10,7 @@ Java bindings for [Brotli](https://github.com/google/brotli.git): a new compress
 
 ##### Status of this project
 
-🚨 Experimental 🚀
+🚨 Beta 🚀
 
 ##### Example usage - Tomcat
 
