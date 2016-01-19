@@ -1,6 +1,6 @@
 platform: linux
 
-image: docker:///maven-cmake-gcc
+image: docker:///nitram509/maven-cmake-gcc
 
 inputs:
   - name: git-repo
