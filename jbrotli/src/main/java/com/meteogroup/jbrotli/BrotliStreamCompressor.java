@@ -20,6 +20,7 @@ import java.io.Closeable;
 import java.nio.ByteBuffer;
 
 import static com.meteogroup.jbrotli.BrotliErrorChecker.assertBrotliOk;
+import static java.lang.Math.min;
 
 public final class BrotliStreamCompressor implements Closeable {
 
@@ -39,7 +40,7 @@ public final class BrotliStreamCompressor implements Closeable {
 
   /**
    * @param parameter parameter to use for this compressor
-   * @throws BrotliException  in case of something in native code went wrong
+   * @throws BrotliException in case of something in native code went wrong
    */
   public BrotliStreamCompressor(Brotli.Parameter parameter) throws BrotliException {
     assertBrotliOk(initBrotliCompressor(parameter.getMode().mode, parameter.getQuality(), parameter.getLgwin(), parameter.getLgblock()));
@@ -69,16 +70,20 @@ public final class BrotliStreamCompressor implements Closeable {
   }
 
   /**
-   * One may use {@link ByteBuffer#position(int)} and {@link ByteBuffer#limit(int)} to adjust
-   * how the buffers are used for reading and writing.
+   * Compressing larger {@link ByteBuffer}s is more easy, because this method
+   * automatically compresses the maximum partial buffer. For example, if you have a 10mb buffer and the
+   * {@link #getInputBlockSize()} is 2mb, you can call {@link #compressNextBuffer(ByteBuffer, boolean)}
+   * 5 times in total. The input {@link ByteBuffer#position(int)} will be set accordingly.
+   * You may use {@link ByteBuffer#position(int)} and {@link ByteBuffer#limit(int)} to adjust
+   * how the buffers are used for reading.
    *
    * @param in      input buffer
    * @param doFlush do flush
    * @return a direct baked {@link ByteBuffer} containing the compressed output
    */
-  public final ByteBuffer compress(ByteBuffer in, boolean doFlush) {
+  public final ByteBuffer compressNextBuffer(ByteBuffer in, boolean doFlush) {
     int inPosition = in.position();
-    int inLimit = in.limit();
+    int inLimit = min(in.limit(), inPosition + getMaxInputBufferSize());
     int inRemain = inLimit - inPosition;
     if (inRemain < 0)
       throw new IllegalArgumentException("The source (in) position must me smaller then the source ByteBuffer's limit.");

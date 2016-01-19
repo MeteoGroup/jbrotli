@@ -49,6 +49,37 @@ public class BrotliStreamCompressorByteBufferTest {
     compressor.close();
   }
 
+  @Test
+  public void compress_sets_position_to_the_next_compressed_block__until_hits_limit() throws Exception {
+    // setup
+    int maxInputBufferSize = compressor.getMaxInputBufferSize();
+    int expectedLargeBufferSize = (int) (maxInputBufferSize * 2.5);
+
+    // given
+    ByteBuffer in = wrapDirect(createFilledByteArray(expectedLargeBufferSize, 'x'));
+
+    // when #1
+    compressor.compressNextBuffer(in, false);
+    // then
+    assertThat(in.position()).isEqualTo(maxInputBufferSize);
+    assertThat(in.limit()).isEqualTo(expectedLargeBufferSize);
+    assertThat(in.capacity()).isEqualTo(expectedLargeBufferSize);
+
+    // when #2
+    compressor.compressNextBuffer(in, false);
+    // then
+    assertThat(in.position()).isEqualTo(maxInputBufferSize * 2);
+    assertThat(in.limit()).isEqualTo(expectedLargeBufferSize);
+    assertThat(in.capacity()).isEqualTo(expectedLargeBufferSize);
+
+    // when #2.5
+    compressor.compressNextBuffer(in, false);
+    // then
+    assertThat(in.position()).isEqualTo(expectedLargeBufferSize);
+    assertThat(in.limit()).isEqualTo(expectedLargeBufferSize);
+    assertThat(in.capacity()).isEqualTo(expectedLargeBufferSize);
+  }
+
 
   //
   // *** direct ByteBuffer **********
@@ -60,7 +91,7 @@ public class BrotliStreamCompressorByteBufferTest {
     inBuffer.position(0);
 
     // when
-    ByteBuffer outBuffer = compressor.compress(inBuffer, true);
+    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, true);
 
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
     assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
@@ -73,12 +104,12 @@ public class BrotliStreamCompressorByteBufferTest {
     inBuffer.position(0);
 
     // when
-    ByteBuffer outBuffer = compressor.compress(inBuffer, false);
+    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, false);
     // then
     assertThat(outBuffer.capacity()).isEqualTo(0);
 
     // when
-    outBuffer = compressor.compress(ByteBuffer.allocateDirect(0), true);
+    outBuffer = compressor.compressNextBuffer(ByteBuffer.allocateDirect(0), true);
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
 
@@ -100,7 +131,7 @@ public class BrotliStreamCompressorByteBufferTest {
     inBuffer.limit(testPosition + A_BYTES.length);
 
     // when
-    ByteBuffer outBuffer = compressor.compress(inBuffer, true);
+    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, true);
 
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
@@ -108,18 +139,6 @@ public class BrotliStreamCompressorByteBufferTest {
     assertThat(outBuffer.position()).isEqualTo(0);
     // then
     assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
-  }
-
-  @Test(expectedExceptions = IllegalArgumentException.class,
-      expectedExceptionsMessageRegExp = "BrotliStreamCompressor, input ByteBuffer size is larger than allowed input block size. Slice the input into smaller chunks.")
-  public void compress_with_array_direct_ByteBuffer_using_larger_input_buffer_throws_exception() throws Exception {
-    // given
-    ByteBuffer tmpBuffer = wrapDirect(new byte[compressor.getMaxInputBufferSize() + 1]);
-
-    // when
-    compressor.compress(tmpBuffer, true);
-
-    // expected exception
   }
 
   //
@@ -130,7 +149,7 @@ public class BrotliStreamCompressorByteBufferTest {
     ByteBuffer inBuffer = wrap(A_BYTES);
 
     // when
-    ByteBuffer outBuffer = compressor.compress(inBuffer, true);
+    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, true);
 
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
     assertThat(getByteArray(outBuffer)).isEqualTo(A_BYTES_COMPRESSED);
@@ -141,12 +160,12 @@ public class BrotliStreamCompressorByteBufferTest {
     ByteBuffer inBuffer = wrap(A_BYTES);
 
     // when
-    ByteBuffer outBuffer = compressor.compress(inBuffer, false);
+    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, false);
     // then
     assertThat(outBuffer.capacity()).isEqualTo(0);
 
     // when
-    outBuffer = compressor.compress(wrap(new byte[0]), true);
+    outBuffer = compressor.compressNextBuffer(wrap(new byte[0]), true);
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
 
@@ -167,7 +186,7 @@ public class BrotliStreamCompressorByteBufferTest {
     inBuffer.limit(testPosition + A_BYTES.length);
 
     // when
-    ByteBuffer outBuffer = compressor.compress(inBuffer, true);
+    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, true);
 
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
@@ -191,7 +210,7 @@ public class BrotliStreamCompressorByteBufferTest {
     inBuffer.limit(A_BYTES.length);
 
     // when
-    ByteBuffer outBuffer = compressor.compress(inBuffer, true);
+    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, true);
 
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
@@ -199,18 +218,6 @@ public class BrotliStreamCompressorByteBufferTest {
     assertThat(outBuffer.position()).isEqualTo(0);
     // then
     assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
-  }
-
-  @Test(expectedExceptions = IllegalArgumentException.class,
-      expectedExceptionsMessageRegExp = "BrotliStreamCompressor, input byte array length is larger than allowed input block size. Slice the input into smaller chunks.")
-  public void compress_with_array_wrapped_ByteBuffer_using_larger_input_buffer_throws_exception() throws Exception {
-    // given
-    ByteBuffer tmpBuffer = wrap(new byte[compressor.getMaxInputBufferSize() + 1]);
-
-    // when
-    compressor.compress(tmpBuffer, true);
-
-    // expected exception
   }
 
 }
