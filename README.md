@@ -79,7 +79,35 @@ byte[] compressed = streamCompressor.compress(inBuf, doFlush);
 ```
 
 
-## Building this library
+## Running the automated build pipeline
+
+jbrotli comes with it's own [Continuous Integration](https://www.thoughtworks.com/continuous-integration) pipeline
+based on configuration files, which describe a virtual build infrastructure.
+The tools which you need to have installed on your box are [Vagrant](https://www.vagrantup.com/)
+and [Virtual Box](https://www.virtualbox.org/).
+The pipeline is build by using the great [Concourse CI](http://concourse.ci/) tools and ideas behind that project.
+
+#### 1. Prepare vagrant box
+```
+vagrant init
+vagrant up
+```
+
+#### 2. Prepare 'fly' command line tool
+This [fly](http://concourse.ci/fly-cli.html) tool is required to work with the pipeline.
+Please follow the Concourse CI's [Getting Started Guide](http://concourse.ci/getting-started.html)
+to learn how to install this tool.
+
+#### 3. Upload pipeline
+```
+fly set-pipeline -p jbrotli -c ./pipeline.yml
+```
+
+#### 3. Open Web UI and run pipeline
+Once the pipeline is set, you can open the Web UI via http://192.168.100.4:8080/
+and start the pipeline manually.
+
+## Building this library manually
 
 ### Requirements
 
