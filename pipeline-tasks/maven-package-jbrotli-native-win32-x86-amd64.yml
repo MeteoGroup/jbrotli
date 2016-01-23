@@ -10,5 +10,5 @@ outputs:
     path: git-repo/target
 
 run:
-  path: mvn
-  args: ["-f", "git-repo/pom.xml", "package"]
+  path: bash
+  args: ["git-repo/pipeline-tasks/maven-package-jbrotli-native-win32-x86-amd64.sh"]
