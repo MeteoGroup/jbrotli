@@ -72,7 +72,7 @@ public final class BrotliStreamCompressor implements Closeable {
   /**
    * Compressing larger {@link ByteBuffer}s is more easy, because this method
    * automatically compresses the maximum partial buffer. For example, if you have a 10mb buffer and the
-   * {@link #getInputBlockSize()} is 2mb, you can call {@link #compressNext(ByteBuffer, boolean)}
+   * {@link #getInputBlockSize()} is 2mb, you can call this method
    * 5 times in total. The input {@link ByteBuffer#position(int)} will be set accordingly.
    * You may use {@link ByteBuffer#position(int)} and {@link ByteBuffer#limit(int)} to adjust
    * how the buffers are used for reading.
