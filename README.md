@@ -90,4 +90,4 @@ https://docs.google.com/spreadsheets/d/1y3t_NvXrD58tKCXMvNC49EtxBMQQOE_8SPQLS6c1
 
 ## How to build
 
-If you want to compile & test this library yourself, please follow the guideline [how to build](HOWTO-BUILD.md) 
+If you want to compile & test this library yourself, please follow this [guideline](HOWTO-BUILD.md). 
