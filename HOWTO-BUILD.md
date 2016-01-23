@@ -2,34 +2,6 @@
 Guideline how to build jbrotli project
 =========================================
 
-## Running the automated build pipeline
-
-jbrotli comes with it's own [Continuous Integration](https://www.thoughtworks.com/continuous-integration) pipeline
-based on configuration files, which describe a virtual build infrastructure.
-The tools which you need to have installed on your box are [Vagrant](https://www.vagrantup.com/)
-and [Virtual Box](https://www.virtualbox.org/).
-The pipeline is build by using the great [Concourse CI](http://concourse.ci/) tools and ideas behind that project.
-
-#### 1. Prepare vagrant box
-```
-vagrant init
-vagrant up
-```
-
-#### 2. Prepare 'fly' command line tool
-This [fly](http://concourse.ci/fly-cli.html) tool is required to work with the pipeline.
-Please follow the Concourse CI's [Getting Started Guide](http://concourse.ci/getting-started.html)
-to learn how to install this tool.
-
-#### 3. Upload pipeline
-```
-fly set-pipeline -p jbrotli -c ./pipeline.yml
-```
-
-#### 3. Open Web UI and run pipeline
-Once the pipeline is set, you can open the Web UI via http://192.168.100.4:8080/
-and start the pipeline manually.
-
 ## Building libraries manually per platform
 
 ### Requirements
@@ -88,7 +60,7 @@ build.bat
 ```
 
 
-### Prepare JNI header files
+## Prepare JNI header files
 
 This is only needed when native method signatures change.
 
@@ -97,9 +69,12 @@ mvn -pl jbrotli compile
 javah -v -d jbrotli-native/src/main/cpp -classpath jbrotli/target/classes com.meteogroup.jbrotli.BrotliCompressor com.meteogroup.jbrotli.BrotliDeCompressor com.meteogroup.jbrotli.BrotliStreamCompressor com.meteogroup.jbrotli.BrotliStreamDeCompressor com.meteogroup.jbrotli.BrotliError
 ```
 
-### Run benchmark
 
+## Run benchmark
+
+Once you build everything, you're able to run the benchmark.
 Example for Linux 64bit
+
 ```bash
 cd jbrotli-native/linux-x86-amd64
 mvn install
@@ -110,3 +85,33 @@ mvn -pl jbrotli-performance package
 java -jar jbrotli-performance/target/jbrotli-performance-0.2.0.jar
 ```
 
+
+## WiP: Running the automated build pipeline
+
+**The pipeline is still under construction**.
+
+jbrotli comes with it's own [Continuous Integration](https://www.thoughtworks.com/continuous-integration) pipeline
+based on configuration files, which describe a virtual build infrastructure.
+The tools which you need to have installed on your box are [Vagrant](https://www.vagrantup.com/)
+and [Virtual Box](https://www.virtualbox.org/).
+The pipeline is build by using the great [Concourse CI](http://concourse.ci/) tools and ideas behind that project.
+
+#### 1. Prepare vagrant box
+```
+vagrant init
+vagrant up
+```
+
+#### 2. Prepare 'fly' command line tool
+This [fly](http://concourse.ci/fly-cli.html) tool is required to work with the pipeline.
+Please follow the Concourse CI's [Getting Started Guide](http://concourse.ci/getting-started.html)
+to learn how to install this tool.
+
+#### 3. Upload pipeline
+```
+fly set-pipeline -p jbrotli -c ./pipeline.yml
+```
+
+#### 3. Open Web UI and run pipeline
+Once the pipeline is set, you can open the Web UI via http://192.168.100.4:8080/
+and start the pipeline manually.
