@@ -12,9 +12,10 @@ Java bindings for [Brotli](https://github.com/google/brotli.git): a new compress
 
 🚨 Beta 🚀
 
-##### Example usage - Tomcat
+##### Example usage in HTTP servers
 
-There's a second experiment to let a [patched Tomcat server](https://github.com/nitram509/tomcat80) make use of jbrotli.
+* There's a [patched Tomcat server](https://github.com/nitram509/tomcat80) which makes use of jbrotli.
+* There's a [patched Undertow server](https://github.com/MeteoGroup/undertow) which makes use of jbrotli.
 
 
 ## About Brotli
