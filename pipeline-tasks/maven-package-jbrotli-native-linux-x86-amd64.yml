@@ -6,7 +6,7 @@ inputs:
   - name: git-repo
 
 outputs:
-  - name: jar-file
+  - name: jar-file-linux-x86-amd64
     path: git-repo/target
 
 run:
