@@ -51,7 +51,7 @@ public class BrotliExampleTest {
     byte[] inBuf = "Brotli: a new compression algorithm for the internet. Now available for Java!".getBytes();
     boolean doFlush = true;
     BrotliStreamCompressor streamCompressor = new BrotliStreamCompressor(Brotli.DEFAULT_PARAMETER);
-    byte[] compressed = streamCompressor.compress(inBuf, doFlush);
+    byte[] compressed = streamCompressor.compressBuffer(inBuf, doFlush);
   }
 
 }

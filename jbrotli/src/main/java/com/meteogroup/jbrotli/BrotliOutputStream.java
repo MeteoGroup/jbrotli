@@ -36,22 +36,22 @@ public class BrotliOutputStream extends OutputStream {
   @Override
   public void write(int i) throws IOException {
     byte[] buf = new byte[]{(byte) (i & 0xff)};
-    outputStream.write(brotliStreamCompressor.compress(buf, false));
+    outputStream.write(brotliStreamCompressor.compressBuffer(buf, false));
   }
 
   @Override
   public void write(byte[] b) throws IOException {
-    outputStream.write(brotliStreamCompressor.compress(b, false));
+    outputStream.write(brotliStreamCompressor.compressBuffer(b, false));
   }
 
   @Override
   public void write(byte[] b, int off, int len) throws IOException {
-    outputStream.write(brotliStreamCompressor.compress(b, off, len, false));
+    outputStream.write(brotliStreamCompressor.compressBuffer(b, off, len, false));
   }
 
   @Override
   public void flush() throws IOException {
-    outputStream.write(brotliStreamCompressor.compress(new byte[0], true));
+    outputStream.write(brotliStreamCompressor.compressBuffer(new byte[0], true));
     outputStream.flush();
   }
 

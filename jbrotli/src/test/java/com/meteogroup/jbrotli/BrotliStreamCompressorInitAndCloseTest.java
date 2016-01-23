@@ -61,7 +61,7 @@ public class BrotliStreamCompressorInitAndCloseTest {
       expectedExceptionsMessageRegExp = "Brotli: input array position and length must be greater than zero.")
   public void using_negative_position_on_input_throws_IllegalArgumentException() throws Exception {
 
-    compressor.compress(A_BYTES, -1, 0, true);
+    compressor.compressBuffer(A_BYTES, -1, 0, true);
 
     // expect exception
   }
@@ -70,7 +70,7 @@ public class BrotliStreamCompressorInitAndCloseTest {
       expectedExceptionsMessageRegExp = "Brotli: input array position and length must be greater than zero.")
   public void using_negative_length_on_input_throws_IllegalArgumentException() throws Exception {
 
-    compressor.compress(A_BYTES, 0, -1, true);
+    compressor.compressBuffer(A_BYTES, 0, -1, true);
 
     // expect exception
   }

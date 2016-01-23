@@ -59,21 +59,21 @@ public class BrotliStreamCompressorByteBufferTest {
     ByteBuffer in = wrapDirect(createFilledByteArray(expectedLargeBufferSize, 'x'));
 
     // when #1
-    compressor.compressNextBuffer(in, false);
+    compressor.compressNext(in, false);
     // then
     assertThat(in.position()).isEqualTo(maxInputBufferSize);
     assertThat(in.limit()).isEqualTo(expectedLargeBufferSize);
     assertThat(in.capacity()).isEqualTo(expectedLargeBufferSize);
 
     // when #2
-    compressor.compressNextBuffer(in, false);
+    compressor.compressNext(in, false);
     // then
     assertThat(in.position()).isEqualTo(maxInputBufferSize * 2);
     assertThat(in.limit()).isEqualTo(expectedLargeBufferSize);
     assertThat(in.capacity()).isEqualTo(expectedLargeBufferSize);
 
     // when #2.5
-    compressor.compressNextBuffer(in, false);
+    compressor.compressNext(in, false);
     // then
     assertThat(in.position()).isEqualTo(expectedLargeBufferSize);
     assertThat(in.limit()).isEqualTo(expectedLargeBufferSize);
@@ -91,7 +91,7 @@ public class BrotliStreamCompressorByteBufferTest {
     inBuffer.position(0);
 
     // when
-    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, true);
+    ByteBuffer outBuffer = compressor.compressNext(inBuffer, true);
 
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
     assertThat(getByteArray(outBuffer)).startsWith(A_BYTES_COMPRESSED);
@@ -104,12 +104,12 @@ public class BrotliStreamCompressorByteBufferTest {
     inBuffer.position(0);
 
     // when
-    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, false);
+    ByteBuffer outBuffer = compressor.compressNext(inBuffer, false);
     // then
     assertThat(outBuffer.capacity()).isEqualTo(0);
 
     // when
-    outBuffer = compressor.compressNextBuffer(ByteBuffer.allocateDirect(0), true);
+    outBuffer = compressor.compressNext(ByteBuffer.allocateDirect(0), true);
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
 
@@ -131,7 +131,7 @@ public class BrotliStreamCompressorByteBufferTest {
     inBuffer.limit(testPosition + A_BYTES.length);
 
     // when
-    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, true);
+    ByteBuffer outBuffer = compressor.compressNext(inBuffer, true);
 
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
@@ -149,7 +149,7 @@ public class BrotliStreamCompressorByteBufferTest {
     ByteBuffer inBuffer = wrap(A_BYTES);
 
     // when
-    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, true);
+    ByteBuffer outBuffer = compressor.compressNext(inBuffer, true);
 
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
     assertThat(getByteArray(outBuffer)).isEqualTo(A_BYTES_COMPRESSED);
@@ -160,12 +160,12 @@ public class BrotliStreamCompressorByteBufferTest {
     ByteBuffer inBuffer = wrap(A_BYTES);
 
     // when
-    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, false);
+    ByteBuffer outBuffer = compressor.compressNext(inBuffer, false);
     // then
     assertThat(outBuffer.capacity()).isEqualTo(0);
 
     // when
-    outBuffer = compressor.compressNextBuffer(wrap(new byte[0]), true);
+    outBuffer = compressor.compressNext(wrap(new byte[0]), true);
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
 
@@ -186,7 +186,7 @@ public class BrotliStreamCompressorByteBufferTest {
     inBuffer.limit(testPosition + A_BYTES.length);
 
     // when
-    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, true);
+    ByteBuffer outBuffer = compressor.compressNext(inBuffer, true);
 
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);
@@ -210,7 +210,7 @@ public class BrotliStreamCompressorByteBufferTest {
     inBuffer.limit(A_BYTES.length);
 
     // when
-    ByteBuffer outBuffer = compressor.compressNextBuffer(inBuffer, true);
+    ByteBuffer outBuffer = compressor.compressNext(inBuffer, true);
 
     // then
     assertThat(outBuffer.capacity()).isEqualTo(A_BYTES_COMPRESSED.length);

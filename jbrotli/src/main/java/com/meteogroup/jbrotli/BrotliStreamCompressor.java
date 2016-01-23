@@ -51,8 +51,8 @@ public final class BrotliStreamCompressor implements Closeable {
    * @param doFlush do flush
    * @return compressed byte array or NULL if there was an error in native code
    */
-  public final byte[] compress(byte[] in, boolean doFlush) {
-    return compress(in, 0, in.length, doFlush);
+  public final byte[] compressBuffer(byte[] in, boolean doFlush) {
+    return compressBuffer(in, 0, in.length, doFlush);
   }
 
   /**
@@ -62,7 +62,7 @@ public final class BrotliStreamCompressor implements Closeable {
    * @param doFlush    do flush
    * @return compressed byte array
    */
-  public final byte[] compress(byte[] in, int inPosition, int inLength, boolean doFlush) {
+  public final byte[] compressBuffer(byte[] in, int inPosition, int inLength, boolean doFlush) {
     if (inPosition + inLength > in.length) {
       throw new IllegalArgumentException("The source position + length must me smaller then the source byte array's length.");
     }
@@ -72,7 +72,7 @@ public final class BrotliStreamCompressor implements Closeable {
   /**
    * Compressing larger {@link ByteBuffer}s is more easy, because this method
    * automatically compresses the maximum partial buffer. For example, if you have a 10mb buffer and the
-   * {@link #getInputBlockSize()} is 2mb, you can call {@link #compressNextBuffer(ByteBuffer, boolean)}
+   * {@link #getInputBlockSize()} is 2mb, you can call {@link #compressNext(ByteBuffer, boolean)}
    * 5 times in total. The input {@link ByteBuffer#position(int)} will be set accordingly.
    * You may use {@link ByteBuffer#position(int)} and {@link ByteBuffer#limit(int)} to adjust
    * how the buffers are used for reading.
@@ -81,7 +81,7 @@ public final class BrotliStreamCompressor implements Closeable {
    * @param doFlush do flush
    * @return a direct baked {@link ByteBuffer} containing the compressed output
    */
-  public final ByteBuffer compressNextBuffer(ByteBuffer in, boolean doFlush) {
+  public final ByteBuffer compressNext(ByteBuffer in, boolean doFlush) {
     int inPosition = in.position();
     int inLimit = min(in.limit(), inPosition + getMaxInputBufferSize());
     int inRemain = inLimit - inPosition;
