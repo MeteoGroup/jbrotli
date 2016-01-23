@@ -14,5 +14,5 @@ jobs:
       trigger: true
     - task: maven-package-jbrotli-native-win32-x86-amd64
       privileged: true
-      file: git-repo/pipeline-tasks/maven-package-jbrotli-native-win32-x86-amd64.yml
+      file: git-repo/pipeline-tasks/maven-package-jbrotli-native-linux-x86-amd64.yml
 
