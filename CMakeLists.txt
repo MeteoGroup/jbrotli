@@ -46,9 +46,9 @@ add_library (brotli ${LIB_TYPE} "brotli/enc/backward_references.cc"
 				"brotli/dec/state.c"
 				"brotli/dec/streams.c"
 				"jbrotli-native/src/main/cpp/param_converter.cxx"
-				"jbrotli-native/src/main/cpp/com_meteogroup_jbrotli_BrotliCompressor.cxx"
-				"jbrotli-native/src/main/cpp/com_meteogroup_jbrotli_BrotliStreamCompressor.cxx"
-				"jbrotli-native/src/main/cpp/com_meteogroup_jbrotli_BrotliStreamDeCompressor.cxx"
-				"jbrotli-native/src/main/cpp/com_meteogroup_jbrotli_BrotliDeCompressor.cxx")
+				"jbrotli-native/src/main/cpp/org_meteogroup_jbrotli_BrotliCompressor.cxx"
+				"jbrotli-native/src/main/cpp/org_meteogroup_jbrotli_BrotliStreamCompressor.cxx"
+				"jbrotli-native/src/main/cpp/org_meteogroup_jbrotli_BrotliStreamDeCompressor.cxx"
+				"jbrotli-native/src/main/cpp/org_meteogroup_jbrotli_BrotliDeCompressor.cxx")
 
 SET_TARGET_PROPERTIES (brotli PROPERTIES LINKER_LANGUAGE CXX)

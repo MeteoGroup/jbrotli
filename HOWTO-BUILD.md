@@ -66,7 +66,7 @@ This is only needed when native method signatures change.
 
 ```bash
 mvn -pl jbrotli compile
-javah -v -d jbrotli-native/src/main/cpp -classpath jbrotli/target/classes com.meteogroup.jbrotli.BrotliCompressor com.meteogroup.jbrotli.BrotliDeCompressor com.meteogroup.jbrotli.BrotliStreamCompressor com.meteogroup.jbrotli.BrotliStreamDeCompressor com.meteogroup.jbrotli.BrotliError
+javah -v -d jbrotli-native/src/main/cpp -classpath jbrotli/target/classes org.meteogroup.jbrotli.BrotliCompressor org.meteogroup.jbrotli.BrotliDeCompressor org.meteogroup.jbrotli.BrotliStreamCompressor org.meteogroup.jbrotli.BrotliStreamDeCompressor org.meteogroup.jbrotli.BrotliError
 ```
 
 

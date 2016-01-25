@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.meteogroup.jbrotli</groupId>
+  <groupId>org.meteogroup.jbrotli</groupId>
   <artifactId>jbrotli</artifactId>
   <packaging>jar</packaging>
   <version>0.2.1-SNAPSHOT</version>
@@ -27,7 +27,7 @@
       </activation>
       <dependencies>
         <dependency>
-          <groupId>com.meteogroup.jbrotli</groupId>
+          <groupId>org.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-win32-x86-amd64</artifactId>
           <version>${version.jbrotli.native}</version>
         </dependency>
@@ -44,7 +44,7 @@
       </activation>
       <dependencies>
         <dependency>
-          <groupId>com.meteogroup.jbrotli</groupId>
+          <groupId>org.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-win32-x86</artifactId>
           <version>${version.jbrotli.native}</version>
         </dependency>
@@ -60,7 +60,7 @@
       </activation>
       <dependencies>
         <dependency>
-          <groupId>com.meteogroup.jbrotli</groupId>
+          <groupId>org.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-darwin</artifactId>
           <version>${version.jbrotli.native}</version>
         </dependency>
@@ -77,7 +77,7 @@
       </activation>
       <dependencies>
         <dependency>
-          <groupId>com.meteogroup.jbrotli</groupId>
+          <groupId>org.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-linux-x86-amd64</artifactId>
           <version>${version.jbrotli.native}</version>
         </dependency>
@@ -94,7 +94,7 @@
       </activation>
       <dependencies>
         <dependency>
-          <groupId>com.meteogroup.jbrotli</groupId>
+          <groupId>org.meteogroup.jbrotli</groupId>
           <artifactId>jbrotli-native-linux-x86</artifactId>
           <version>${version.jbrotli.native}</version>
         </dependency>
