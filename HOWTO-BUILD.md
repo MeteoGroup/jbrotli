@@ -79,7 +79,6 @@ Example for Linux 64bit
 cd jbrotli-native/linux-x86-amd64
 mvn install
 cd ../..
-mvn -pl jbrotli-native install
 mvn -pl jbrotli install
 mvn -pl jbrotli-performance package
 java -jar jbrotli-performance/target/jbrotli-performance-0.2.0.jar

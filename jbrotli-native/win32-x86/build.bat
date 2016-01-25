@@ -20,7 +20,7 @@ SET TARGET_CLASSES_PATH=%~dp0target\classes
 
 :PREPARE_MAKEFILES
 cd "%~dp0target"
-cmake -G "NMake Makefiles" ..\..\..\ || goto ERROR
+cmake -DCMAKE_BUILD_TYPE=RELEASE -G "NMake Makefiles" ..\..\..\ || goto ERROR
 
 :MAKE_ALL
 cd "%~dp0target"
