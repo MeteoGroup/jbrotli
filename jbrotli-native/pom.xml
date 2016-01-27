@@ -82,6 +82,13 @@
 
   </profiles>
 
+  <scm>
+    <url>scm:git:git@github.com:MeteoGroup/jbrotli.git</url>
+    <connection>scm:git:git@github.com:MeteoGroup/jbrotli.git</connection>
+    <developerConnection>scm:git:git@github.com:MeteoGroup/jbrotli.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -90,5 +97,13 @@
       <comments>A business-friendly OSS license</comments>
     </license>
   </licenses>
+
+  <developers>
+    <developer>
+      <name>Martin W. Kirst</name>
+      <email>maki@bitkings.de</email>
+      <url>https://github.com/nitram509</url>
+    </developer>
+  </developers>
 
 </project>
