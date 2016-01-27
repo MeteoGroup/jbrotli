@@ -38,9 +38,9 @@ In order to use, simply add these lines to your project's pom.xml:
 ```xml
   <dependencies>
     <dependency>
-      <groupId>com.meteogroup.jbrotli</groupId>
+      <groupId>org.meteogroup.jbrotli</groupId>
       <artifactId>jbrotli</artifactId>
-      <version>0.2.0</version>
+      <version>0.3.0</version>
     </dependency>
   </dependencies>
 
@@ -78,7 +78,7 @@ NativeLoader.loadLibrary("brotli");
 byte[] inBuf = "Brotli: a new compression algorithm for the internet. Now available for Java!".getBytes();
 boolean doFlush = true;
 BrotliStreamCompressor streamCompressor = new BrotliStreamCompressor(Brotli.DEFAULT_PARAMETER);
-byte[] compressed = streamCompressor.compress(inBuf, doFlush);
+byte[] compressed = streamCompressor.compressBuffer(inBuf, doFlush);
 ```
 
 
