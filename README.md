@@ -16,7 +16,7 @@ At the moment, there are zero known issues with jbrotli and all 90+ unit tests a
 
 ###### Jan.2016
 
-    When I did high throughput and highly concurrent benchmarks with the HTTP servers (see above),
+    When I did high throughput and highly concurrent benchmarks with the HTTP servers (see below),
     I observed peak memory usages over 32GByte, which killed my JVM. I've searched for memory leaks,
     but couldn't found any orphan objects after comparing heap dumps.
     Unfortunately there isn't that much documentation on memory usage available. Which makes it difficult
