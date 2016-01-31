@@ -7,7 +7,7 @@
   <groupId>org.meteogroup.jbrotli</groupId>
   <artifactId>jbrotli-native-win32-x86</artifactId>
   <packaging>jar</packaging>
-  <version>0.3.0</version>
+  <version>0.3.1-SNAPSHOT</version>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
