@@ -55,19 +55,6 @@
     </profile>
 
     <profile>
-      <id>linux-x86</id>
-      <activation>
-        <os>
-          <family>unix</family>
-          <arch>x86</arch>
-        </os>
-      </activation>
-      <modules>
-        <module>linux-x86</module>
-      </modules>
-    </profile>
-
-    <profile>
       <id>linux-x86-amd64</id>
       <activation>
         <os>
