@@ -28,7 +28,7 @@ At the moment, there are zero known issues with jbrotli and all 90+ unit tests a
 ##### Example usage in HTTP servers
 
 * There's a [patched Tomcat server](https://github.com/nitram509/tomcat80) which makes use of jbrotli.
-* There's a [patched Undertow server](https://github.com/MeteoGroup/undertow) which makes use of jbrotli.
+* There's a [patched Undertow server](https://github.com/nitram509/undertow) which makes use of jbrotli.
 
 
 ## About Brotli
