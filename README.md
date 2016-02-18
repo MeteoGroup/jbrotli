@@ -25,7 +25,7 @@ At the moment, there are zero known issues with jbrotli and all 90+ unit tests a
     I don't recommend to use jbrotli in projects with many and highly concurrent compression tasks.
     
     
-##### Example usage in HTTP servers
+##### Example patches in HTTP servers
 
 * There's a [patched Tomcat server](https://github.com/nitram509/tomcat80) which makes use of jbrotli.
 * There's a [patched Undertow server](https://github.com/nitram509/undertow) which makes use of jbrotli.
