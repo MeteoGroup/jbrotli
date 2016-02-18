@@ -103,6 +103,7 @@ public class Brotli_vs_Gzip_Benchmark {
     arrayOutputStream.reset();
     GZIPOutputStream gzipOutputStream = new GZIPOutputStream(arrayOutputStream);
     gzipOutputStream.write(cpHtmlData, 0, cpHtmlData.length);
+    gzipOutputStream.close();
   }
 
   public static void main(String[] args) throws RunnerException {
