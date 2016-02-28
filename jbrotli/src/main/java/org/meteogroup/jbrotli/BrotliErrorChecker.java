@@ -21,7 +21,7 @@ class BrotliErrorChecker {
   /**
    * @param errorCode errorCode
    */
-  public static boolean isBrotliOk(int errorCode) {
+  static boolean isBrotliOk(int errorCode) {
     return errorCode >= 0;
   }
 
@@ -29,7 +29,7 @@ class BrotliErrorChecker {
    * @param errorCodeOrSizeInformation error code or size information
    * @throws BrotliException in case of errors
    */
-  public static int assertBrotliOk(int errorCodeOrSizeInformation) throws BrotliException {
+  static int assertBrotliOk(int errorCodeOrSizeInformation) throws BrotliException {
     if (!isBrotliOk(errorCodeOrSizeInformation))
       throw new BrotliException(resolveErrorCode2Message(errorCodeOrSizeInformation));
     return errorCodeOrSizeInformation;
@@ -39,7 +39,7 @@ class BrotliErrorChecker {
    * @param errorCode errorCode
    * @return message or null if there was no error
    */
-  public static String resolveErrorCode2Message(int errorCode) {
+  private static String resolveErrorCode2Message(int errorCode) {
     if (isBrotliOk(errorCode)) return null;
     String msg = " (Error code: " + errorCode + ")";
     switch (errorCode) {

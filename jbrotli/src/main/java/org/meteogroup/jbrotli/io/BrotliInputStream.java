@@ -14,7 +14,9 @@
  *  limitations under the License.
  */
 
-package org.meteogroup.jbrotli;
+package org.meteogroup.jbrotli.io;
+
+import org.meteogroup.jbrotli.BrotliStreamDeCompressor;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

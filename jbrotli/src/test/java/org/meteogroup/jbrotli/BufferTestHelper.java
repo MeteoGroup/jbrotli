@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 import static java.util.Arrays.copyOfRange;
 
-class BufferTestHelper {
+public class BufferTestHelper {
 
   static byte[] concat(byte[] bytes1, byte[] bytes2) {
     byte[] result = new byte[bytes1.length + bytes2.length];
@@ -50,7 +50,7 @@ class BufferTestHelper {
     return byteBuffer;
   }
 
-  static byte[] createFilledByteArray(int len, char fillChar) {
+  public static byte[] createFilledByteArray(int len, char fillChar) {
     byte[] tmpXXX = new byte[len];
     Arrays.fill(tmpXXX, (byte) fillChar);
     return tmpXXX;

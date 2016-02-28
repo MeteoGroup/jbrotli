@@ -14,8 +14,10 @@
  *  limitations under the License.
  */
 
-package org.meteogroup.jbrotli;
+package org.meteogroup.jbrotli.io;
 
+import org.meteogroup.jbrotli.BrotliCompressor;
+import org.meteogroup.jbrotli.BufferTestHelper;
 import org.scijava.nativelib.NativeLoader;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -26,11 +28,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.meteogroup.jbrotli.Brotli.DEFAULT_PARAMETER;
 import static org.meteogroup.jbrotli.BrotliCompressorTest.A_BYTES;
 import static org.meteogroup.jbrotli.BrotliCompressorTest.A_BYTES_COMPRESSED;
-import static org.meteogroup.jbrotli.BrotliInputStream.INTERNAL_UNCOMPRESSED_BUFFER_SIZE;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.meteogroup.jbrotli.io.BrotliInputStream.INTERNAL_UNCOMPRESSED_BUFFER_SIZE;
 
 public class BrotliInputStreamTest {
 
