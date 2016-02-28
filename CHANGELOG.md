@@ -6,7 +6,9 @@ CHANGELOG jbrotli
 
 * NEW: provide BrotliServletFilter, so you may add to your Tomcat, Jetty, etc.
 * NEW: Brotli.Parameter has fluent setter-methods, for convenience
+* FIX: memory leak in BrotliOutputStream and BrotliInputStream
 * CHG: rename BrotliStreamCompressor array methods to 'compressArray()'
+* CHG: BrotliOutputStream and BrotliInputStream don't auto-flush, because this violates the AutoCloseable contract
 
 ## v0.3.0 (2016-01-27)
 

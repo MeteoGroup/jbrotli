@@ -13,11 +13,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package org.meteogroup.jbrotli.servlet;
 
-package org.meteogroup.jbrotli.io;
 
 import org.meteogroup.jbrotli.Brotli;
 import org.meteogroup.jbrotli.BrotliDeCompressor;
+import org.meteogroup.jbrotli.io.BrotliOutputStream;
 import org.scijava.nativelib.NativeLoader;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -26,12 +27,11 @@ import org.testng.annotations.Test;
 
 import java.io.ByteArrayOutputStream;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class BrotliOutputStreamTest {
-
+public class BrotliServletOutputStreamTest {
   private byte[] testBytes;
-  private BrotliOutputStream brotliOutputStream;
+  private BrotliServletOutputStream brotliOutputStream;
   private ByteArrayOutputStream baos;
 
   @BeforeClass
@@ -42,7 +42,7 @@ public class BrotliOutputStreamTest {
   @BeforeMethod
   public void setUp() throws Exception {
     baos = new ByteArrayOutputStream();
-    brotliOutputStream = new BrotliOutputStream(baos);
+    brotliOutputStream = new BrotliServletOutputStream(baos);
     createTestBytes();
   }
 
@@ -85,7 +85,7 @@ public class BrotliOutputStreamTest {
     // then
     byte[] decompressed = decompress(baos.toByteArray(), testBytes.length);
     for (int i = 10; i < 100; i++)
-      assertThat(decompressed[i-10]).describedAs("Byte at offset=" + i).isEqualTo(testBytes[i]);
+      assertThat(decompressed[i - 10]).describedAs("Byte at offset=" + i).isEqualTo(testBytes[i]);
   }
 
   @Test
@@ -93,7 +93,7 @@ public class BrotliOutputStreamTest {
     // constructing a new native object with highest quality allocs lots of megabytes.
     // assuming there's a mem-leak, looping will alloc so much mem, that the jvm crashes
     for (int i = 0; i < 65536; i++) {
-      brotliOutputStream = new BrotliOutputStream(baos, Brotli.DEFAULT_PARAMETER.setQuality(11));
+      brotliOutputStream = new BrotliServletOutputStream(baos, Brotli.DEFAULT_PARAMETER.setQuality(11));
       brotliOutputStream.close();
     }
   }

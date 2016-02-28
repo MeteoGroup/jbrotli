@@ -62,6 +62,7 @@ public class BrotliInputStream extends InputStream {
 
   @Override
   public void close() throws IOException {
+    brotliStreamDeCompressor.close();
     inputStream.close();
   }
 

@@ -22,6 +22,8 @@ import org.meteogroup.jbrotli.BrotliStreamCompressor;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static java.lang.Math.min;
+
 public class BrotliOutputStream extends OutputStream {
 
   private final BrotliStreamCompressor brotliStreamCompressor;
@@ -39,17 +41,30 @@ public class BrotliOutputStream extends OutputStream {
   @Override
   public void write(int i) throws IOException {
     byte[] buf = new byte[]{(byte) (i & 0xff)};
-    outputStream.write(brotliStreamCompressor.compressArray(buf, false));
+    byte[] compressedBuf = brotliStreamCompressor.compressArray(buf, false);
+    if (compressedBuf.length > 0) {
+      outputStream.write(compressedBuf);
+    }
   }
 
   @Override
-  public void write(byte[] b) throws IOException {
-    outputStream.write(brotliStreamCompressor.compressArray(b, false));
+  public void write(byte[] buffer) throws IOException {
+    this.write(buffer, 0, buffer.length);
   }
 
   @Override
-  public void write(byte[] b, int off, int len) throws IOException {
-    outputStream.write(brotliStreamCompressor.compressArray(b, off, len, false));
+  public void write(byte[] buffer, int offset, int len) throws IOException {
+    final int maxInputBufferSize = brotliStreamCompressor.getMaxInputBufferSize();
+    while (len > 0) {
+      final int stepSize = min(maxInputBufferSize, len);
+      final boolean doFlush = len <= maxInputBufferSize;
+      final byte[] compressedBuf = brotliStreamCompressor.compressArray(buffer, offset, stepSize, doFlush);
+      if (compressedBuf.length > 0) {
+        outputStream.write(compressedBuf);
+      }
+      offset += stepSize;
+      len -= stepSize;
+    }
   }
 
   @Override
@@ -60,7 +75,7 @@ public class BrotliOutputStream extends OutputStream {
 
   @Override
   public void close() throws IOException {
-    flush();
+    brotliStreamCompressor.close();
     outputStream.close();
   }
 }

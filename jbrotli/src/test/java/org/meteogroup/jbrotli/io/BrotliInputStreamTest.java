@@ -16,6 +16,7 @@
 
 package org.meteogroup.jbrotli.io;
 
+import org.meteogroup.jbrotli.Brotli;
 import org.meteogroup.jbrotli.BrotliCompressor;
 import org.meteogroup.jbrotli.BufferTestHelper;
 import org.scijava.nativelib.NativeLoader;
