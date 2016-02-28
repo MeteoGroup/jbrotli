@@ -19,8 +19,8 @@ package org.meteogroup.jbrotli;
 import java.io.Closeable;
 import java.nio.ByteBuffer;
 
-import static org.meteogroup.jbrotli.BrotliErrorChecker.assertBrotliOk;
 import static java.lang.Math.min;
+import static org.meteogroup.jbrotli.BrotliErrorChecker.assertBrotliOk;
 
 public final class BrotliStreamCompressor implements Closeable {
 
@@ -49,10 +49,12 @@ public final class BrotliStreamCompressor implements Closeable {
   /**
    * @param in      input byte array
    * @param doFlush do flush
-   * @return compressed byte array or NULL if there was an error in native code
+   * @return compressed byte array, never NULL, but maybe length=0
+   * @throws IllegalArgumentException if e.g. wrong length was provided
+   * @throws IllegalStateException    if there was an error in native code
    */
-  public final byte[] compressBuffer(byte[] in, boolean doFlush) {
-    return compressBuffer(in, 0, in.length, doFlush);
+  public final byte[] compressArray(byte[] in, boolean doFlush) {
+    return compressArray(in, 0, in.length, doFlush);
   }
 
   /**
@@ -60,9 +62,11 @@ public final class BrotliStreamCompressor implements Closeable {
    * @param inPosition position to start compress from
    * @param inLength   length in byte to compress
    * @param doFlush    do flush
-   * @return compressed byte array
+   * @return compressed byte array, never NULL, but maybe length=0
+   * @throws IllegalArgumentException if e.g. wrong length was provided
+   * @throws IllegalStateException    if there was an error in native code
    */
-  public final byte[] compressBuffer(byte[] in, int inPosition, int inLength, boolean doFlush) {
+  public final byte[] compressArray(byte[] in, int inPosition, int inLength, boolean doFlush) {
     if (inPosition + inLength > in.length) {
       throw new IllegalArgumentException("The source position + length must me smaller then the source byte array's length.");
     }

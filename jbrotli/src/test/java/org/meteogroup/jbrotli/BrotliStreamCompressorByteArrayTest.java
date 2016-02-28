@@ -47,7 +47,7 @@ public class BrotliStreamCompressorByteArrayTest {
 
   @Test
   public void compress_with_byte_array_and_flushing() throws Exception {
-    byte[] out = compressor.compressBuffer(A_BYTES, true);
+    byte[] out = compressor.compressArray(A_BYTES, true);
 
     assertThat(out).hasSize(10);
     assertThat(out).isEqualTo(A_BYTES_COMPRESSED);
@@ -57,13 +57,13 @@ public class BrotliStreamCompressorByteArrayTest {
   public void compress_with_byte_array_without_flushing() throws Exception {
 
     // when
-    byte[] out = compressor.compressBuffer(A_BYTES, false);
+    byte[] out = compressor.compressArray(A_BYTES, false);
 
     // then
     assertThat(out).hasSize(0);
 
     // when
-    out = compressor.compressBuffer(new byte[0], true);
+    out = compressor.compressArray(new byte[0], true);
 
     // then
     assertThat(out).isEqualTo(A_BYTES_COMPRESSED);
@@ -73,7 +73,7 @@ public class BrotliStreamCompressorByteArrayTest {
       expectedExceptionsMessageRegExp = "Brotli: input array position and length must be greater than zero.")
   public void using_negative_position_throws_IllegalArgumentException() throws Exception {
 
-    compressor.compressBuffer(A_BYTES, -1, 0, true);
+    compressor.compressArray(A_BYTES, -1, 0, true);
 
     // expect exception
   }
@@ -82,7 +82,7 @@ public class BrotliStreamCompressorByteArrayTest {
       expectedExceptionsMessageRegExp = "Brotli: input array position and length must be greater than zero.")
   public void using_negative_length_throws_IllegalArgumentException() throws Exception {
 
-    compressor.compressBuffer(A_BYTES, 0, -1, true);
+    compressor.compressArray(A_BYTES, 0, -1, true);
 
     // expect exception
   }
@@ -98,7 +98,7 @@ public class BrotliStreamCompressorByteArrayTest {
     System.arraycopy(A_BYTES, 0, in, testPosition, testLength);
 
     // when
-    byte[] out = compressor.compressBuffer(in, testPosition, testLength, true);
+    byte[] out = compressor.compressArray(in, testPosition, testLength, true);
 
     // then
     assertThat(out).isEqualTo(A_BYTES_COMPRESSED);
@@ -111,7 +111,7 @@ public class BrotliStreamCompressorByteArrayTest {
     byte[] tmpBuffer = new byte[compressor.getMaxInputBufferSize() + 1];
 
     // when
-    compressor.compressBuffer(tmpBuffer, true);
+    compressor.compressArray(tmpBuffer, true);
 
     // expected exception
   }
