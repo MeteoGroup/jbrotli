@@ -18,6 +18,7 @@ package org.meteogroup.jbrotli.io;
 
 import org.meteogroup.jbrotli.Brotli;
 import org.meteogroup.jbrotli.BrotliDeCompressor;
+import org.meteogroup.jbrotli.BrotliStreamCompressor;
 import org.scijava.nativelib.NativeLoader;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -43,7 +44,7 @@ public class BrotliOutputStreamTest {
   public void setUp() throws Exception {
     baos = new ByteArrayOutputStream();
     brotliOutputStream = new BrotliOutputStream(baos);
-    createTestBytes();
+    createSmallTestBytes();
   }
 
   @AfterMethod
@@ -76,6 +77,21 @@ public class BrotliOutputStreamTest {
   }
 
   @Test
+  public void big_byte_array_gets_compressed_when_underlying_brotli_compressor_is_smaller() throws Exception {
+    Brotli.Parameter parameter = Brotli.DEFAULT_PARAMETER.setQuality(3);
+    brotliOutputStream = new BrotliOutputStream(baos, parameter);
+    createBigTestBytes();
+    assertCompressorHasSmallerBuffer(parameter);
+
+    // when
+    brotliOutputStream.write(testBytes);
+    brotliOutputStream.flush();
+
+    // then
+    assertThat(decompress(baos.toByteArray(), testBytes.length)).isEqualTo(testBytes);
+  }
+
+  @Test
   public void byte_array_length_and_offset_wise_compression_works() throws Exception {
 
     // when
@@ -85,7 +101,7 @@ public class BrotliOutputStreamTest {
     // then
     byte[] decompressed = decompress(baos.toByteArray(), testBytes.length);
     for (int i = 10; i < 100; i++)
-      assertThat(decompressed[i-10]).describedAs("Byte at offset=" + i).isEqualTo(testBytes[i]);
+      assertThat(decompressed[i - 10]).describedAs("Byte at offset=" + i).isEqualTo(testBytes[i]);
   }
 
   @Test
@@ -98,6 +114,12 @@ public class BrotliOutputStreamTest {
     }
   }
 
+  private void assertCompressorHasSmallerBuffer(Brotli.Parameter parameter) {
+    try (BrotliStreamCompressor aCompressor = new BrotliStreamCompressor(parameter)) {
+      assertThat(aCompressor.getMaxInputBufferSize()).isLessThan(testBytes.length);
+    }
+  }
+
   private byte[] decompress(byte[] compressed, int upackedLength) {
     BrotliDeCompressor brotliDeCompressor = new BrotliDeCompressor();
     byte[] decompressed = new byte[upackedLength];
@@ -105,11 +127,20 @@ public class BrotliOutputStreamTest {
     return decompressed;
   }
 
-  private void createTestBytes() {
+  private void createSmallTestBytes() {
     testBytes = new byte[256];
     int idx = 0;
     for (byte b = Byte.MIN_VALUE; b < Byte.MAX_VALUE; b++) {
       testBytes[idx++] = b;
     }
   }
+
+  private void createBigTestBytes() {
+    testBytes = new byte[65535];
+    int idx = 0;
+    for (short b = Short.MIN_VALUE; b < Short.MAX_VALUE; b++) {
+      testBytes[idx++] = (byte) b;
+    }
+  }
+
 }
