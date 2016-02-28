@@ -33,9 +33,18 @@ public class Brotli {
     private int lgwin = DEFAULT_LGWIN;
     private int lgblock = DEFAULT_LGBLOCK;
 
+    /**
+     * Use default parameter settings
+     */
     public Parameter() {
     }
 
+    /**
+     * @param mode    mode
+     * @param quality quality
+     * @param lgwin   lgwin
+     * @param lgblock lgblock
+     */
     public Parameter(Mode mode, int quality, int lgwin, int lgblock) {
       this.mode = mode;
       this.quality = quality;
@@ -52,9 +61,11 @@ public class Brotli {
 
     /**
      * @param mode the mode, default {@link Brotli#DEFAULT_MODE}
+     * @return this, for fluent writing
      */
-    public void setMode(Mode mode) {
+    public Parameter setMode(Mode mode) {
       this.mode = mode;
+      return this;
     }
 
     /**
@@ -70,9 +81,11 @@ public class Brotli {
      * Controls the compression-speed vs compression-density tradeoffs. The higher the quality, the slower the compression. Range is 0 to 11.
      *
      * @param quality range 0..11, default {@link Brotli#DEFAULT_QUALITY}
+     * @return this, for fluent writing
      */
-    public void setQuality(int quality) {
+    public Parameter setQuality(int quality) {
       this.quality = quality;
+      return this;
     }
 
     /**
@@ -88,9 +101,11 @@ public class Brotli {
      * Base 2 logarithm of the sliding window size. Range is 10 to 24.
      *
      * @param lgwin range 10..24, default {@link Brotli#DEFAULT_LGWIN}
+     * @return this, for fluent writing
      */
-    public void setLgwin(int lgwin) {
+    public Parameter setLgwin(int lgwin) {
       this.lgwin = lgwin;
+      return this;
     }
 
     /**
@@ -106,9 +121,11 @@ public class Brotli {
      * Base 2 logarithm of the maximum input block size. Range is 16 to 24. If set to 0, the value will be set based on the quality.
      *
      * @param lgblock range 16..24, default {@link Brotli#DEFAULT_LGBLOCK}
+     * @return this, for fluent writing
      */
-    public void setLgblock(int lgblock) {
+    public Parameter setLgblock(int lgblock) {
       this.lgblock = lgblock;
+      return this;
     }
   }
 
