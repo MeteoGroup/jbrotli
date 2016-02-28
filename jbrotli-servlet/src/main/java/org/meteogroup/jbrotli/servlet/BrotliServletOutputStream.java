@@ -25,7 +25,7 @@ import java.io.OutputStream;
 
 import static java.lang.Math.min;
 
-class BrotliServletOutputStream extends ServletOutputStream {
+public class BrotliServletOutputStream extends ServletOutputStream {
 
   private final BrotliStreamCompressor brotliStreamCompressor;
   private final OutputStream outputStream;

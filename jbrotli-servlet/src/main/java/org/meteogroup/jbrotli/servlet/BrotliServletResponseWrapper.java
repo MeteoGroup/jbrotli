@@ -25,14 +25,14 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-class BrotliServletResponseWrapper extends HttpServletResponseWrapper {
+public class BrotliServletResponseWrapper extends HttpServletResponseWrapper {
 
   private static final Brotli.Parameter BROTLI_COMRESSION_PARAMETER = new Brotli.Parameter().setQuality(3);
 
   private BrotliServletOutputStream brotliServletOutputStream = null;
   private PrintWriter printWriter = null;
 
-  BrotliServletResponseWrapper(HttpServletResponse response) throws IOException {
+  public BrotliServletResponseWrapper(HttpServletResponse response) throws IOException {
     super(response);
   }
 
