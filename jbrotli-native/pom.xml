@@ -67,6 +67,19 @@
       </modules>
     </profile>
 
+    <profile>
+      <id>linux-arm32-vfp-hflt</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <arch>arm</arch>
+        </os>
+      </activation>
+      <modules>
+        <module>jbrotli-native-linux-arm32-vfp-hflt</module>
+      </modules>
+    </profile>
+
   </profiles>
 
   <scm>

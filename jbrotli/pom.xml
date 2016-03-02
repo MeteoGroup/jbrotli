@@ -102,6 +102,23 @@
     </profile>
 
     <profile>
+      <id>linux-arm32-vfp-hflt</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <arch>arm</arch>
+        </os>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.meteogroup.jbrotli</groupId>
+          <artifactId>jbrotli-native-linux-arm32-vfp-hflt</artifactId>
+          <version>${version.jbrotli.native}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
       <id>release</id>
       <build>
         <plugins>
