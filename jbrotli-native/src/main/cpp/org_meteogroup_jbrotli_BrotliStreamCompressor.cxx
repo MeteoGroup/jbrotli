@@ -122,7 +122,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_
     return NULL;
   }
 
-  if (compressor->input_block_size() < inLength) {
+  if ((signed)compressor->input_block_size() < inLength) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "BrotliStreamCompressor, input byte array length is larger than allowed input block size. Slice the input into smaller chunks.");
     return NULL;
   }
@@ -178,7 +178,7 @@ JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_com
     return NULL;
   }
 
-  if (compressor->input_block_size() < inLength) {
+  if ((signed)compressor->input_block_size() < inLength) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "BrotliStreamCompressor, input ByteBuffer size is larger than allowed input block size. Slice the input into smaller chunks.");
     return NULL;
   }
