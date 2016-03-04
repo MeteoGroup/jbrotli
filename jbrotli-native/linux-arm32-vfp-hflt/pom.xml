@@ -54,7 +54,7 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>build.sh</executable>
+              <executable>build-native.sh</executable>
               <workingDirectory>${project.basedir}</workingDirectory>
             </configuration>
           </execution>

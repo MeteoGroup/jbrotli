@@ -1,0 +1,14 @@
+platform: linux
+
+image: docker:///nitram509/debian-oraclejdk8-maven-cmake-gcc-gnueabihf
+
+inputs:
+  - name: git-repo
+
+outputs:
+  - name: jar-file-linux-arm32-vfp-hflt
+    path: git-repo/target
+
+run:
+  path: sh
+  args: ["git-repo/pipeline-tasks/maven-package-jbrotli-native-linux-arm32-vfp-hflt.sh"]
