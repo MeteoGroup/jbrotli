@@ -54,7 +54,7 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>build-native.sh</executable>
+              <executable>build-linux-armhf.sh</executable>
               <workingDirectory>${project.basedir}</workingDirectory>
             </configuration>
           </execution>
