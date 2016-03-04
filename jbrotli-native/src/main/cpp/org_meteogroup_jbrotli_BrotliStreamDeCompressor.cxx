@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 static jlong packErrorCodeAndSizeInformation(BrotliResult brotliResult, int64_t sizeInformation) {
-  int64_t errorCode = 0;
+  int64_t errorCode;
   switch (brotliResult) {
     case BROTLI_RESULT_ERROR:
       errorCode = org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_ERROR;
@@ -39,6 +39,8 @@ static jlong packErrorCodeAndSizeInformation(BrotliResult brotliResult, int64_t 
     case BROTLI_RESULT_NEEDS_MORE_OUTPUT:
       errorCode = org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
       break;
+    default:
+      errorCode = 0;
   }
 
   jlong errorCodeOrSizeInformation = (errorCode) << 56;
@@ -116,17 +118,17 @@ JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deC
 
   if (inPosition < 0 || inLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: input array position and length must be greater than zero.");
-    return NULL;
+    return 0;
   }
   if (outPosition < 0 || outLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: output array position and length must be greater than zero.");
-    return NULL;
+    return 0;
   }
 
   BrotliState *brotliState = (BrotliState*) GetLongFieldAsPointer(env, thisObj, brotliDeCompressorStateRefId);
   if (NULL == brotliState || env->ExceptionCheck()) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamDeCompressor wasn't initialised. You need to create a new object before start decompressing.");
-    return NULL;
+    return 0;
   }
 
   uint8_t *inBufPtr = (uint8_t *) env->GetPrimitiveArrayCritical(inByteArray, 0);
@@ -166,28 +168,28 @@ JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deC
 
   if (inPosition < 0 || inLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: input ByteBuffer position and length must be greater than zero.");
-    return NULL;
+    return 0;
   }
   if (outPosition < 0 || outLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: output ByteBuffer position and length must be greater than zero.");
-    return NULL;
+    return 0;
   }
 
   BrotliState *brotliState = (BrotliState*) GetLongFieldAsPointer(env, thisObj, brotliDeCompressorStateRefId);
   if (NULL == brotliState || env->ExceptionCheck()) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamDeCompressor wasn't initialised. You need to create a new object before start decompressing.");
-    return NULL;
+    return 0;
   }
 
   const uint8_t *inBufPtr = (uint8_t *) env->GetDirectBufferAddress(inBuf);
   if (NULL == inBufPtr) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamDeCompressor couldn't get direct address of input buffer.");
-    return NULL;
+    return 0;
   }
   uint8_t *outBufPtr = (uint8_t *) env->GetDirectBufferAddress(outBuf);
   if (NULL == outBufPtr) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamDeCompressor couldn't get direct address of output buffer.");
-    return NULL;
+    return 0;
   }
 
   size_t available_in = inLength;
