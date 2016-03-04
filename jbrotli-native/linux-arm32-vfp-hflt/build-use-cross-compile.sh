@@ -13,7 +13,7 @@ exitWithError() {
 mkdir -p "$TARGET_CLASSES_PATH"
 
 cd "$TARGET_PATH"
-cmake ../../../ || exitWithError $?
+cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-linux-armhf.cmake.txt ../../../ || exitWithError $?
 make || exitWithError $?
 rm -f "$CURPATH/${TARGET_CLASSES_PATH}/libbrotli.dylib"
 cp "./libbrotli.so" "$CURPATH/${TARGET_CLASSES_PATH}" || exitWithError $?

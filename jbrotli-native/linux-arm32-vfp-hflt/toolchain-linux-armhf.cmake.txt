@@ -1,0 +1,19 @@
+#
+# CMake Toolchain file for crosscompiling on ARMHF.
+# See https://cmake.org/Wii/CMake_Cross_Compiling
+#
+# Example usage:
+#  cmake .. -DCMAKE_TOOLCHAIN_FILE=toolchain-linux-armhf.cmake.txt
+#
+
+set(CMAKE_SYSTEM_NAME Linux)
+
+set(CMAKE_C_COMPILER "/usr/bin/arm-linux-gnueabihf-gcc")
+set(CMAKE_CXX_COMPILER "/usr/bin/arm-linux-gnueabihf-g++")
+
+# path exists, but not needed to actually compile this
+# set(CMAKE_FIND_ROOT_PATH "/usr/lib/arm-linux-gnueabihf")
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
