@@ -27,7 +27,7 @@ import java.io.PrintWriter;
 
 public class BrotliServletResponseWrapper extends HttpServletResponseWrapper {
 
-  private static final Brotli.Parameter BROTLI_COMRESSION_PARAMETER = new Brotli.Parameter().setQuality(3);
+  private static final Brotli.Parameter BROTLI_COMRESSION_PARAMETER = new Brotli.Parameter().setQuality(5);
 
   private BrotliServletOutputStream brotliServletOutputStream = null;
   private PrintWriter printWriter = null;
