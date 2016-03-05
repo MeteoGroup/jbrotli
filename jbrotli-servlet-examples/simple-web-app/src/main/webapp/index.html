@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  ~ Copyright (c) 2016 MeteoGroup Deutschland GmbH
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+<head>
+  <meta charset="UTF-8">
+  <title>Brotli Compression Showcase</title>
+</head>
+<body>
+<h1>Wep Application - Brotli Compression Showcase</h1>
+<h2>Example: The Canterbury Corpus</h2>
+
+<p>
+  <strong>This is just a copy from <a href="http://corpus.canterbury.ac.nz/descriptions/">http://corpus.canterbury.ac.nz/descriptions/</a></strong>.
+</p>
+
+<p>
+  This collection is the main benchmark for comparing compression methods.
+  The Calgary collection is provided for historic interest,
+  the Large corpus is useful for algorithms that can't "get up to speed"
+  on smaller files, and the other collections may be useful for particular file types.
+</p>
+<p>
+  This collection was developed in 1997 as an improved version of the Calgary corpus.
+  The files were chosen because their results on existing compression algorithms are "typical",
+  and so it is hoped this will also be true for new methods.
+</p>
+<p>
+  The paper in DCC '97 (Adobe PDF, 99Kb) explains how the files were chosen, and why it is difficult to find "typical"
+  files. This collection will not be changed so that it can be used as a benchmark in future.
+</p>
+<p>There are 11 files in this corpus:</p>
+
+<table class="Files" border=0 cellspacing=0 cellpadding=4 width=33%>
+  <tr>
+    <td class="FilesTableHeader">File</td>
+    <td class="FilesTableHeader">Abbrev</td>
+    <td class="FilesTableHeader">Category</td>
+    <td class="FilesTableHeader">Size</td>
+  </tr>
+  <tr class="Even"><td><a href="/canterbury-corpus/alice29.txt">alice29.txt</a></td>
+    <td>text</td>
+    <td>English text</td>
+    <td align="right">&nbsp;152089</td></tr>
+  <tr class="Odd"><td><a href="/canterbury-corpus/asyoulik.txt">asyoulik.txt</a></td>
+    <td>play</td>
+    <td>Shakespeare</td>
+    <td align="right">&nbsp;125179</td></tr>
+  <tr class="Even"><td><a href="/canterbury-corpus/cp.html">cp.html</a></td>
+    <td>html</td>
+    <td>HTML source</td>
+    <td align="right">&nbsp;24603</td></tr>
+  <tr class="Odd"><td><a href="/canterbury-corpus/fields.c">fields.c</a></td>
+    <td>Csrc</td>
+    <td>C source</td>
+    <td align="right">&nbsp;11150</td></tr>
+  <tr class="Even"><td><a href="/canterbury-corpus/grammar.lsp">grammar.lsp</a></td>
+    <td>list</td>
+    <td>LISP source</td>
+    <td align="right">&nbsp;3721</td></tr>
+  <tr class="Odd"><td><a href="/canterbury-corpus/kennedy.xls">kennedy.xls</a></td>
+    <td>Excl</td>
+    <td>Excel Spreadsheet</td>
+    <td align="right">&nbsp;1029744</td></tr>
+  <tr class="Even"><td><a href="/canterbury-corpus/lcet10.txt">lcet10.txt</a></td>
+    <td>tech</td>
+    <td>Technical writing</td>
+    <td align="right">&nbsp;426754</td></tr>
+  <tr class="Odd"><td><a href="/canterbury-corpus/plrabn12.txt">plrabn12.txt</a></td>
+    <td>poem</td>
+    <td>Poetry</td>
+    <td align="right">&nbsp;481861</td></tr>
+  <tr class="Even"><td><a href="/canterbury-corpus/ptt5">ptt5</a></td>
+    <td>fax</td>
+    <td>CCITT test set</td>
+    <td align="right">&nbsp;513216</td></tr>
+  <tr class="Odd"><td><a href="/canterbury-corpus/sum">sum</a></td>
+    <td>SPRC</td>
+    <td>SPARC Executable</td>
+    <td align="right">&nbsp;38240</td></tr>
+  <tr class="Even"><td><a href="/canterbury-corpus/xargs.1">xargs.1</a></td>
+    <td>man</td>
+    <td>GNU manual page</td>
+    <td align="right">&nbsp;4227</td></tr>
+</table>
+
+<p>(All file sizes in bytes)</p>
+
+<p>
+  The full set of files is available as
+  <a href="http://corpus.canterbury.ac.nz/resources/cantrbry.tar.gz">cantrbry.tar.gz</a>
+  or
+  <a href="http://corpus.canterbury.ac.nz/resources/cantrbry.zip">cantrbry.zip</a>
+</p>
+
+</body>
+</html>

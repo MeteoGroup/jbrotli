@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.meteogroup.jbrotli</groupId>
+  <artifactId>jbrotli-servlet-examples-simple-web-app</artifactId>
+  <version>0.3.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.meteogroup.jbrotli</groupId>
+      <artifactId>jbrotli</artifactId>
+      <version>0.3.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.meteogroup.jbrotli</groupId>
+      <artifactId>jbrotli-servlet</artifactId>
+      <version>0.3.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-coyote</artifactId>
+      <version>8.0.32</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-catalina</artifactId>
+      <version>8.0.32</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>bintray-nitram509-jbrotli</id>
+      <url>https://api.bintray.com/maven/nitram509/jbrotli/jbrotli</url>
+    </repository>
+    <repository>
+      <id>tomcat</id>
+      <url>http://repo2.maven.org/maven2/org/apache/tomcat/</url>
+    </repository>
+  </repositories>
+</project>
