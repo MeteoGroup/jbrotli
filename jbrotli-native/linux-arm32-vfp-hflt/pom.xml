@@ -39,31 +39,74 @@
 
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.4.0</version>
-        <executions>
-          <execution>
-            <!-- this execution happens just after compiling the java classes, and builds the native code. -->
-            <id>build-native</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>build-linux-armhf.sh</executable>
-              <workingDirectory>${project.basedir}</workingDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+   <profiles>
 
-  <profiles>
+    <profile>
+      <id>build-native-linux-armhf</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <arch>arm</arch>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.4.0</version>
+            <executions>
+              <execution>
+                <!-- this execution happens just after compiling the java classes, and builds the native code. -->
+                <id>build-native</id>
+                <phase>process-classes</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>build-native-linux-armhf.sh</executable>
+                  <workingDirectory>${project.basedir}</workingDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>build-cross-compile-on-linux-x86-amd64</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <arch>amd64</arch>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.4.0</version>
+            <executions>
+              <execution>
+                <!-- this execution happens just after compiling the java classes, and builds the native code. -->
+                <id>build-native</id>
+                <phase>process-classes</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>build-cross-compile-on-linux-x86-amd64.sh</executable>
+                  <workingDirectory>${project.basedir}</workingDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <profile>
       <id>release</id>
       <build>
