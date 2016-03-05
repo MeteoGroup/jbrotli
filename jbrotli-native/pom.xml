@@ -76,7 +76,7 @@
         </os>
       </activation>
       <modules>
-        <module>jbrotli-native-linux-arm32-vfp-hflt</module>
+        <module>linux-arm32-vfp-hflt</module>
       </modules>
     </profile>
 
