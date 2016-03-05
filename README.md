@@ -14,6 +14,15 @@ Java bindings for [Brotli](https://github.com/google/brotli.git): a new compress
 
 At the moment, there are zero known issues with jbrotli and all 90+ unit tests are passing green.
 
+###### Mar.2016
+
+    The problem with the crashing JVM is solved: it revealed itself as a memory leak in the 
+    OutputStream class ;-)
+    Also high throughput and concurrent benchmarks are now running perfectly fine.
+    Monitoring with jConsole or jVisualVM show that e.g. the BrotliServletFilter behaves
+    on par with GZIP compression in e.g. Tomcat web server.
+
+
 ###### Jan.2016
 
     When I did high throughput and highly concurrent benchmarks with the HTTP servers (see below),
