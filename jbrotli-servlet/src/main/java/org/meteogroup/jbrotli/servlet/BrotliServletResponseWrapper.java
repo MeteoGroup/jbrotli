@@ -27,13 +27,13 @@ import java.io.PrintWriter;
 
 public class BrotliServletResponseWrapper extends HttpServletResponseWrapper {
 
-  private static final Brotli.Parameter BROTLI_COMRESSION_PARAMETER = new Brotli.Parameter().setQuality(5);
-
   private BrotliServletOutputStream brotliServletOutputStream = null;
   private PrintWriter printWriter = null;
+  private final Brotli.Parameter brotliParameter;
 
-  public BrotliServletResponseWrapper(HttpServletResponse response) throws IOException {
+  public BrotliServletResponseWrapper(HttpServletResponse response, Brotli.Parameter brotliCompressionParameter) throws IOException {
     super(response);
+    brotliParameter = brotliCompressionParameter;
   }
 
   void close() throws IOException {
@@ -65,7 +65,7 @@ public class BrotliServletResponseWrapper extends HttpServletResponseWrapper {
       throw new IllegalStateException("PrintWriter obtained already - cannot get OutputStream");
     }
     if (this.brotliServletOutputStream == null) {
-      this.brotliServletOutputStream = new BrotliServletOutputStream(getResponse().getOutputStream(), BROTLI_COMRESSION_PARAMETER);
+      this.brotliServletOutputStream = new BrotliServletOutputStream(getResponse().getOutputStream(), brotliParameter);
     }
     return this.brotliServletOutputStream;
   }
@@ -76,7 +76,7 @@ public class BrotliServletResponseWrapper extends HttpServletResponseWrapper {
       throw new IllegalStateException("OutputStream obtained already - cannot get PrintWriter");
     }
     if (this.printWriter == null) {
-      this.brotliServletOutputStream = new BrotliServletOutputStream(getResponse().getOutputStream(), BROTLI_COMRESSION_PARAMETER);
+      this.brotliServletOutputStream = new BrotliServletOutputStream(getResponse().getOutputStream(), brotliParameter);
       this.printWriter = new PrintWriter(new OutputStreamWriter(this.brotliServletOutputStream, getResponse().getCharacterEncoding()));
     }
     return this.printWriter;

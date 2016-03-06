@@ -7,19 +7,30 @@
   <filter>
     <filter-name>BrotliFilter</filter-name>
     <filter-class>org.meteogroup.jbrotli.servlet.BrotliServletFilter</filter-class>
+    <!-- all parameters are optional -->
+    <init-param>
+      <param-name>brotli.compression.parameter.quality</param-name>
+      <param-value>5</param-value>
+    </init-param>
+    <!--
+    <init-param>
+      <param-name>brotli.compression.parameter.mode</param-name>
+      <param-value>generic</param-value>
+    </init-param>
+    <init-param>
+      <param-name>brotli.compression.parameter.lgwin</param-name>
+      <param-value>22</param-value>
+    </init-param>
+    <init-param>
+      <param-name>brotli.compression.parameter.lgblock</param-name>
+      <param-value>0</param-value>
+    </init-param>
+    -->
   </filter>
 
   <filter-mapping>
     <filter-name>BrotliFilter</filter-name>
-    <url-pattern>*.txt</url-pattern>
-  </filter-mapping>
-  <filter-mapping>
-    <filter-name>BrotliFilter</filter-name>
-    <url-pattern>*.html</url-pattern>
-  </filter-mapping>
-  <filter-mapping>
-    <filter-name>BrotliFilter</filter-name>
-    <url-pattern>/</url-pattern>
+    <url-pattern>/canterbury-corpus/*</url-pattern>
   </filter-mapping>
 
 </web-app>

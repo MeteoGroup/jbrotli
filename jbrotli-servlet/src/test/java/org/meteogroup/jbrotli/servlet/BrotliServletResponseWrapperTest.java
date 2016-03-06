@@ -16,6 +16,7 @@
 
 package org.meteogroup.jbrotli.servlet;
 
+import org.meteogroup.jbrotli.Brotli;
 import org.scijava.nativelib.NativeLoader;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -42,7 +43,7 @@ public class BrotliServletResponseWrapperTest {
   public void setUp() throws Exception {
     HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
     when(httpServletResponse.getCharacterEncoding()).thenReturn("UTF-8");
-    responseWrapper = new BrotliServletResponseWrapper(httpServletResponse);
+    responseWrapper = new BrotliServletResponseWrapper(httpServletResponse, Brotli.DEFAULT_PARAMETER);
   }
 
   @Test(expectedExceptions = IllegalStateException.class,
