@@ -45,16 +45,4 @@ class BrotliError {
   static final byte DECOMPRESS_ByteBuffer_BROTLI_RESULT_NEEDS_MORE_INPUT = -43;
   static final byte DECOMPRESS_ByteBuffer_BROTLI_RESULT_NEEDS_MORE_OUTPUT = -44;
 
-  static final byte STREAM_COMPRESS_INIT_BrotliCompressor = -50;
-
-  static final byte STREAM_COMPRESS_GetPrimitiveArrayCritical_INBUF = -60;
-  static final byte STREAM_COMPRESS_GetPrimitiveArrayCritical_OUTBUF = -61;
-  static final byte STREAM_COMPRESS_ReleasePrimitiveArrayCritical_OUTBUF = -63;
-  static final byte STREAM_COMPRESS_ReleasePrimitiveArrayCritical_INBUF = -64;
-  static final byte STREAM_COMPRESS_WriteBrotliData = -62;
-
-  static final byte STREAM_COMPRESS_ByteBuffer_GetDirectBufferAddress_INBUF = -70;
-  static final byte STREAM_COMPRESS_ByteBuffer_GetDirectBufferAddress_OUTBUF = -71;
-  static final byte STREAM_COMPRESS_ByteBuffer_WriteBrotliData = -72;
-
 }
