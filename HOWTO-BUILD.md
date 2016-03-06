@@ -54,7 +54,8 @@ mvn package
 Each native module contains a small build script.
 E.g. for Windows 64bit, you may use this ...
 
-```bash
+```
+"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x64 
 cd jbrotli-native/win32-x86-amd64
 build.bat
 ```
