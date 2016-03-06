@@ -25,7 +25,14 @@ import java.io.IOException;
 
 public class BrotliServletFilter implements Filter {
 
-  private static final String BROTLI_MIME_TYPE = "br";
+  /**
+   * As defined in RFC draft "Brotli Compressed Data Format"
+   *
+   * @see <a href="http://www.ietf.org/id/draft-alakuijala-brotli-08.txt"></a>
+   */
+  public static final String BROTLI_HTTP_CONTENT_CODING = "br";
+
+  private static final HttpAcceptEncodingParser acceptEncodingParser = new HttpAcceptEncodingParser();
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
@@ -41,20 +48,18 @@ public class BrotliServletFilter implements Filter {
   }
 
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-    HttpServletRequest httpRequest = (HttpServletRequest) request;
-    if (acceptsGZipEncoding(httpRequest)) {
+    if (acceptEncodingParser.acceptBrotliEncoding((HttpServletRequest) request)) {
       HttpServletResponse httpResponse = (HttpServletResponse) response;
-      httpResponse.addHeader("Content-Encoding", BROTLI_MIME_TYPE);
+      httpResponse.addHeader("Content-Encoding", BROTLI_HTTP_CONTENT_CODING);
       BrotliServletResponseWrapper brotliResponse = new BrotliServletResponseWrapper(httpResponse);
-      chain.doFilter(request, brotliResponse);
-      brotliResponse.close();
+      try {
+        chain.doFilter(request, brotliResponse);
+      } finally {
+        brotliResponse.close();
+      }
     } else {
       chain.doFilter(request, response);
     }
   }
 
-  private boolean acceptsGZipEncoding(HttpServletRequest httpRequest) {
-    String acceptEncoding = httpRequest.getHeader("Accept-Encoding");
-    return acceptEncoding != null && acceptEncoding.contains(BROTLI_MIME_TYPE);
-  }
 }
