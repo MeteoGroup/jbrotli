@@ -27,10 +27,19 @@ public class BrotliServletOutputStream extends ServletOutputStream {
 
   private final BrotliOutputStream brotliOutputStream;
 
+  /**
+   * uses brotli default compression parameter {@link org.meteogroup.jbrotli.Brotli#DEFAULT_PARAMETER}
+   *
+   * @param outputStream outputStream
+   */
   public BrotliServletOutputStream(OutputStream outputStream) {
     this(outputStream, Brotli.DEFAULT_PARAMETER);
   }
 
+  /**
+   * @param outputStream outputStream
+   * @param parameter    brotli compression parameter
+   */
   public BrotliServletOutputStream(OutputStream outputStream, Brotli.Parameter parameter) {
     brotliOutputStream = new BrotliOutputStream(outputStream, parameter);
   }
