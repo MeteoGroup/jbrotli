@@ -19,7 +19,6 @@
 #include <string.h>
 
 #include "../../../../brotli/dec/decode.h"
-#include "./org_meteogroup_jbrotli_BrotliDeCompressor.h"
 #include "./org_meteogroup_jbrotli_BrotliError.h"
 
 

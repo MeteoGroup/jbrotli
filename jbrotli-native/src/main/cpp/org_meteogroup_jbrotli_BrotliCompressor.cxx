@@ -20,7 +20,6 @@
 
 #include "../../../../brotli/enc/encode.h"
 #include "./param_converter.h"
-#include "./org_meteogroup_jbrotli_BrotliCompressor.h"
 #include "./org_meteogroup_jbrotli_BrotliError.h"
 
 
