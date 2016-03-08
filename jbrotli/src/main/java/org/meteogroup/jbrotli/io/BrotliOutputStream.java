@@ -17,6 +17,7 @@
 package org.meteogroup.jbrotli.io;
 
 import org.meteogroup.jbrotli.Brotli;
+import org.meteogroup.jbrotli.BrotliException;
 import org.meteogroup.jbrotli.BrotliStreamCompressor;
 
 import java.io.IOException;
@@ -77,5 +78,15 @@ public class BrotliOutputStream extends OutputStream {
   public void close() throws IOException {
     brotliStreamCompressor.close();
     outputStream.close();
+  }
+
+  /**
+   * @return a hint, how big the underlying brotli input buffer size is.
+   * this is useful knowledge for client implementation, to optimize buffer handling
+   * @throws BrotliException
+   * @see {@link BrotliStreamCompressor#getMaxInputBufferSize()}
+   */
+  public int getBrotliCompressionBufferSize() throws BrotliException {
+    return brotliStreamCompressor.getMaxInputBufferSize();
   }
 }

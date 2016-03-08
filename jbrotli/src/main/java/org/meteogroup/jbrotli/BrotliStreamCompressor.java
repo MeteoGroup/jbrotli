@@ -104,6 +104,14 @@ public final class BrotliStreamCompressor implements Closeable {
     return out;
   }
 
+  /**
+   * @return the size of the internal compression buffer window in bytes
+   * @throws BrotliException
+   */
+  public final int getMaxInputBufferSize() throws BrotliException {
+    return assertBrotliOk(getInputBlockSize());
+  }
+
   @Override
   protected void finalize() throws Throwable {
     super.finalize();
@@ -113,10 +121,6 @@ public final class BrotliStreamCompressor implements Closeable {
   @Override
   public void close() throws BrotliException {
     assertBrotliOk(freeNativeResources());
-  }
-
-  public final int getMaxInputBufferSize() throws BrotliException {
-    return assertBrotliOk(getInputBlockSize());
   }
 
   private native static int initJavaFieldIdCache();
