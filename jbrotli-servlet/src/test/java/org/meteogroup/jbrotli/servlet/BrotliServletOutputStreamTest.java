@@ -18,7 +18,6 @@ package org.meteogroup.jbrotli.servlet;
 
 import org.meteogroup.jbrotli.Brotli;
 import org.meteogroup.jbrotli.BrotliDeCompressor;
-import org.meteogroup.jbrotli.io.BrotliOutputStream;
 import org.scijava.nativelib.NativeLoader;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -27,7 +26,7 @@ import org.testng.annotations.Test;
 
 import java.io.ByteArrayOutputStream;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BrotliServletOutputStreamTest {
   private byte[] testBytes;
