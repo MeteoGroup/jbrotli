@@ -4,7 +4,7 @@ CHANGELOG jbrotli
 
 ## v0.3.1 (2016-??-??)
 
-* NEW: lowered the barrier to Java 1.7 (also as preparation for Android support) 
+* NEW: lowered the entry-barrier to Java 1.7 (also as preparation for Android support) 
 * NEW: provide BrotliServletFilter, so you may add to your Tomcat, Jetty, etc.
 * NEW: provide simple web app example for servlet filter 
 * NEW: Brotli.Parameter has fluent setter-methods, for convenience

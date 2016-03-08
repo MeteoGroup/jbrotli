@@ -40,8 +40,8 @@ public class BrotliOutputStream extends OutputStream {
 
   @Override
   public void write(int i) throws IOException {
-    byte[] buf = new byte[]{(byte) (i & 0xff)};
-    byte[] compressedBuf = brotliStreamCompressor.compressArray(buf, false);
+    final byte[] buf = new byte[]{(byte) (i & 0xff)};
+    final byte[] compressedBuf = brotliStreamCompressor.compressArray(buf, false);
     if (compressedBuf.length > 0) {
       outputStream.write(compressedBuf);
     }

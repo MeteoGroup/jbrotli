@@ -87,17 +87,17 @@ public class BrotliInputStream extends InputStream {
   }
 
   private void readChunkFromInput() throws IOException {
-    byte[] uncompressedBuffer = new byte[INTERNAL_UNCOMPRESSED_BUFFER_SIZE];
+    final byte[] uncompressedBuffer = new byte[INTERNAL_UNCOMPRESSED_BUFFER_SIZE];
     if (brotliStreamDeCompressor.needsMoreOutput()) {
-      int length = brotliStreamDeCompressor.deCompress(new byte[0], uncompressedBuffer);
+      final int length = brotliStreamDeCompressor.deCompress(new byte[0], uncompressedBuffer);
       uncompressedInputStreamDelegate = new ByteArrayInputStream(uncompressedBuffer, 0, length);
       return;
     }
 
-    byte[] in = new byte[4 * 1024];
+    final byte[] in = new byte[16 * 1024];
     int uncompressedBufferPosition = 0;
     while (!isEndOfInputStream && (uncompressedBufferPosition == 0 || brotliStreamDeCompressor.needsMoreInput())) {
-      int inLength = inputStream.read(in);
+      final int inLength = inputStream.read(in);
       if (inLength > 0) {
         uncompressedBufferPosition += brotliStreamDeCompressor.deCompress(in, 0, inLength, uncompressedBuffer, uncompressedBufferPosition, uncompressedBuffer.length - uncompressedBufferPosition);
       } else {
