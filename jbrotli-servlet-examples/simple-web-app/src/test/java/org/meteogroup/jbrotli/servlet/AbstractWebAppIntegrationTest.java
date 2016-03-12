@@ -47,9 +47,9 @@ public abstract class AbstractWebAppIntegrationTest {
     webAppBaseDir = createTempDirectory("jbrotli-servlet-examples-test").toString();
 
     tomcat = new Tomcat();
+    tomcat.setBaseDir(webAppBaseDir);
     tomcat.setPort(0);
     tomcat.getConnector().setProperty("address", serverAddress);
-    tomcat.setBaseDir(webAppBaseDir);
     tomcat.getHost().setAppBase(webAppBaseDir);
     tomcat.getHost().setAutoDeploy(false);
     tomcat.getHost().setDeployOnStartup(true);
