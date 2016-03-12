@@ -93,7 +93,9 @@ public abstract class AbstractWebAppIntegrationTest {
 
   private void doCopyAllFiles(File source, String targetStr) throws IOException {
     for (File srcFile : listFilesOnly(source)) {
-      try (FileOutputStream fos = new FileOutputStream(new File(targetStr, srcFile.getName()))) {
+      File targetFile = new File(targetStr, srcFile.getName());
+      targetFile.deleteOnExit(); // auto-cleanup ;-)
+      try (FileOutputStream fos = new FileOutputStream(targetFile)) {
         Files.copy(srcFile.toPath(), fos);
       }
     }
