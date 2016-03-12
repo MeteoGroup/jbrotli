@@ -84,8 +84,11 @@ public class BrotliServletResponseWrapper extends HttpServletResponseWrapper {
 
   @Override
   public void setContentLength(int len) {
-    //ignore, since content length of zipped content
-    //does not match content length of unzipped content.
+    setContentLengthLong((long) len);
   }
 
+  @Override
+  public void setContentLengthLong(long len) {
+    //ignore, since content length of compressed content does not match length of raw content.
+  }
 }

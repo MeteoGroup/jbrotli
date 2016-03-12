@@ -22,6 +22,7 @@ import org.meteogroup.jbrotli.BrotliStreamCompressor;
 import org.meteogroup.jbrotli.io.BrotliOutputStream;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -79,5 +80,15 @@ public class BrotliServletOutputStream extends ServletOutputStream {
   @Override
   public void close() throws IOException {
     brotliOutputStream.close();
+  }
+
+  @Override
+  public boolean isReady() {
+    return false;
+  }
+
+  @Override
+  public void setWriteListener(WriteListener writeListener) {
+    throw new UnsupportedOperationException("WriteListener support is not yet implemented.");
   }
 }
