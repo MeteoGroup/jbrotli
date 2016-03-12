@@ -9,6 +9,15 @@
   <version>0.3.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
+  <properties>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <version.jbrotli.native>0.3.1-SNAPSHOT</version.jbrotli.native>
+    <version.tomcat-embed>8.0.32</version.tomcat-embed>
+  </properties>
+
   <dependencies>
 
     <dependency>
@@ -20,27 +29,35 @@
 
     <dependency>
       <groupId>org.meteogroup.jbrotli</groupId>
-      <artifactId>jbrotli</artifactId>
-      <version>0.3.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.meteogroup.jbrotli</groupId>
       <artifactId>jbrotli-servlet</artifactId>
-      <version>0.3.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>tomcat-coyote</artifactId>
-      <version>8.0.32</version>
-      <scope>test</scope>
+      <version>${version.jbrotli.native}</version>
     </dependency>
 
     <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>tomcat-catalina</artifactId>
-      <version>8.0.32</version>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-jasper</artifactId>
+      <version>${version.tomcat-embed}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-logging-log4j</artifactId>
+      <version>${version.tomcat-embed}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.9.10</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>2.2.0</version>
+      <scope>test</scope>
+    </dependency>
+
 
   </dependencies>
 
