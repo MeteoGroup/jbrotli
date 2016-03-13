@@ -9,6 +9,9 @@
   <packaging>jar</packaging>
   <version>0.3.1-SNAPSHOT</version>
 
+  <description>Java bindings for Brotli: a new compression algorithm for the internet.</description>
+  <url>https://github.com/MeteoGroup/jbrotli</url>
+
   <properties>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
@@ -50,5 +53,29 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>bintray-nitram509-jbrotli</id>
+      <url>https://api.bintray.com/maven/nitram509/jbrotli/jbrotli/;publish=1</url>
+    </repository>
+  </distributionManagement>
 
 </project>

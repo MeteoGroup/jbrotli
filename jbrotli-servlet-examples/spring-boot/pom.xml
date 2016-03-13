@@ -53,4 +53,11 @@
     </dependency>
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>bintray-nitram509-jbrotli</id>
+      <url>https://api.bintray.com/maven/nitram509/jbrotli/jbrotli</url>
+    </repository>
+  </repositories>
+
 </project>
