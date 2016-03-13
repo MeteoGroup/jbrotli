@@ -22,6 +22,7 @@ import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
@@ -37,7 +38,7 @@ import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.meteogroup.jbrotli.servlet.BrotliServletFilter.BROTLI_HTTP_CONTENT_CODING;
 
-@SpringApplicationConfiguration(classes = HelloBrotliHttpController.class)
+@SpringApplicationConfiguration(classes = HelloBrotliApplication.class)
 @WebIntegrationTest({"server.port=0", "management.port=0"})
 public class HelloBrotliHttpControllerTest extends AbstractTestNGSpringContextTests {
 
@@ -50,7 +51,6 @@ public class HelloBrotliHttpControllerTest extends AbstractTestNGSpringContextTe
   public void setUp() throws Exception {
     this.root_url = "http://127.0.0.1:" + localServerPort;
     restTemplate = new TestRestTemplate();
-    restTemplate.setInterceptors(createAcceptBrotliEncodingInterceptor());
   }
 
   @Test
@@ -59,6 +59,7 @@ public class HelloBrotliHttpControllerTest extends AbstractTestNGSpringContextTe
     String textFileUrl = root_url + "/canterbury-corpus/asyoulik.txt";
 
     // when
+    restTemplate.setInterceptors(createAcceptBrotliEncodingInterceptor());
     HttpHeaders headers = restTemplate.getForEntity(textFileUrl, String.class).getHeaders();
 
     // then
@@ -71,10 +72,23 @@ public class HelloBrotliHttpControllerTest extends AbstractTestNGSpringContextTe
     String textFileUrl = root_url + "/canterbury-corpus/asyoulik.txt";
 
     // when
+    restTemplate.setInterceptors(createAcceptBrotliEncodingInterceptor());
     HttpHeaders headers = restTemplate.getForEntity(textFileUrl, String.class).getHeaders();
 
     // then
     assertThat(headers.getContentLength()).describedAs("Content length should be unknown").isEqualTo(-1L);
+  }
+
+  @Test
+  public void hello_brotli_controller_response_OK() throws Exception {
+    // given
+    String textFileUrl = root_url + "/hello";
+
+    // when
+    ResponseEntity<String> responseEntity = restTemplate.getForEntity(textFileUrl, String.class);
+
+    // then
+    assertThat(responseEntity.getBody()).isEqualTo("Hello Brotli!");
   }
 
   private static List<ClientHttpRequestInterceptor> createAcceptBrotliEncodingInterceptor() {

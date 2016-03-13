@@ -17,10 +17,12 @@
 package org.meteogrou.jbrotli.servlet;
 
 import org.meteogroup.jbrotli.servlet.BrotliServletFilter;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 
+@Component
 @WebFilter(urlPatterns = "/*", initParams = {
     @WebInitParam(name = "brotli.compression.parameter.quality", value = "5"),    //  [0..11]
 //        @WebInitParam(name = "brotli.compression.parameter.mode", value = "generic"), //  [generic, text, font]

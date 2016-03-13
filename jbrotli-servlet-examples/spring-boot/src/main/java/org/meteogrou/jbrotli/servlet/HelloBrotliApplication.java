@@ -16,19 +16,24 @@
 
 package org.meteogrou.jbrotli.servlet;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+@EnableAutoConfiguration
+@SpringBootApplication()
+public class HelloBrotliApplication {
 
-@Controller
-public class HelloBrotliHttpController {
+  @Bean()
+  BrotliFilter brotliFilter() {
+    return new BrotliFilter();
+  }
 
-  @RequestMapping(value = "/hello", method = GET)
-  @ResponseBody
-  String helloBrotli() {
-    return "Hello Brotli!";
+  public static void main(String[] args) throws Exception {
+    SpringApplication.run(HelloBrotliApplication.class, args);
   }
 
 }
