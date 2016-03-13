@@ -24,6 +24,7 @@ import java.net.URL;
 
 import static java.lang.Integer.parseInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.meteogroup.jbrotli.servlet.BrotliServletFilter.BROTLI_HTTP_CONTENT_CODING;
 
 public class BrotliServletFilterIntegrationTest extends AbstractWebAppIntegrationTest {
 
@@ -41,13 +42,13 @@ public class BrotliServletFilterIntegrationTest extends AbstractWebAppIntegratio
 
     // when
     HttpURLConnection httpCon = (HttpURLConnection) textFileUrl.openConnection();
-    httpCon.addRequestProperty("Accept-Encoding", "br");
+    httpCon.addRequestProperty("Accept-Encoding", BROTLI_HTTP_CONTENT_CODING);
     httpCon.connect();
     String contentEncoding = httpCon.getHeaderField("Content-Encoding");
     httpCon.disconnect();
 
     // then
-    assertThat(contentEncoding).isEqualTo("br");
+    assertThat(contentEncoding).isEqualTo(BROTLI_HTTP_CONTENT_CODING);
   }
 
   @Test
@@ -57,7 +58,7 @@ public class BrotliServletFilterIntegrationTest extends AbstractWebAppIntegratio
 
     // when
     HttpURLConnection httpCon = (HttpURLConnection) textFileUrl.openConnection();
-    httpCon.addRequestProperty("Accept-Encoding", "br");
+    httpCon.addRequestProperty("Accept-Encoding", BROTLI_HTTP_CONTENT_CODING);
     httpCon.connect();
     String contentEncoding = httpCon.getHeaderField("Content-Length");
 
