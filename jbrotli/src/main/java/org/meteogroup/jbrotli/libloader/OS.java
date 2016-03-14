@@ -19,7 +19,7 @@ package org.meteogroup.jbrotli.libloader;
 enum OS {
   WIN32("win32", "win32", "windows"),
   LINUX("linux", "linux", "unix"),
-  OSX("darwin", "darwin", "mac os x", "mac");
+  OSX("darwin", "darwin", "mac os x", "mac", "osx");
 
   final String name;
   final String[] aliases;
@@ -28,4 +28,12 @@ enum OS {
     this.name = name;
     this.aliases = aliases;
   }
+
+  boolean matches(String aName) {
+    for (String alias : aliases) {
+      if (aName.contains(alias)) return true;
+    }
+    return false;
+  }
+
 }

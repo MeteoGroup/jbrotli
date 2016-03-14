@@ -33,7 +33,7 @@ public class BrotliLibraryLoader {
    * @throws IllegalStateException
    * @throws SecurityException
    */
-  public static synchronized void load() throws UnsatisfiedLinkError, IllegalStateException, SecurityException {
+  public static synchronized void loadBrotli() throws UnsatisfiedLinkError, IllegalStateException, SecurityException {
     LibraryLoader libraryLoader = new LibraryLoader(BROTLI_LIB_NAME);
     if (libraryLoader.tryAlreadyLoaded()) return;
     if (libraryLoader.trySystemLibraryLoading()) return;

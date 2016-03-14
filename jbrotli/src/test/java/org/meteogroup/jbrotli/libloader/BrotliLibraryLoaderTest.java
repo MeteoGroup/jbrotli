@@ -18,13 +18,11 @@ package org.meteogroup.jbrotli.libloader;
 
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
-
 public class BrotliLibraryLoaderTest {
 
   @Test
   public void testName() throws Exception {
-    BrotliLibraryLoader.load();
+    BrotliLibraryLoader.loadBrotli();
 
   }
 }

@@ -28,4 +28,12 @@ enum ARCH {
     this.name = name;
     this.aliases = aliases;
   }
+
+  boolean matches(String aName) {
+    for (String alias : aliases) {
+      if (aName.contains(alias)) return true;
+    }
+    return false;
+  }
+
 }

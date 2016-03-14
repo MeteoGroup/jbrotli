@@ -27,13 +27,8 @@ import java.nio.file.Path;
 import java.util.Locale;
 
 import static java.lang.ClassLoader.getSystemClassLoader;
-import static java.util.Arrays.asList;
-import static org.meteogroup.jbrotli.libloader.ARCH.ARM32_VFP_HFLT;
-import static org.meteogroup.jbrotli.libloader.ARCH.X86;
-import static org.meteogroup.jbrotli.libloader.ARCH.X86_AMD64;
-import static org.meteogroup.jbrotli.libloader.OS.LINUX;
-import static org.meteogroup.jbrotli.libloader.OS.OSX;
-import static org.meteogroup.jbrotli.libloader.OS.WIN32;
+import static org.meteogroup.jbrotli.libloader.ARCH.*;
+import static org.meteogroup.jbrotli.libloader.OS.*;
 
 class LibraryLoader {
 
@@ -118,29 +113,17 @@ class LibraryLoader {
 
   private String determineOS() {
     String osName = System.getProperty("os.name").toLowerCase(Locale.US);
-    if (asList(LINUX.aliases).contains(osName)) {
-      return LINUX.name;
-    }
-    if (asList(WIN32.aliases).contains(osName)) {
-      return WIN32.name;
-    }
-    if (asList(OSX.aliases).contains(osName)) {
-      return OSX.name;
-    }
+    if (LINUX.matches(osName)) return LINUX.name;
+    if (WIN32.matches(osName)) return WIN32.name;
+    if (OSX.matches(osName)) return OSX.name;
     return osName;
   }
 
   private String determineArch() {
     String osArch = System.getProperty("os.arch").toLowerCase(Locale.US);
-    if (asList(X86_AMD64.aliases).contains(osArch)) {
-      return X86_AMD64.name;
-    }
-    if (asList(X86.aliases).contains(osArch)) {
-      return X86.name;
-    }
-    if (asList(ARM32_VFP_HFLT.aliases).contains(osArch)) {
-      return ARM32_VFP_HFLT.name;
-    }
+    if (X86_AMD64.matches(osArch)) return X86_AMD64.name;
+    if (X86.matches(osArch)) return X86.name;
+    if (ARM32_VFP_HFLT.matches(osArch)) return ARM32_VFP_HFLT.name;
     return osArch;
   }
 
