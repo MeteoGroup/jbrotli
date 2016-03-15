@@ -83,7 +83,7 @@ For a list of supported platforms, look for released ```jbrotli-native-*``` arti
 ##### Example of regular BrotliCompressor with custom dictionary
 
 ```java
-NativeLoader.loadLibrary("brotli");
+BrotliLibraryLoader.loadBrotli();
 
 byte[] inBuf = "Brotli: a new compression algorithm for the internet. Now available for Java!".getBytes();
 byte[] compressedBuf = new byte[2048];
@@ -95,7 +95,7 @@ int outLength = compressor.compress(Brotli.DEFAULT_PARAMETER, inBuf, compressedB
 ##### Example of BrotliStreamCompressor using default dictionary
  
 ```java
-NativeLoader.loadLibrary("brotli");
+BrotliLibraryLoader.loadBrotli();
 
 byte[] inBuf = "Brotli: a new compression algorithm for the internet. Now available for Java!".getBytes();
 boolean doFlush = true;

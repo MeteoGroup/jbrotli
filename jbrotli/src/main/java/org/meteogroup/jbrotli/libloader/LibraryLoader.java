@@ -16,9 +16,6 @@
 
 package org.meteogroup.jbrotli.libloader;
 
-import org.meteogroup.jbrotli.Brotli;
-import org.meteogroup.jbrotli.BrotliStreamCompressor;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,17 +34,6 @@ class LibraryLoader {
 
   LibraryLoader(String libName) {
     this.libName = libName;
-  }
-
-  boolean tryAlreadyLoaded() {
-    try {
-      new BrotliStreamCompressor(new Brotli.Parameter().setQuality(0)).close();
-      loaderResult.setAlreadyLoaded(true);
-      return true;
-    } catch (UnsatisfiedLinkError e) {
-      loaderResult.setAlreadyLoaded(false);
-      return false;
-    }
   }
 
   boolean trySystemLibraryLoading() {
@@ -85,9 +71,9 @@ class LibraryLoader {
     } catch (IOException e) {
       throw new IllegalStateException("Can't write to " + libFile, e);
     }
+    libFile.deleteOnExit();
 
     if (loaderResult.isUsedThisClassloader() || loaderResult.isUsedSystemClassloader()) {
-      libFile.deleteOnExit();
       loaderResult.setMadeReadable(libFile.setReadable(true));
       loaderResult.setMadeExecutable(libFile.setExecutable(true));
       Runtime.getRuntime().load(libFile.getAbsolutePath());

@@ -43,14 +43,14 @@
     </profile>
 
     <profile>
-      <id>darwin</id>
+      <id>darwin-x86-amd64</id>
       <activation>
         <os>
           <family>mac</family>
         </os>
       </activation>
       <modules>
-        <module>darwin</module>
+        <module>darwin-x86-amd64</module>
       </modules>
     </profile>
 

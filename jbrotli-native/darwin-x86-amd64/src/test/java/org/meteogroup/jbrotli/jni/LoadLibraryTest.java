@@ -16,13 +16,15 @@
 
 package org.meteogroup.jbrotli.jni;
 
-import org.scijava.nativelib.NativeLoader;
 import org.testng.annotations.Test;
+
+import java.net.URL;
 
 public class LoadLibraryTest {
 
   @Test
   public void the_library_can_be_loaded() throws Exception {
-    NativeLoader.loadLibrary("brotli");
+    URL resource = this.getClass().getResource("/lib/darwin-x86-amd64/brotli.dylib");
+    Runtime.getRuntime().load(resource.getFile());
   }
 }

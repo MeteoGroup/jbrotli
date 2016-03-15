@@ -18,7 +18,7 @@ package org.meteogroup.jbrotli.playground;
 
 import org.meteogroup.jbrotli.Brotli;
 import org.meteogroup.jbrotli.BrotliStreamCompressor;
-import org.scijava.nativelib.NativeLoader;
+import org.meteogroup.jbrotli.libloader.BrotliLibraryLoader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -36,7 +36,7 @@ public class TestSingleFileCompression {
   }
 
   private void run() throws Exception {
-    NativeLoader.loadLibrary("brotli");
+    BrotliLibraryLoader.loadBrotli();
 
     byte[] data = loadDemoData();
 

@@ -7,7 +7,7 @@ REM Requirements
 REM --------------
 REM  o  Java 1.8 JDK installed, needs JAVA_HOME set
 REM  o  cmake 3.0 + installed and available via PATH
-REM  o  nmake installed (comes e.g. with Visual Studio), call "vcvarsall.bat x86" before to activate 64bit tools
+REM  o  nmake installed (comes e.g. with Visual Studio), call "vcvarsall.bat x86" before to activate 32bit tools
 REM
 
 :ENSURE_WORKING_DIRECTORY
@@ -16,7 +16,9 @@ cd "%~dp0"
 :PREPARE_FOLDERS
 if not exist "%~dp0target" mkdir "%~dp0target"
 if not exist "%~dp0target\classes" mkdir "%~dp0target\classes"
-SET TARGET_CLASSES_PATH=%~dp0target\classes
+if not exist "%~dp0target\classes\lib" mkdir "%~dp0target\classes\lib"
+SET TARGET_CLASSES_PATH=%~dp0target\classes\lib\win32-x86
+if not exist "%TARGET_CLASSES_PATH%" mkdir "%TARGET_CLASSES_PATH%"
 
 :PREPARE_MAKEFILES
 cd "%~dp0target"
@@ -27,7 +29,7 @@ cd "%~dp0target"
 nmake || goto ERROR
 
 :COPY_DLL_FOR_MAVEN_PACKAGING
-copy /Y "%~dp0target\brotli.dll" "%TARGET_CLASSES_PATH%" || goto ERROR 
+copy /Y "%~dp0target\brotli.dll" "%TARGET_CLASSES_PATH%" || goto ERROR
 
 :ENSURE_WORKING_DIRECTORY
 cd %~dp0

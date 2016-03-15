@@ -16,7 +16,7 @@
 
 package org.meteogroup.jbrotli;
 
-import org.scijava.nativelib.NativeLoader;
+import org.meteogroup.jbrotli.libloader.BrotliLibraryLoader;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -29,7 +29,7 @@ public class BrotliCompressorExtremeTest {
 
   @BeforeClass
   public void loadLibrary() throws Exception {
-    NativeLoader.loadLibrary("brotli");
+    BrotliLibraryLoader.loadBrotli();
   }
 
   @BeforeMethod

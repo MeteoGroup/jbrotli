@@ -16,7 +16,6 @@
 
 package org.meteogroup.jbrotli.jni;
 
-import org.scijava.nativelib.NativeLoader;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,6 +25,8 @@ public class LoadLibraryTest {
   @Test
   public void the_library_can_be_loaded() throws Exception {
     // because of cross compiling, we can't test here.
+//        URL resource = this.getClass().getResource("/lib/linux-x86-amd64/libbrotli.so");
+//        Runtime.getRuntime().load(resource.getFile());
     assertThat(true).isTrue();
   }
 }

@@ -21,8 +21,7 @@ import org.testng.annotations.Test;
 public class BrotliLibraryLoaderTest {
 
   @Test
-  public void testName() throws Exception {
+  public void happy_path() throws Exception {
     BrotliLibraryLoader.loadBrotli();
-
   }
 }

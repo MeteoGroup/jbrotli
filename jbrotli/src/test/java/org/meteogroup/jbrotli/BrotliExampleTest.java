@@ -16,7 +16,7 @@
 
 package org.meteogroup.jbrotli;
 
-import org.scijava.nativelib.NativeLoader;
+import org.meteogroup.jbrotli.libloader.BrotliLibraryLoader;
 import org.testng.annotations.Test;
 
 public class BrotliExampleTest {
@@ -29,7 +29,7 @@ public class BrotliExampleTest {
   @Test
   public void compress_with_byte_array() throws Exception {
 
-    NativeLoader.loadLibrary("brotli");
+    BrotliLibraryLoader.loadBrotli();
 
     byte[] inBuf = "Brotli: a new compression algorithm for the internet. Now available for Java!".getBytes();
     byte[] compressedBuf = new byte[2048];
@@ -46,7 +46,7 @@ public class BrotliExampleTest {
   @Test
   public void compress_with_stream_compressor() throws Exception {
 
-    NativeLoader.loadLibrary("brotli");
+    BrotliLibraryLoader.loadBrotli();
 
     byte[] inBuf = "Brotli: a new compression algorithm for the internet. Now available for Java!".getBytes();
     boolean doFlush = true;

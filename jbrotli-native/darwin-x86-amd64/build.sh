@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 CURPATH=$(pwd)
-TARGET_CLASSES_PATH="target/classes"
+TARGET_CLASSES_PATH="target/classes/lib/darwin-x86-amd64"
 TARGET_PATH="target"
 
 function exitWithError() {

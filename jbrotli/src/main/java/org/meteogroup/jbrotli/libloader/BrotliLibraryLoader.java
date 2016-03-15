@@ -16,12 +16,6 @@
 
 package org.meteogroup.jbrotli.libloader;
 
-import org.meteogroup.jbrotli.Brotli;
-import org.meteogroup.jbrotli.BrotliStreamCompressor;
-
-import java.io.*;
-import java.nio.file.Files;
-
 public class BrotliLibraryLoader {
 
   private static final String BROTLI_LIB_NAME = "brotli";
@@ -35,7 +29,6 @@ public class BrotliLibraryLoader {
    */
   public static synchronized void loadBrotli() throws UnsatisfiedLinkError, IllegalStateException, SecurityException {
     LibraryLoader libraryLoader = new LibraryLoader(BROTLI_LIB_NAME);
-    if (libraryLoader.tryAlreadyLoaded()) return;
     if (libraryLoader.trySystemLibraryLoading()) return;
     if (libraryLoader.tryLoadingFromTemporaryFolder()) return;
     String details = libraryLoader.getResult().asFormattedString();

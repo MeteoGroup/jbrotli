@@ -16,14 +16,14 @@
 
 package org.meteogroup.jbrotli;
 
-import org.scijava.nativelib.NativeLoader;
+import org.meteogroup.jbrotli.libloader.BrotliLibraryLoader;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.meteogroup.jbrotli.BrotliCompressorTest.A_BYTES;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.meteogroup.jbrotli.BrotliCompressorTest.A_BYTES;
 
 public class BrotliStreamCompressorInitAndCloseTest {
 
@@ -31,7 +31,7 @@ public class BrotliStreamCompressorInitAndCloseTest {
 
   @BeforeClass
   public void loadLibrary() throws Exception {
-    NativeLoader.loadLibrary("brotli");
+    BrotliLibraryLoader.loadBrotli();
   }
 
   @BeforeMethod

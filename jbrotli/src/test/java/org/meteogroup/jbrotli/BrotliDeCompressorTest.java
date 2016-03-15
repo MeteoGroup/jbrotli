@@ -16,7 +16,7 @@
 
 package org.meteogroup.jbrotli;
 
-import org.scijava.nativelib.NativeLoader;
+import org.meteogroup.jbrotli.libloader.BrotliLibraryLoader;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -24,8 +24,9 @@ import org.testng.annotations.Test;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import static org.meteogroup.jbrotli.BrotliCompressorTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.meteogroup.jbrotli.BrotliCompressorTest.A_BYTES;
+import static org.meteogroup.jbrotli.BrotliCompressorTest.A_BYTES_COMPRESSED;
 
 public class BrotliDeCompressorTest {
 
@@ -33,7 +34,7 @@ public class BrotliDeCompressorTest {
 
   @BeforeClass
   public void loadLibrary() throws Exception {
-    NativeLoader.loadLibrary("brotli");
+    BrotliLibraryLoader.loadBrotli();
   }
 
   @BeforeMethod

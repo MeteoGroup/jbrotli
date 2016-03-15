@@ -16,7 +16,9 @@ cd "%~dp0"
 :PREPARE_FOLDERS
 if not exist "%~dp0target" mkdir "%~dp0target"
 if not exist "%~dp0target\classes" mkdir "%~dp0target\classes"
-SET TARGET_CLASSES_PATH=%~dp0target\classes
+if not exist "%~dp0target\classes\lib" mkdir "%~dp0target\classes\lib"
+SET TARGET_CLASSES_PATH=%~dp0target\classes\lib\win32-x86-amd64
+if not exist "%TARGET_CLASSES_PATH%" mkdir "%TARGET_CLASSES_PATH%"
 
 :PREPARE_MAKEFILES
 cd "%~dp0target"
@@ -27,7 +29,7 @@ cd "%~dp0target"
 nmake || goto ERROR
 
 :COPY_DLL_FOR_MAVEN_PACKAGING
-copy /Y "%~dp0target\brotli.dll" "%TARGET_CLASSES_PATH%" || goto ERROR 
+copy /Y "%~dp0target\brotli.dll" "%TARGET_CLASSES_PATH%" || goto ERROR
 
 :ENSURE_WORKING_DIRECTORY
 cd %~dp0

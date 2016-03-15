@@ -17,7 +17,7 @@
 package org.meteogroup.jbrotli.servlet;
 
 import org.meteogroup.jbrotli.Brotli;
-import org.scijava.nativelib.NativeLoader;
+import org.meteogroup.jbrotli.libloader.BrotliLibraryLoader;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -51,8 +51,8 @@ public class BrotliServletFilter implements Filter {
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
     try {
-      NativeLoader.loadLibrary("brotli");
-    } catch (IOException e) {
+      BrotliLibraryLoader.loadBrotli();
+    } catch (UnsatisfiedLinkError | IllegalStateException | SecurityException e) {
       throw new ServletException(e);
     }
     applyFilterConfig(filterConfig);

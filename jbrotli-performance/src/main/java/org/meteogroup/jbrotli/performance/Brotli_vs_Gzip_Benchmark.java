@@ -19,6 +19,7 @@ package org.meteogroup.jbrotli.performance;
 import org.meteogroup.jbrotli.Brotli;
 import org.meteogroup.jbrotli.BrotliCompressor;
 import org.meteogroup.jbrotli.BrotliStreamCompressor;
+import org.meteogroup.jbrotli.libloader.BrotliLibraryLoader;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
@@ -27,7 +28,6 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import org.scijava.nativelib.NativeLoader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class Brotli_vs_Gzip_Benchmark {
 
   @Setup
   public void init() throws IOException {
-    NativeLoader.loadLibrary("brotli");
+    BrotliLibraryLoader.loadBrotli();
 
     brotliParameter = new Brotli.Parameter(Brotli.Mode.GENERIC, 5, Brotli.DEFAULT_LGWIN, Brotli.DEFAULT_LGBLOCK);
 
