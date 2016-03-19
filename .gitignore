@@ -9,3 +9,4 @@ tmplib
 hs_err_pid*.log
 *.bro
 *.brotli
+*.versionsBackup
