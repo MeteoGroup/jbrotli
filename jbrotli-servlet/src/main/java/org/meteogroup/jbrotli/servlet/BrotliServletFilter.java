@@ -25,7 +25,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * BrotliServletFilter
+ * BrotliServletFilter applies brotli compression to servlet response data.
+ * This filter will only activate itself, when the request contains an 'Accept-Encoding' header
+ * and this header contains a content type value 'br'.
+ * <br>
+ * <br>
  * This filter accepts init parameters and uses the following defaults:
  * <pre>
  *   brotli.compression.parameter.mode=generic       [generic, text, font]
@@ -42,6 +46,34 @@ public class BrotliServletFilter implements Filter {
    * @see <a href="http://www.ietf.org/id/draft-alakuijala-brotli-08.txt"></a>
    */
   public static final String BROTLI_HTTP_CONTENT_CODING = "br";
+
+  /**
+   * Name of the {@link BrotliServletFilter} init parameter.
+   * Use a value for this parameter, as defined in
+   * {@link org.meteogroup.jbrotli.Brotli.Parameter#setMode(Brotli.Mode)}
+   */
+  public static final String BROTLI_COMPRESSION_PARAMETER_MODE = "brotli.compression.parameter.mode";
+
+  /**
+   * Name of the {@link BrotliServletFilter} init parameter.
+   * Use a value for this parameter, as defined in
+   * {@link org.meteogroup.jbrotli.Brotli.Parameter#setQuality(int)}
+   */
+  public static final String BROTLI_COMPRESSION_PARAMETER_QUALITY = "brotli.compression.parameter.quality";
+
+  /**
+   * Name of the {@link BrotliServletFilter} init parameter.
+   * Use a value for this parameter, as defined in
+   * {@link org.meteogroup.jbrotli.Brotli.Parameter#setLgwin(int)}
+   */
+  public static final String BROTLI_COMPRESSION_PARAMETER_LGWIN = "brotli.compression.parameter.lgwin";
+
+  /**
+   * Name of the {@link BrotliServletFilter} init parameter.
+   * Use a value for this parameter, as defined in
+   * {@link org.meteogroup.jbrotli.Brotli.Parameter#setLgblock(int)}
+   */
+  public static final String BROTLI_COMPRESSION_PARAMETER_LGBLOCK = "brotli.compression.parameter.lgblock";
 
   private static final HttpAcceptEncodingParser acceptEncodingParser = new HttpAcceptEncodingParser();
   private static final int DEFAULT_BROTLI_SERVLET_COMPRESSION_QUALITY = 5;
@@ -80,10 +112,10 @@ public class BrotliServletFilter implements Filter {
 
   private void applyFilterConfig(FilterConfig filterConfig) {
     brotliCompressionParameter = brotliCompressionParameter
-        .setMode(getInitParameterAsBrotliMode(filterConfig, "brotli.compression.parameter.mode", Brotli.Mode.GENERIC))
-        .setQuality(getInitParameterAsInteger(filterConfig, "brotli.compression.parameter.quality", DEFAULT_BROTLI_SERVLET_COMPRESSION_QUALITY))
-        .setLgwin(getInitParameterAsInteger(filterConfig, "brotli.compression.parameter.lgwin", Brotli.DEFAULT_LGWIN))
-        .setLgblock(getInitParameterAsInteger(filterConfig, "brotli.compression.parameter.lgblock", Brotli.DEFAULT_LGBLOCK));
+        .setMode(getInitParameterAsBrotliMode(filterConfig, BROTLI_COMPRESSION_PARAMETER_MODE, Brotli.Mode.GENERIC))
+        .setQuality(getInitParameterAsInteger(filterConfig, BROTLI_COMPRESSION_PARAMETER_QUALITY, DEFAULT_BROTLI_SERVLET_COMPRESSION_QUALITY))
+        .setLgwin(getInitParameterAsInteger(filterConfig, BROTLI_COMPRESSION_PARAMETER_LGWIN, Brotli.DEFAULT_LGWIN))
+        .setLgblock(getInitParameterAsInteger(filterConfig, BROTLI_COMPRESSION_PARAMETER_LGBLOCK, Brotli.DEFAULT_LGBLOCK));
   }
 
   private Brotli.Mode getInitParameterAsBrotliMode(FilterConfig filterConfig, String parameterName, Brotli.Mode defaultValue) {
