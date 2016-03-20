@@ -115,3 +115,9 @@ fly set-pipeline -p jbrotli -c ./pipeline.yml
 #### 3. Open Web UI and run pipeline
 Once the pipeline is set, you can open the Web UI via http://192.168.100.4:8080/
 and start the pipeline manually.
+
+## Update version numbers
+
+```
+mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=0.4.0-SNAPSHOT -Dartifacts=jbrotli-parent,jbrotli,jbrotli-native,jbrotli-native-win32-x86-amd64,jbrotli-native-win32-x86,jbrotli-native-linux-x86-amd64,jbrotli-native-linux-arm32-vfp-hflt,jbrotli-native-darwin-x86-amd64,jbrotli-performance,jbrotli-servlet,jbrotli-servlet-examples-dropwizard,jbrotli-servlet-examples-simple-web-app,jbrotli-servlet-examples-spring-boot,jbrotli-servlet-examples -Dproperties=version.jbrotli.native                                                                                                                                                                                                                                                                                                                           
+```
