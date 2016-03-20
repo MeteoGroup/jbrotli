@@ -12,7 +12,13 @@ Java bindings for [Brotli](https://github.com/google/brotli.git): a new compress
 
 🚨 Release-Candidate 🚀
 
-At the moment, there are zero known issues with jbrotli and all 95+ unit tests are passing green.
+###### Mar.2016
+
+    With version 0.4.0 the Raspberry PI was added as supported platform.
+    For easier adoption of Brotli, there is now 'BrotliServletFilter' available.
+    Have a look at [jbrotli-servlet-examples](jbrotli-servlet-examples) how to
+    use it in Tomcat, Spring Boot or Dropwizard.
+
 
 ###### Mar.2016
 
@@ -51,6 +57,13 @@ It was developed by Google and released in September 2015 via this blog post:
 
 
 ## Using jbrotli
+
+##### Supported operating system and architectures
+
+* Windows 7 or newer, x86 64bit
+* Windows 7 or newer, x86 32bit
+* Linux, x86 64bit
+* Raspberry Pi (Linux), ARMv6 32bit (hardware floating point)
 
 ##### Maven
 jbrotli releases are available at [bintray](https://bintray.com/nitram509/jbrotli/jbrotli/)
