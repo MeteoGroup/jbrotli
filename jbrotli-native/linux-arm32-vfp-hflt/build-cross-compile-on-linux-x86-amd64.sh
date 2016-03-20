@@ -1,7 +1,7 @@
 #!/bin/sh
 
 CURPATH=$(pwd)
-TARGET_CLASSES_PATH="target/classes"
+TARGET_CLASSES_PATH="target/classes/lib/linux-arm32-vfp-hflt"
 TARGET_PATH="target"
 
 exitWithError() {
