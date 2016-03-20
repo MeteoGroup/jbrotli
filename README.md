@@ -84,7 +84,8 @@ In order to use, simply add these lines to your project's pom.xml:
   <repositories>
     <repository>
       <id>bintray-nitram509-jbrotli</id>
-      <url>https://api.bintray.com/maven/nitram509/jbrotli/jbrotli</url>
+      <name>bintray</name>
+      <url>http://dl.bintray.com/nitram509/jbrotli</url>
     </repository>
   </repositories>
 ```
