@@ -2,7 +2,7 @@
 CHANGELOG jbrotli
 =================
 
-## v0.4.0 (2016-03-??)
+## v0.4.0 (2016-03-20)
 
 * NEW: new platform support for Raspberry Pi
 * NEW: lowered the entry-barrier to Java 1.7 (also as preparation for upcoming Android support) 
