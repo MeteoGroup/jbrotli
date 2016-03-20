@@ -67,7 +67,7 @@ It was developed by Google and released in September 2015 via this blog post:
 ##### Maven
 jbrotli releases are available at [bintray](https://bintray.com/nitram509/jbrotli/jbrotli/)
 
-In order to use, simply add these lines to your project's pom.xml:
+In order to use, simply add these lines to your project's **pom.xml**
 
 ```xml
   <dependencies>
@@ -93,7 +93,7 @@ For a list of supported platforms, look for released ```jbrotli-native-*``` arti
 [jbrotli's bintray repository](https://bintray.com/nitram509/jbrotli/jbrotli#files/com/meteogroup/jbrotli).
 
 
-##### Example enabling your Java web application
+##### Enabling your Java Web Application (WAR file)
 
 In order to use BrotliServletFilter, simply add these lines to your project's **pom.xml**
 
@@ -129,13 +129,15 @@ Then finally activate the filter in your **web.xml**
   </filter-mapping>
 ```
 
-That's it!
+See full example at [jbrotli-servlet-examples/simple-web-app](jbrotli-servlet-examples/simple-web-app)
 
-More examples are available:
 
-* [jbrotli-servlet-examples/simple-web-app](jbrotli-servlet-examples/simple-web-app) - a generic web application (deployed as WAR file)
-* [jbrotli-servlet-examples/spring-boot](jbrotli-servlet-examples/spring-boot)       - a simple [Spring Boot](http://projects.spring.io/spring-boot/) based microservice
-* [jbrotli-servlet-examples/dropwizard](jbrotli-servlet-examples/dropwizard)         - a simple [Dropwizard](http://www.dropwizard.io/) based microservice 
+##### Enabling your [Spring Boot](http://projects.spring.io/spring-boot/) or [Dropwizard](http://www.dropwizard.io/) microservice
+
+Enabling one of the famous microservice frameworks is very easy. Just have a look a the examples ...
+
+* [jbrotli-servlet-examples/spring-boot](jbrotli-servlet-examples/spring-boot)
+* [jbrotli-servlet-examples/dropwizard](jbrotli-servlet-examples/dropwizard) 
 
 
 ##### Example of regular BrotliCompressor with custom dictionary
