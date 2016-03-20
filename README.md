@@ -27,6 +27,9 @@ for the following operating systems and architectures.
     With version 0.4.0 the Raspberry PI binaries where added as supported platform.
     For easier adoption of Brotli, there is now a 'BrotliServletFilter' available.
     Have a look at 'jbrotli-servlet-examples' on how to use it in Tomcat, Spring Boot or Dropwizard.
+    This 0.4.0 release is bundled with the LATEST (un-released) version of brotli,
+    because it contains a security fix CVE-2016-1968. The latest Google brotli-release 0.3.0
+    is still vulnerable to this issue.
 
 
 ###### 2016-03-05
@@ -49,12 +52,6 @@ for the following operating systems and architectures.
     I don't recommend to use jbrotli in projects with many and highly concurrent compression tasks.
     
     
-##### Example patches in HTTP servers
-
-* There's a [patched Tomcat server](https://github.com/nitram509/tomcat80) which makes use of jbrotli.
-* There's a [patched Undertow server](https://github.com/nitram509/undertow) which makes use of jbrotli.
-
-
 ## About Brotli
 
 Brotli is a generic-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm,
@@ -79,15 +76,6 @@ In order to use, simply add these lines to your project's pom.xml:
       <artifactId>jbrotli</artifactId>
       <version>0.4.0</version>
     </dependency>
-    
-    <!-- enable when servlet filter support is needed --> 
-    <!--
-    <dependency>
-      <groupId>org.meteogroup.jbrotli</groupId>
-      <artifactId>jbrotli-servlet</artifactId>
-      <version>0.4.0</version>
-    </dependency>
-    -->
   </dependencies>
 
   <repositories>
@@ -103,6 +91,51 @@ jbrotli's pom.xml will automatically select the native library,
 depending on your platform's operating system family and arch type (Java property *os.arch*).
 For a list of supported platforms, look for released ```jbrotli-native-*``` artifacts at 
 [jbrotli's bintray repository](https://bintray.com/nitram509/jbrotli/jbrotli#files/com/meteogroup/jbrotli).
+
+
+##### Example enabling your Java web application
+
+In order to use BrotliServletFilter, simply add these lines to your project's **pom.xml**
+
+```xml
+  <dependencies>
+    <dependency>
+      <groupId>org.meteogroup.jbrotli</groupId>
+      <artifactId>jbrotli-servlet</artifactId>
+      <version>0.4.0</version>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>bintray-nitram509-jbrotli</id>
+      <name>bintray</name>
+      <url>http://dl.bintray.com/nitram509/jbrotli</url>
+    </repository>
+  </repositories>
+```
+
+Then finally activate the filter in your **web.xml**
+
+```xml
+  <filter>
+    <filter-name>BrotliFilter</filter-name>
+    <filter-class>org.meteogroup.jbrotli.servlet.BrotliServletFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>BrotliFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+```
+
+That's it!
+
+More examples are available:
+
+* [jbrotli-servlet-examples/simple-web-app](jbrotli-servlet-examples/simple-web-app) - a generic web application (deployed as WAR file)
+* [jbrotli-servlet-examples/spring-boot](jbrotli-servlet-examples/spring-boot)       - a simple [Spring Boot](http://projects.spring.io/spring-boot/) based microservice
+* [jbrotli-servlet-examples/dropwizard](jbrotli-servlet-examples/dropwizard)         - a simple [Dropwizard](http://www.dropwizard.io/) based microservice 
 
 
 ##### Example of regular BrotliCompressor with custom dictionary
