@@ -77,7 +77,7 @@ In order to use, simply add these lines to your project's pom.xml:
     <dependency>
       <groupId>org.meteogroup.jbrotli</groupId>
       <artifactId>jbrotli</artifactId>
-      <version>0.3.0</version>
+      <version>0.4.0</version>
     </dependency>
   </dependencies>
 
