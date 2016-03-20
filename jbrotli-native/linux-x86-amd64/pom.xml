@@ -7,7 +7,7 @@
   <groupId>org.meteogroup.jbrotli</groupId>
   <artifactId>jbrotli-native-linux-x86-amd64</artifactId>
   <packaging>jar</packaging>
-  <version>0.4.0</version>
+  <version>0.4.1-SNAPSHOT</version>
 
   <description>Java bindings for Brotli: a new compression algorithm for the internet.</description>
   <url>https://github.com/MeteoGroup/jbrotli</url>
