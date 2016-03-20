@@ -6,7 +6,7 @@
 
   <groupId>org.meteogroup.jbrotli</groupId>
   <artifactId>jbrotli-servlet-examples-simple-web-app</artifactId>
-  <version>0.3.1-SNAPSHOT</version>
+  <version>0.4.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <properties>
@@ -14,7 +14,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
-    <version.jbrotli.native>0.3.1-SNAPSHOT</version.jbrotli.native>
+    <version.jbrotli.native>0.4.0-SNAPSHOT</version.jbrotli.native>
     <version.tomcat-embed>8.0.32</version.tomcat-embed>
   </properties>
 

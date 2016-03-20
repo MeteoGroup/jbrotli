@@ -7,7 +7,7 @@
   <groupId>org.meteogroup.jbrotli</groupId>
   <artifactId>jbrotli</artifactId>
   <packaging>jar</packaging>
-  <version>0.3.1-SNAPSHOT</version>
+  <version>0.4.0-SNAPSHOT</version>
 
   <description>Java bindings for Brotli: a new compression algorithm for the internet.</description>
   <url>https://github.com/MeteoGroup/jbrotli</url>
@@ -16,7 +16,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.jbrotli.native>0.3.1-SNAPSHOT</version.jbrotli.native>
+    <version.jbrotli.native>0.4.0-SNAPSHOT</version.jbrotli.native>
   </properties>
 
   <build>
