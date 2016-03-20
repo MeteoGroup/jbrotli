@@ -8,10 +8,11 @@ Java bindings for [Brotli](https://github.com/google/brotli.git): a new compress
 
 [![License](https://img.shields.io/:license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-##### Supported operating system and architectures
+##### Supported operating systems and architectures
 
 jbrotli provides platform dependant bindings for Google's brotli library.
-Thus each target platform which is provided here was compiled and tested.
+Thus each target platform which is provided here was compiled and tested
+for the following operating systems and architectures.
 
 * Windows 7 or newer, x86 64bit
 * Windows 7 or newer, x86 32bit
