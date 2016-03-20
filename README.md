@@ -8,19 +8,27 @@ Java bindings for [Brotli](https://github.com/google/brotli.git): a new compress
 
 [![License](https://img.shields.io/:license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-##### Status of this project
+##### Supported operating system and architectures
 
-🚨 Release-Candidate 🚀
+jbrotli provides platform dependant bindings for Google's brotli library.
+Thus each target platform which is provided here was compiled and tested.
 
-###### Mar.2016
-
-    With version 0.4.0 the Raspberry PI was added as supported platform.
-    For easier adoption of Brotli, there is now 'BrotliServletFilter' available.
-    Have a look at [jbrotli-servlet-examples](jbrotli-servlet-examples) how to
-    use it in Tomcat, Spring Boot or Dropwizard.
+* Windows 7 or newer, x86 64bit
+* Windows 7 or newer, x86 32bit
+* Linux, x86 64bit
+* Raspberry Pi (Linux), ARMv6 32bit (hardware floating point)
 
 
-###### Mar.2016
+##### News
+
+###### 2016-03-20
+
+    With version 0.4.0 the Raspberry PI binaries where added as supported platform.
+    For easier adoption of Brotli, there is now a 'BrotliServletFilter' available.
+    Have a look at 'jbrotli-servlet-examples' on how to use it in Tomcat, Spring Boot or Dropwizard.
+
+
+###### 2016-03-05
 
     The problem with the crashing JVM is solved: it revealed itself as a memory leak in the 
     OutputStream class ;-)
@@ -29,7 +37,7 @@ Java bindings for [Brotli](https://github.com/google/brotli.git): a new compress
     on par with GZIP compression in e.g. Tomcat web server.
 
 
-###### Jan.2016
+###### 2016-01-31
 
     When I did high throughput and highly concurrent benchmarks with the HTTP servers (see below),
     I observed peak memory usages over 32GByte, which killed my JVM. I've searched for memory leaks,
@@ -57,13 +65,6 @@ It was developed by Google and released in September 2015 via this blog post:
 
 
 ## Using jbrotli
-
-##### Supported operating system and architectures
-
-* Windows 7 or newer, x86 64bit
-* Windows 7 or newer, x86 32bit
-* Linux, x86 64bit
-* Raspberry Pi (Linux), ARMv6 32bit (hardware floating point)
 
 ##### Maven
 jbrotli releases are available at [bintray](https://bintray.com/nitram509/jbrotli/jbrotli/)
