@@ -6,7 +6,7 @@ CHANGELOG jbrotli
 
 * NEW: new platform support for Raspberry Pi
 * NEW: lowered the entry-barrier to Java 1.7 (also as preparation for upcoming Android support) 
-* NEW: provide BrotliServletFilter, so you may add to your Tomcat, Jetty, etc.
+* NEW: provide BrotliServletFilter, so you may add to your Tomcat, Jetty, Spring Boot, Dropwizard, etc.
 * NEW: provide simple web app example for servlet filter 
 * NEW: provide [Spring Boot](http://projects.spring.io/spring-boot/) web app example for servlet filter 
 * NEW: provide [Dropwizard](http://dropwizard.io) web app example for servlet filter 
