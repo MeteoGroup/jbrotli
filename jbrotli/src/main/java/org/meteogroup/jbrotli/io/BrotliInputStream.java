@@ -89,8 +89,9 @@ public class BrotliInputStream extends InputStream {
   private void readChunkFromInput() throws IOException {
     final byte[] uncompressedBuffer = new byte[INTERNAL_UNCOMPRESSED_BUFFER_SIZE];
     if (brotliStreamDeCompressor.needsMoreOutput()) {
-      final int length = brotliStreamDeCompressor.deCompress(new byte[0], uncompressedBuffer);
-      uncompressedInputStreamDelegate = new ByteArrayInputStream(uncompressedBuffer, 0, length);
+      final int[] lengths = brotliStreamDeCompressor.deCompress(new byte[0], uncompressedBuffer);
+      assert(lengths[0] == 0);
+      uncompressedInputStreamDelegate = new ByteArrayInputStream(uncompressedBuffer, 0, lengths[1]);
       return;
     }
 
@@ -99,7 +100,12 @@ public class BrotliInputStream extends InputStream {
     while (!isEndOfInputStream && (uncompressedBufferPosition == 0 || brotliStreamDeCompressor.needsMoreInput())) {
       final int inLength = inputStream.read(in);
       if (inLength > 0) {
-        uncompressedBufferPosition += brotliStreamDeCompressor.deCompress(in, 0, inLength, uncompressedBuffer, uncompressedBufferPosition, uncompressedBuffer.length - uncompressedBufferPosition);
+        int[] lengths = brotliStreamDeCompressor.deCompress(in, 0, inLength, uncompressedBuffer, uncompressedBufferPosition, uncompressedBuffer.length - uncompressedBufferPosition);
+        if (lengths[0] < inLength) {
+          // TODO: handle this case
+          throw new IOException("Compressor did not consume all input");
+        }
+        uncompressedBufferPosition += lengths[1];
       } else {
         isEndOfInputStream = true;
       }

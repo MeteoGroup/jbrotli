@@ -27,25 +27,37 @@
 extern "C" {
 #endif
 
-static jlong packErrorCodeAndSizeInformation(BrotliResult brotliResult, int64_t sizeInformation) {
-  int64_t errorCode;
+static jint getErrorCode(BrotliResult brotliResult) {
   switch (brotliResult) {
     case BROTLI_RESULT_ERROR:
-      errorCode = org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_ERROR;
-      break;
+      return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_ERROR;
     case BROTLI_RESULT_NEEDS_MORE_INPUT:
-      errorCode = org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
-      break;
+      return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
     case BROTLI_RESULT_NEEDS_MORE_OUTPUT:
-      errorCode = org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
-      break;
+      return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
     default:
-      errorCode = 0;
+      return 0;
   }
+}
 
-  jlong errorCodeOrSizeInformation = (errorCode) << 56;
-  errorCodeOrSizeInformation = errorCodeOrSizeInformation | (sizeInformation & 0x00000000ffffffffL);
-  return errorCodeOrSizeInformation;
+static jobject newResult(JNIEnv *env,
+                         jint errorCode,
+                         jint bytesConsumed,
+                         jint bytesProduced) {
+  jclass resultClass = env->FindClass("org/meteogroup/jbrotli/BrotliStreamDeCompressorResult");
+  if (resultClass == NULL) {
+    return NULL;
+  }
+  jmethodID methodID = env->GetMethodID(resultClass, "<init>", "(III)V");
+  if (methodID == NULL) {
+    return NULL;
+  }
+  return env->NewObject(resultClass, methodID, errorCode, bytesConsumed, bytesProduced);
+}
+
+static jobject newErrorResult(JNIEnv *env,
+                              jint errorCode) {
+  return newResult(env, errorCode, 0, 0);
 }
 
 static jfieldID brotliDeCompressorStateRefId;
@@ -105,9 +117,9 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_free
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamDeCompressor
  * Method:    deCompressBytes
- * Signature: ([BII[BII)L
+ * Signature: ([BII[BII)Lorg/meteogroup/jbrotli/BrotliStreamDeCompressorResult;
  */
-JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressBytes(JNIEnv *env,
+JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressBytes(JNIEnv *env,
                                                                                              jobject thisObj,
                                                                                              jbyteArray inByteArray,
                                                                                              jint inPosition,
@@ -118,23 +130,23 @@ JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deC
 
   if (inPosition < 0 || inLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: input array position and length must be greater than zero.");
-    return 0;
+    return NULL;
   }
   if (outPosition < 0 || outLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: output array position and length must be greater than zero.");
-    return 0;
+    return NULL;
   }
 
   BrotliState *brotliState = (BrotliState*) GetLongFieldAsPointer(env, thisObj, brotliDeCompressorStateRefId);
   if (NULL == brotliState || env->ExceptionCheck()) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamDeCompressor wasn't initialised. You need to create a new object before start decompressing.");
-    return 0;
+    return NULL;
   }
 
   uint8_t *inBufPtr = (uint8_t *) env->GetPrimitiveArrayCritical(inByteArray, 0);
-  if (inBufPtr == NULL || env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_GetPrimitiveArrayCritical_INBUF;
+  if (inBufPtr == NULL || env->ExceptionCheck()) return newErrorResult(env, org_meteogroup_jbrotli_BrotliError_DECOMPRESS_GetPrimitiveArrayCritical_INBUF);
   uint8_t *outBufPtr = (uint8_t *) env->GetPrimitiveArrayCritical(outByteArray, 0);
-  if (outBufPtr == NULL || env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_GetPrimitiveArrayCritical_OUTBUF;
+  if (outBufPtr == NULL || env->ExceptionCheck()) return newErrorResult(env, org_meteogroup_jbrotli_BrotliError_DECOMPRESS_GetPrimitiveArrayCritical_OUTBUF);
 
   size_t available_in = inLength;
   const uint8_t* inBufPtrInclPosition = inBufPtr + inPosition;
@@ -144,20 +156,23 @@ JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deC
   BrotliResult brotliResult = BrotliDecompressStream(&available_in, &inBufPtrInclPosition, &available_out, &outBufPtrInclPosition, &total_out, brotliState);
 
   env->ReleasePrimitiveArrayCritical(outByteArray, outBufPtr, 0);
-  if (env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ReleasePrimitiveArrayCritical_OUTBUF;
+  if (env->ExceptionCheck()) return newErrorResult(env, org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ReleasePrimitiveArrayCritical_OUTBUF);
   env->ReleasePrimitiveArrayCritical(inByteArray, inBufPtr, 0);
-  if (env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ReleasePrimitiveArrayCritical_INBUF;
+  if (env->ExceptionCheck()) return newErrorResult(env, org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ReleasePrimitiveArrayCritical_INBUF);
 
-  int64_t sizeInformation = outLength - available_out;
-  return packErrorCodeAndSizeInformation(brotliResult, sizeInformation);
+  jint errorCode = getErrorCode(brotliResult);
+  jint bytesConsumed = (jint) inLength - available_in;
+  jint bytesProduced = (jint) outLength - available_out;
+
+  return newResult(env, errorCode, bytesConsumed, bytesProduced);
 }
 
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamDeCompressor
  * Method:    deCompressByteBuffer
- * Signature: (Ljava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)L
+ * Signature: (Ljava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)Lorg/meteogroup/jbrotli/BrotliStreamDeCompressorResult;
  */
-JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressByteBuffer(JNIEnv *env,
+JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressByteBuffer(JNIEnv *env,
                                                                                                   jobject thisObj,
                                                                                                   jobject inBuf,
                                                                                                   jint inPosition,
@@ -168,28 +183,28 @@ JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deC
 
   if (inPosition < 0 || inLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: input ByteBuffer position and length must be greater than zero.");
-    return 0;
+    return NULL;
   }
   if (outPosition < 0 || outLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: output ByteBuffer position and length must be greater than zero.");
-    return 0;
+    return NULL;
   }
 
   BrotliState *brotliState = (BrotliState*) GetLongFieldAsPointer(env, thisObj, brotliDeCompressorStateRefId);
   if (NULL == brotliState || env->ExceptionCheck()) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamDeCompressor wasn't initialised. You need to create a new object before start decompressing.");
-    return 0;
+    return NULL;
   }
 
   const uint8_t *inBufPtr = (uint8_t *) env->GetDirectBufferAddress(inBuf);
   if (NULL == inBufPtr) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamDeCompressor couldn't get direct address of input buffer.");
-    return 0;
+    return NULL;
   }
   uint8_t *outBufPtr = (uint8_t *) env->GetDirectBufferAddress(outBuf);
   if (NULL == outBufPtr) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamDeCompressor couldn't get direct address of output buffer.");
-    return 0;
+    return NULL;
   }
 
   size_t available_in = inLength;
@@ -199,8 +214,11 @@ JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deC
   size_t total_out = 0;
   BrotliResult brotliResult = BrotliDecompressStream(&available_in, &inBufPtr, &available_out, &outBufPtr, &total_out, brotliState);
 
-  int64_t sizeInformation = outLength - available_out;
-  return packErrorCodeAndSizeInformation(brotliResult, sizeInformation);
+  jint errorCode = getErrorCode(brotliResult);
+  jint bytesConsumed = (jint) inLength - available_in;
+  jint bytesProduced = (jint) outLength - available_out;
+
+  return newResult(env, errorCode, bytesConsumed, bytesProduced);
 }
 
 #ifdef __cplusplus

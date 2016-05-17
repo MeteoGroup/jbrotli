@@ -53,10 +53,11 @@ public class BrotliStreamDeCompressorByteArrayTest {
     byte[] out = new byte[A_BYTES.length];
 
     // when
-    int length = decompressor.deCompress(A_BYTES_COMPRESSED, out);
+    int[] lengths = decompressor.deCompress(A_BYTES_COMPRESSED, out);
 
     // then
-    assertThat(length).isEqualTo(A_BYTES.length);
+    assertThat(lengths[0]).isEqualTo(A_BYTES_COMPRESSED.length);
+    assertThat(lengths[1]).isEqualTo(A_BYTES.length);
     assertThat(out).isEqualTo(A_BYTES);
   }
 
@@ -66,10 +67,11 @@ public class BrotliStreamDeCompressorByteArrayTest {
     byte[] out = new byte[100];
 
     // when
-    int length = decompressor.deCompress(A_BYTES_COMPRESSED, out);
+    int[] lengths = decompressor.deCompress(A_BYTES_COMPRESSED, out);
 
     // then
-    assertThat(length).isEqualTo(A_BYTES.length);
+    assertThat(lengths[0]).isEqualTo(A_BYTES_COMPRESSED.length);
+    assertThat(lengths[1]).isEqualTo(A_BYTES.length);
     assertThat(out).startsWith(A_BYTES);
   }
 
@@ -84,9 +86,10 @@ public class BrotliStreamDeCompressorByteArrayTest {
     int testLength = A_BYTES_COMPRESSED.length;
     System.arraycopy(A_BYTES_COMPRESSED, 0, in, testPosition, testLength);
 
-    int outLen = decompressor.deCompress(in, testPosition, testLength, out, 0, out.length);
+    int[] lengths = decompressor.deCompress(in, testPosition, testLength, out, 0, out.length);
 
-    assertThat(outLen).isEqualTo(A_BYTES.length);
+    assertThat(lengths[0]).isEqualTo(A_BYTES_COMPRESSED.length);
+    assertThat(lengths[1]).isEqualTo(A_BYTES.length);
     assertThat(out).startsWith(A_BYTES);
   }
 
@@ -97,10 +100,11 @@ public class BrotliStreamDeCompressorByteArrayTest {
 
     // when
     int testPosition = 23;
-    int outLen = decompressor.deCompress(A_BYTES_COMPRESSED, 0, A_BYTES_COMPRESSED.length, out, testPosition, A_BYTES.length);
+    int[] lengths = decompressor.deCompress(A_BYTES_COMPRESSED, 0, A_BYTES_COMPRESSED.length, out, testPosition, A_BYTES.length);
 
-    assertThat(outLen).isEqualTo(A_BYTES.length);
-    byte[] outCopiedRange = Arrays.copyOfRange(out, testPosition, testPosition + outLen);
+    assertThat(lengths[0]).isEqualTo(A_BYTES_COMPRESSED.length);
+    assertThat(lengths[1]).isEqualTo(A_BYTES.length);
+    byte[] outCopiedRange = Arrays.copyOfRange(out, testPosition, testPosition + lengths[1]);
     assertThat(outCopiedRange).isEqualTo(A_BYTES);
   }
 
@@ -111,15 +115,15 @@ public class BrotliStreamDeCompressorByteArrayTest {
     int lengthPart1 = A_BYTES_COMPRESSED.length / 2;
 
     // when
-    int length1 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, lengthPart1, out, 0, out.length);
+    int[] lengths1 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, lengthPart1, out, 0, out.length);
     assertThat(decompressor.needsMoreInput()).isTrue();
 
     // when
-    int length2 = decompressor.deCompress(A_BYTES_COMPRESSED, lengthPart1, A_BYTES_COMPRESSED.length - lengthPart1, out, length1, out.length - length1);
+    int[] lengths2 = decompressor.deCompress(A_BYTES_COMPRESSED, lengthPart1, A_BYTES_COMPRESSED.length - lengthPart1, out, lengths1[1], out.length - lengths1[1]);
     assertThat(decompressor.needsMoreInput()).isFalse();
 
     // then
-    assertThat(length1 + length2).isEqualTo(A_BYTES.length);
+    assertThat(lengths1[1] + lengths2[1]).isEqualTo(A_BYTES.length);
     assertThat(out).isEqualTo(A_BYTES);
   }
 
@@ -130,15 +134,15 @@ public class BrotliStreamDeCompressorByteArrayTest {
     byte[] out2 = new byte[A_BYTES.length / 2 + A_BYTES.length % 2];
 
     // when
-    int length1 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, A_BYTES_COMPRESSED.length, out1, 0, out1.length);
+    int[] lengths1 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, A_BYTES_COMPRESSED.length, out1, 0, out1.length);
     assertThat(decompressor.needsMoreOutput()).isTrue();
 
     // when
-    int length2 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, 0, out2, 0, out2.length);
+    int[] lengths2 = decompressor.deCompress(A_BYTES_COMPRESSED, 0, 0, out2, 0, out2.length);
     assertThat(decompressor.needsMoreOutput()).isFalse();
 
     // then
-    assertThat(length1 + length2).isEqualTo(A_BYTES.length);
+    assertThat(lengths1[1] + lengths2[1]).isEqualTo(A_BYTES.length);
     assertThat(concat(out1, out2)).isEqualTo(A_BYTES);
   }
 
