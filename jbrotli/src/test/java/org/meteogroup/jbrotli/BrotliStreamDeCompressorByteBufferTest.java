@@ -135,6 +135,11 @@ public class BrotliStreamDeCompressorByteBufferTest {
     // when
     int length1 = decompressor.deCompress(inPart1, out);
     assertThat(decompressor.needsMoreInput()).isTrue();
+    assertThat(out.position()).isEqualTo(0);
+    assertThat(out.limit()).isEqualTo(0);
+
+    // prepare out for reuse
+    out.clear();
 
     // when
     int length2 = decompressor.deCompress(inPart2, out);
@@ -293,6 +298,11 @@ public class BrotliStreamDeCompressorByteBufferTest {
     // when
     int length1 = decompressor.deCompress(inPart1, out);
     assertThat(decompressor.needsMoreInput()).isTrue();
+    assertThat(out.position()).isEqualTo(0);
+    assertThat(out.limit()).isEqualTo(0);
+
+    // prepare out for reuse
+    out.clear();
 
     // when
     int length2 = decompressor.deCompress(inPart2, out);

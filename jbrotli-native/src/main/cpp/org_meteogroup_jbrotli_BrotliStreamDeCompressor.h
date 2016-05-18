@@ -36,7 +36,7 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_free
  * Method:    deCompressBytes
  * Signature: ([BII[BII)J
  */
-JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressBytes
+JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressBytes
   (JNIEnv *, jobject, jbyteArray, jint, jint, jbyteArray, jint, jint);
 
 /*
@@ -44,7 +44,7 @@ JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deC
  * Method:    deCompressByteBuffer
  * Signature: (Ljava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)J
  */
-JNIEXPORT jlong JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressByteBuffer
+JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressByteBuffer
   (JNIEnv *, jobject, jobject, jint, jint, jobject, jint, jint);
 
 #ifdef __cplusplus
