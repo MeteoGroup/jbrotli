@@ -46,7 +46,7 @@ public final class BrotliStreamDeCompressor implements Closeable {
    * @param out output byte array
    * @return length of decompressed byte array
    */
-  public final int[] deCompress(byte[] in, byte[] out) {
+  public final DeCompressorResult deCompress(byte[] in, byte[] out) {
     return deCompress(in, 0, in.length, out, 0, out.length);
   }
 
@@ -59,22 +59,21 @@ public final class BrotliStreamDeCompressor implements Closeable {
    * @param outLength   output length
    * @return length of decompressed byte array
    */
-  public final int[] deCompress(byte[] in, int inPosition, int inLength, byte[] out, int outPosition, int outLength) throws BrotliException {
+  public final DeCompressorResult deCompress(byte[] in, int inPosition, int inLength, byte[] out, int outPosition, int outLength) throws BrotliException {
     if (inPosition + inLength > in.length) {
       throw new IllegalArgumentException("The source position + length must me smaller then the source byte array's length.");
     }
-    BrotliStreamDeCompressorResult result = deCompressBytes(in, inPosition, inLength, out, outPosition, outLength);
-
-    int[] sizes = new int[] {result.bytesConsumed, result.bytesProduced};
-    this.lastErrorCode = result.errorCode;
+    final NativeDeCompressorResult nativeResult = deCompressBytes(in, inPosition, inLength, out, outPosition, outLength);
+    final DeCompressorResult result = new DeCompressorResult(nativeResult);
+    this.lastErrorCode = nativeResult.errorCode;
 
     if (lastErrorCode == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT || lastErrorCode == DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT) {
-      return sizes;
+      return result;
     }
 
     assertBrotliOk(lastErrorCode);
 
-    return sizes;
+    return result;
   }
 
   /**
@@ -116,7 +115,7 @@ public final class BrotliStreamDeCompressor implements Closeable {
           "Output buffer is already full: " + out);
     }
 
-    BrotliStreamDeCompressorResult result;
+    NativeDeCompressorResult result;
     if (in.isDirect() && out.isDirect()) {
       result = deCompressByteBuffer(in, inPosition, inRemain, out, outPosition, outRemain);
     } else if (in.hasArray() && out.hasArray()) {
@@ -158,7 +157,7 @@ public final class BrotliStreamDeCompressor implements Closeable {
 
   private native int freeNativeResources();
 
-  private native BrotliStreamDeCompressorResult deCompressBytes(byte[] inArray, int inPosition, int inLength, byte[] outArray, int outPosition, int outLength);
+  private native NativeDeCompressorResult deCompressBytes(byte[] inArray, int inPosition, int inLength, byte[] outArray, int outPosition, int outLength);
 
-  private native BrotliStreamDeCompressorResult deCompressByteBuffer(ByteBuffer inByteBuffer, int inPosition, int inLength, ByteBuffer outByteBuffer, int outPosition, int outLength);
+  private native NativeDeCompressorResult deCompressByteBuffer(ByteBuffer inByteBuffer, int inPosition, int inLength, ByteBuffer outByteBuffer, int outPosition, int outLength);
 }

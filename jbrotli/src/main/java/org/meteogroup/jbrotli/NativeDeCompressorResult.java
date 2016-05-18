@@ -15,12 +15,12 @@
  */
 package org.meteogroup.jbrotli;
 
-class BrotliStreamDeCompressorResult {
+class NativeDeCompressorResult {
   final int errorCode;
   final int bytesConsumed;
   final int bytesProduced;
 
-  public BrotliStreamDeCompressorResult(int errorCode, int bytesConsumed, int bytesProduced) {
+  public NativeDeCompressorResult(int errorCode, int bytesConsumed, int bytesProduced) {
     this.errorCode = errorCode;
     this.bytesConsumed = bytesConsumed;
     this.bytesProduced = bytesProduced;

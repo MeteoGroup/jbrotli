@@ -46,9 +46,9 @@ public class BrotliStreamDeCompressorInitAndCloseTest {
   public void happy_path_decompress_a_buffer_completly() throws Exception {
     byte out[] = new byte[BrotliCompressorTest.A_BYTES.length];
 
-    int[] outLengths = decompressor.deCompress(BrotliCompressorTest.A_BYTES_COMPRESSED, out);
+    DeCompressorResult result = decompressor.deCompress(BrotliCompressorTest.A_BYTES_COMPRESSED, out);
 
-    assertThat(outLengths[1]).isEqualTo(BrotliCompressorTest.A_BYTES.length);
+    assertThat(result.bytesProduced).isEqualTo(BrotliCompressorTest.A_BYTES.length);
     assertThat(out).isEqualTo(BrotliCompressorTest.A_BYTES);
   }
 

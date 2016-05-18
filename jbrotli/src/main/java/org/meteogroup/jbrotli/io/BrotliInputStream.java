@@ -17,6 +17,7 @@
 package org.meteogroup.jbrotli.io;
 
 import org.meteogroup.jbrotli.BrotliStreamDeCompressor;
+import org.meteogroup.jbrotli.DeCompressorResult;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -89,9 +90,9 @@ public class BrotliInputStream extends InputStream {
   private void readChunkFromInput() throws IOException {
     final byte[] uncompressedBuffer = new byte[INTERNAL_UNCOMPRESSED_BUFFER_SIZE];
     if (brotliStreamDeCompressor.needsMoreOutput()) {
-      final int[] lengths = brotliStreamDeCompressor.deCompress(new byte[0], uncompressedBuffer);
-      assert(lengths[0] == 0);
-      uncompressedInputStreamDelegate = new ByteArrayInputStream(uncompressedBuffer, 0, lengths[1]);
+      final DeCompressorResult result = brotliStreamDeCompressor.deCompress(new byte[0], uncompressedBuffer);
+      assert (result.bytesConsumed == 0);
+      uncompressedInputStreamDelegate = new ByteArrayInputStream(uncompressedBuffer, 0, result.bytesProduced);
       return;
     }
 
@@ -100,12 +101,12 @@ public class BrotliInputStream extends InputStream {
     while (!isEndOfInputStream && (uncompressedBufferPosition == 0 || brotliStreamDeCompressor.needsMoreInput())) {
       final int inLength = inputStream.read(in);
       if (inLength > 0) {
-        int[] lengths = brotliStreamDeCompressor.deCompress(in, 0, inLength, uncompressedBuffer, uncompressedBufferPosition, uncompressedBuffer.length - uncompressedBufferPosition);
-        if (lengths[0] < inLength) {
+        final DeCompressorResult result = brotliStreamDeCompressor.deCompress(in, 0, inLength, uncompressedBuffer, uncompressedBufferPosition, uncompressedBuffer.length - uncompressedBufferPosition);
+        if (result.bytesConsumed < inLength) {
           // TODO: handle this case
           throw new IOException("Compressor did not consume all input");
         }
-        uncompressedBufferPosition += lengths[1];
+        uncompressedBufferPosition += result.bytesProduced;
       } else {
         isEndOfInputStream = true;
       }

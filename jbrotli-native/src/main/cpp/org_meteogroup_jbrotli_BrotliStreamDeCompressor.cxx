@@ -44,7 +44,7 @@ static jobject newResult(JNIEnv *env,
                          jint errorCode,
                          jint bytesConsumed,
                          jint bytesProduced) {
-  jclass resultClass = env->FindClass("org/meteogroup/jbrotli/BrotliStreamDeCompressorResult");
+  jclass resultClass = env->FindClass("org/meteogroup/jbrotli/NativeDeCompressorResult");
   if (resultClass == NULL) {
     return NULL;
   }
@@ -117,7 +117,7 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_free
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamDeCompressor
  * Method:    deCompressBytes
- * Signature: ([BII[BII)Lorg/meteogroup/jbrotli/BrotliStreamDeCompressorResult;
+ * Signature: ([BII[BII)Lorg/meteogroup/jbrotli/NativeDeCompressorResult;
  */
 JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressBytes(JNIEnv *env,
                                                                                              jobject thisObj,
@@ -170,7 +170,7 @@ JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_d
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamDeCompressor
  * Method:    deCompressByteBuffer
- * Signature: (Ljava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)Lorg/meteogroup/jbrotli/BrotliStreamDeCompressorResult;
+ * Signature: (Ljava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)Lorg/meteogroup/jbrotli/NativeDeCompressorResult;
  */
 JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_deCompressByteBuffer(JNIEnv *env,
                                                                                                   jobject thisObj,
