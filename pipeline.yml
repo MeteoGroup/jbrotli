@@ -6,6 +6,13 @@ resources:
       uri: https://github.com/MeteoGroup/jbrotli.git
       branch: master
 
+  - name: s3-jbrotli-releases
+    type: s3
+    source:
+      bucket: jbrotli-releases
+      regexp: jbrotli/releases/
+      access_key_id: {{s3-access-key-id}}
+      secret_access_key: {{s3-secret-access-key}}
 
 jobs:
   - name: jbrotli
@@ -15,6 +22,9 @@ jobs:
     - task: maven-package-jbrotli-native-linux-x86-amd64
       privileged: false
       file: git-repo/pipeline-tasks/maven-package-jbrotli-native-linux-x86-amd64.yml
-    - task: maven-package-jbrotli-native-linux-arm32-vfp-hflt
-      privileged: false
-      file: git-repo/pipeline-tasks/maven-package-jbrotli-native-linux-arm32-vfp-hflt.yml
+    - put: s3-jbrotli-releases
+      params:
+        file: target-linux-x86-amd64/*.tgz
+    # - task: maven-package-jbrotli-native-linux-arm32-vfp-hflt
+    #   privileged: false
+    #   file: git-repo/pipeline-tasks/maven-package-jbrotli-native-linux-arm32-vfp-hflt.yml
