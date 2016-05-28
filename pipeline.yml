@@ -13,6 +13,7 @@ resources:
       regexp: jbrotli/releases/
       access_key_id: {{s3-access-key-id}}
       secret_access_key: {{s3-secret-access-key}}
+      region_name: {{s3-region-name}}
 
 jobs:
   - name: jbrotli
