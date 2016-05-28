@@ -7,8 +7,12 @@ inputs:
 
 outputs:
   - name: jar-file-linux-x86-amd64
-    path: git-repo/jbrotli-native/linux-x86-amd64/target
+    path: target
 
 run:
   path: sh
-  args: ["git-repo/pipeline-tasks/maven-package-jbrotli-native-linux-x86-amd64.sh"]
+  args:
+  - -exc
+  - |
+    sh "git-repo/pipeline-tasks/maven-package-jbrotli-native-linux-x86-amd64.sh"
+    mv git-repo/jbrotli-native/linux-x86-amd64/target target
