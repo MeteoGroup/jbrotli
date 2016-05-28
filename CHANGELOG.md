@@ -2,6 +2,13 @@
 CHANGELOG jbrotli
 =================
 
+## v0.5.0 (2016-??-??)
+
+* CHG: adopt pipeline to Concourse CI 1.2.0
+* CHG: using gcc v4.8 for linux build to enhance compatibility (https://github.com/MeteoGroup/jbrotli/issues/4)
+* FIX: the case where Brotli doesn't consume all input (https://github.com/MeteoGroup/jbrotli/pull/3)
+* FIX: fix ARM detection and library path name for Raspberry Pi binaries
+
 ## v0.4.0 (2016-03-20)
 
 * NEW: new platform support for Raspberry Pi
