@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.meteogroup.jbrotli</groupId>
-  <artifactId>jbrotli-servlet-examples-dropwizard</artifactId>
+  <artifactId>jbrotli-examples-dropwizard</artifactId>
   <version>0.4.1-SNAPSHOT</version>
 
   <properties>

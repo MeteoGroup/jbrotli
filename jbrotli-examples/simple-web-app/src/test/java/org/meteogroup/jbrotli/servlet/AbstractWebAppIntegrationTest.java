@@ -44,7 +44,7 @@ public abstract class AbstractWebAppIntegrationTest {
 
   @BeforeClass
   public void startTomcatServer() throws Throwable {
-    webAppBaseDir = createTempDirectory("jbrotli-servlet-examples-test").toString();
+    webAppBaseDir = createTempDirectory("jbrotli-examples-test").toString();
 
     tomcat = new Tomcat();
     tomcat.setBaseDir(webAppBaseDir);

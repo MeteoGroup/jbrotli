@@ -128,5 +128,5 @@ and start the pipeline manually.
 ## Update version numbers
 
 ```
-mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=0.4.1-SNAPSHOT -Dartifacts=jbrotli-parent,jbrotli,jbrotli-native,jbrotli-native-win32-x86-amd64,jbrotli-native-win32-x86,jbrotli-native-linux-x86-amd64,jbrotli-native-linux-arm32-vfp-hflt,jbrotli-native-darwin-x86-amd64,jbrotli-performance,jbrotli-servlet,jbrotli-servlet-examples-dropwizard,jbrotli-servlet-examples-simple-web-app,jbrotli-servlet-examples-spring-boot,jbrotli-servlet-examples -Dproperties=version.jbrotli.native
+mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=0.4.1-SNAPSHOT -Dartifacts=jbrotli-parent,jbrotli,jbrotli-native,jbrotli-native-win32-x86-amd64,jbrotli-native-win32-x86,jbrotli-native-linux-x86-amd64,jbrotli-native-linux-arm32-vfp-hflt,jbrotli-native-darwin-x86-amd64,jbrotli-performance,jbrotli-servlet,jbrotli-examples-dropwizard,jbrotli-examples-simple-web-app,jbrotli-examples-httpcomponents-client,jbrotli-examples-spring-boot,jbrotli-examples -Dproperties=version.jbrotli.native
 ```

@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.meteogroup.jbrotli</groupId>
-  <artifactId>jbrotli-servlet-examples</artifactId>
+  <artifactId>jbrotli-examples</artifactId>
   <packaging>pom</packaging>
   <version>0.4.1-SNAPSHOT</version>
 

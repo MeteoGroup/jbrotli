@@ -18,7 +18,7 @@
     <module>jbrotli-native</module>
     <module>jbrotli-performance</module>
     <module>jbrotli-servlet</module>
-    <module>jbrotli-servlet-examples</module>
+    <module>jbrotli-examples</module>
   </modules>
 
   <scm>

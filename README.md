@@ -26,7 +26,7 @@ for the following operating systems and architectures.
 
     With version 0.4.0 the Raspberry PI binaries where added as supported platform.
     For easier adoption of Brotli, there is now a 'BrotliServletFilter' available.
-    Have a look at 'jbrotli-servlet-examples' on how to use it in Tomcat, Spring Boot or Dropwizard.
+    Have a look at 'jbrotli-examples' on how to use it in Tomcat, Spring Boot or Dropwizard.
     This 0.4.0 release is bundled with the LATEST (un-released) version of brotli,
     because it contains a security fix CVE-2016-1968. The latest Google brotli-release 0.3.0
     is still vulnerable to this issue.
@@ -129,15 +129,15 @@ Then finally activate the filter in your **web.xml**
   </filter-mapping>
 ```
 
-See full example at [jbrotli-servlet-examples/simple-web-app](jbrotli-servlet-examples/simple-web-app)
+See full example at [jbrotli-examples/simple-web-app](jbrotli-examples/simple-web-app)
 
 
 ##### Enabling your [Spring Boot](http://projects.spring.io/spring-boot/) or [Dropwizard](http://www.dropwizard.io/) microservice
 
 Enabling one of the famous microservice frameworks is very easy. Just have a look a the examples ...
 
-* [jbrotli-servlet-examples/spring-boot](jbrotli-servlet-examples/spring-boot)
-* [jbrotli-servlet-examples/dropwizard](jbrotli-servlet-examples/dropwizard) 
+* [jbrotli-examples/spring-boot](jbrotli-examples/spring-boot)
+* [jbrotli-examples/dropwizard](jbrotli-examples/dropwizard) 
 
 
 ##### Example of regular BrotliCompressor with custom dictionary
