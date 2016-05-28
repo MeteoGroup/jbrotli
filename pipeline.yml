@@ -9,7 +9,7 @@ resources:
   - name: s3-jbrotli-releases
     type: s3
     source:
-      bucket: jbrotli-releases
+      bucket: {{s3-bucket-name}}
       regexp: jbrotli/releases/
       access_key_id: {{s3-access-key-id}}
       secret_access_key: {{s3-secret-access-key}}

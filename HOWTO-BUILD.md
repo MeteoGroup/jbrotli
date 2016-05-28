@@ -14,7 +14,7 @@ Guideline how to build jbrotli project
 #### Supported platforms and architecture
 
 As this project is under development.
-The goal is to provide native libraries for Linux, Windows and OSX in 32bit and 64bit. 
+The goal is to provide native libraries for Linux, Windows and OSX in 32bit and 64bit.
 Currently the following platforms and architectures are tested:
 
 * Windows 10, 64bit
@@ -55,7 +55,7 @@ Each native module contains a small build script.
 E.g. for Windows 64bit, you may use this ...
 
 ```
-"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x64 
+"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x64
 cd jbrotli-native/win32-x86-amd64
 build.bat
 ```
@@ -96,6 +96,8 @@ The tools which you need to have installed on your box are [Vagrant](https://www
 and [Virtual Box](https://www.virtualbox.org/).
 The pipeline is build by using the great [Concourse CI](http://concourse.ci/) tools and ideas behind that project.
 
+The pipeline was tested with Concourse CI v1.2.0.
+
 #### 1. Prepare vagrant box
 ```
 vagrant init
@@ -107,17 +109,24 @@ This [fly](http://concourse.ci/fly-cli.html) tool is required to work with the p
 Please follow the Concourse CI's [Getting Started Guide](http://concourse.ci/getting-started.html)
 to learn how to install this tool.
 
-#### 3. Upload pipeline
+#### 3. Prepare AWS S3 bucket
+
+The pipeline artifacts are stored on Amazon S3 buckets.
+You need to provide a bucket name and access credentials on your on.
+The simples way to get such (for free), is to create an developer account on AWS:
+https://console.aws.amazon.com/s3/home
+
+#### 4. Upload pipeline
 ```
-fly set-pipeline -p jbrotli -c ./pipeline.yml
+fly set-pipeline -p jbrotli -c ./pipeline.yml --var "s3-bucket-name=<YOUR_BUCKET>" --var "s3-access-key-id=<YOUR_KEY>" --var "s3-secret-access-key=<YOUR_SECRET>" --var "s3-region-name=<REGION>"
 ```
 
-#### 3. Open Web UI and run pipeline
+#### 5. Open Web UI and run pipeline
 Once the pipeline is set, you can open the Web UI via http://192.168.100.4:8080/
 and start the pipeline manually.
 
 ## Update version numbers
 
 ```
-mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=0.4.1-SNAPSHOT -Dartifacts=jbrotli-parent,jbrotli,jbrotli-native,jbrotli-native-win32-x86-amd64,jbrotli-native-win32-x86,jbrotli-native-linux-x86-amd64,jbrotli-native-linux-arm32-vfp-hflt,jbrotli-native-darwin-x86-amd64,jbrotli-performance,jbrotli-servlet,jbrotli-servlet-examples-dropwizard,jbrotli-servlet-examples-simple-web-app,jbrotli-servlet-examples-spring-boot,jbrotli-servlet-examples -Dproperties=version.jbrotli.native                                                                                                                                                                                                                                                                                                                           
+mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=0.4.1-SNAPSHOT -Dartifacts=jbrotli-parent,jbrotli,jbrotli-native,jbrotli-native-win32-x86-amd64,jbrotli-native-win32-x86,jbrotli-native-linux-x86-amd64,jbrotli-native-linux-arm32-vfp-hflt,jbrotli-native-darwin-x86-amd64,jbrotli-performance,jbrotli-servlet,jbrotli-servlet-examples-dropwizard,jbrotli-servlet-examples-simple-web-app,jbrotli-servlet-examples-spring-boot,jbrotli-servlet-examples -Dproperties=version.jbrotli.native
 ```
