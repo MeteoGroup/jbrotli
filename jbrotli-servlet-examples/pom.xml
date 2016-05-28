@@ -11,6 +11,7 @@
 
   <modules>
     <module>dropwizard</module>
+    <module>httpcomponents-client</module>
     <module>simple-web-app</module>
     <module>spring-boot</module>
   </modules>
