@@ -1,6 +1,6 @@
 platform: linux
 
-image: docker:///nitram509/alpine-oraclejdk8-maven-cmake-gcc
+image: docker:///nitram509/debian-openjdk8-maven-cmake-gcc
 
 inputs:
   - name: git-repo
