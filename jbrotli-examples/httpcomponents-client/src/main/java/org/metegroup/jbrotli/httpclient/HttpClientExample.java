@@ -22,23 +22,48 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.meteogroup.jbrotli.libloader.BrotliLibraryLoader;
 
 import java.io.IOException;
 
 public class HttpClientExample {
 
-  public static void main(String[] args) throws Exception {
-    HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+  public static final String BROTLI_MIME_TYPE = "br";
 
+  public String downloadFileAsString(String url) throws IOException {
+    BrotliLibraryLoader.loadBrotli();
+    HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+    prepareAcceptHeaderForBrotli(httpClientBuilder);
+    prepareResponseContentFilter(httpClientBuilder);
+    try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
+      String entity = downloadFileAsString(httpClient, url);
+      if (entity != null) return entity;
+    }
+    return null;
+  }
+
+  private String downloadFileAsString(CloseableHttpClient httpClient, String url) throws IOException {
+    HttpGet httpget = new HttpGet(url);
+    HttpResponse response = httpClient.execute(httpget);
+    HttpEntity entity = response.getEntity();
+    if (entity != null) {
+      return EntityUtils.toString(entity);
+    }
+    return null;
+  }
+
+  private void prepareAcceptHeaderForBrotli(HttpClientBuilder httpClientBuilder) {
     httpClientBuilder.addInterceptorFirst(new HttpRequestInterceptor() {
       @Override
       public void process(HttpRequest request, HttpContext httpContext) throws HttpException, IOException {
         if (!request.containsHeader("Accept-Encoding")) {
-          request.addHeader("Accept-Encoding", "br");
+          request.addHeader("Accept-Encoding", BROTLI_MIME_TYPE);
         }
       }
     });
+  }
 
+  private void prepareResponseContentFilter(HttpClientBuilder httpClientBuilder) {
     httpClientBuilder.addInterceptorFirst(new HttpResponseInterceptor() {
       @Override
       public void process(HttpResponse response, HttpContext httpContext) throws HttpException, IOException {
@@ -51,35 +76,12 @@ public class HttpClientExample {
         }
       }
     });
-
-    try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
-      HttpGet httpget = new HttpGet("http://localhost:8080/canterbury-corpus/alice29.txt");
-
-      // Execute HTTP request
-      System.out.println("executing request " + httpget.getURI());
-      HttpResponse response = httpClient.execute(httpget);
-
-      System.out.println("----------------------------------------");
-      System.out.println(response.getStatusLine());
-      System.out.println(response.getLastHeader("Content-Encoding"));
-      System.out.println(response.getLastHeader("Content-Length"));
-      System.out.println("----------------------------------------");
-
-      HttpEntity entity = response.getEntity();
-
-      if (entity != null) {
-        String content = EntityUtils.toString(entity);
-        System.out.println(content);
-        System.out.println("----------------------------------------");
-        System.out.println("Uncompressed size: " + content.length());
-      }
-    }
   }
 
-  private static boolean usesBrotliContentEncoding(Header contentEncoding) {
+  private boolean usesBrotliContentEncoding(Header contentEncoding) {
     if (contentEncoding != null) {
       for (HeaderElement codec : contentEncoding.getElements()) {
-        if ("br".equalsIgnoreCase(codec.getName())) {
+        if (BROTLI_MIME_TYPE.equalsIgnoreCase(codec.getName())) {
           return true;
         }
       }
