@@ -8,7 +8,7 @@ PROJECT_BASE_PATH=$(realpath "$PROJECT_BASE_PATH")
 
 cd "$PROJECT_BASE_PATH/jbrotli-native/linux-x86-amd64"
 chmod +x build.sh
-mvn install
+mvn -P release install
 
 cd "$PROJECT_BASE_PATH/jbrotli"
 mvn package
