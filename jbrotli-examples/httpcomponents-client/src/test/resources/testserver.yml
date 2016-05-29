@@ -1,0 +1,14 @@
+
+server:
+  rootPath: "/api/*"
+  gzip:
+    enabled: true
+    bufferSize: 8KiB
+  applicationConnectors:
+    - type: http
+      port: 0
+
+logging:
+  level: INFO
+  appenders:
+    - type: console

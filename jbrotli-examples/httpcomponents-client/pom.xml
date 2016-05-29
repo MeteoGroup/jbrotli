@@ -29,6 +29,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+    <dropwizard.version>0.9.2</dropwizard.version>
     <version.jbrotli.native>0.4.1-SNAPSHOT</version.jbrotli.native>
   </properties>
 
@@ -44,6 +45,25 @@
       <groupId>org.meteogroup.jbrotli</groupId>
       <artifactId>jbrotli-servlet</artifactId>
       <version>${version.jbrotli.native}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-core</artifactId>
+      <version>${dropwizard.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-assets</artifactId>
+      <version>${dropwizard.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-testing</artifactId>
+      <version>${dropwizard.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>

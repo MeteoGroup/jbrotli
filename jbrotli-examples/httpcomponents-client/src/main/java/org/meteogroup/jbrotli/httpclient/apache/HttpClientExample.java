@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.metegroup.jbrotli.httpclient;
+package org.meteogroup.jbrotli.httpclient.apache;
 
 import org.apache.http.*;
 import org.apache.http.client.methods.HttpGet;
@@ -28,13 +28,17 @@ import java.io.IOException;
 
 public class HttpClientExample {
 
-  public static final String BROTLI_MIME_TYPE = "br";
+  private static final String BROTLI_MIME_TYPE = "br";
+
+  private HttpRequestInterceptor httpRequestInterceptor = createHttpRequestInterceptor();
+
+  HttpResponseInterceptor httpResponseInterceptor = createHttpResponseInterceptor();
 
   public String downloadFileAsString(String url) throws IOException {
     BrotliLibraryLoader.loadBrotli();
     HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-    prepareAcceptHeaderForBrotli(httpClientBuilder);
-    prepareResponseContentFilter(httpClientBuilder);
+    httpClientBuilder.addInterceptorFirst(httpRequestInterceptor);
+    httpClientBuilder.addInterceptorFirst(httpResponseInterceptor);
     try (CloseableHttpClient httpClient = httpClientBuilder.build()) {
       String entity = downloadFileAsString(httpClient, url);
       if (entity != null) return entity;
@@ -52,19 +56,19 @@ public class HttpClientExample {
     return null;
   }
 
-  private void prepareAcceptHeaderForBrotli(HttpClientBuilder httpClientBuilder) {
-    httpClientBuilder.addInterceptorFirst(new HttpRequestInterceptor() {
+  private HttpRequestInterceptor createHttpRequestInterceptor() {
+    return new HttpRequestInterceptor() {
       @Override
       public void process(HttpRequest request, HttpContext httpContext) throws HttpException, IOException {
         if (!request.containsHeader("Accept-Encoding")) {
           request.addHeader("Accept-Encoding", BROTLI_MIME_TYPE);
         }
       }
-    });
+    };
   }
 
-  private void prepareResponseContentFilter(HttpClientBuilder httpClientBuilder) {
-    httpClientBuilder.addInterceptorFirst(new HttpResponseInterceptor() {
+  private HttpResponseInterceptor createHttpResponseInterceptor() {
+    return new HttpResponseInterceptor() {
       @Override
       public void process(HttpResponse response, HttpContext httpContext) throws HttpException, IOException {
         HttpEntity entity = response.getEntity();
@@ -75,7 +79,7 @@ public class HttpClientExample {
           }
         }
       }
-    });
+    };
   }
 
   private boolean usesBrotliContentEncoding(Header contentEncoding) {

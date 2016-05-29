@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.metegroup.jbrotli.httpclient;
+package org.meteogroup.jbrotli.httpclient.apache;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.DecompressingEntity;
@@ -24,8 +24,8 @@ import org.meteogroup.jbrotli.io.BrotliInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class BrotliDecompressingEntity extends DecompressingEntity {
-  public BrotliDecompressingEntity(HttpEntity entity) {
+class BrotliDecompressingEntity extends DecompressingEntity {
+  BrotliDecompressingEntity(HttpEntity entity) {
     super(entity, new InputStreamFactory() {
       public InputStream create(InputStream instream) throws IOException {
         return new BrotliInputStream(instream);
