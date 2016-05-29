@@ -42,6 +42,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>2.22.1</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.meteogroup.jbrotli</groupId>
       <artifactId>jbrotli-servlet</artifactId>
       <version>${version.jbrotli.native}</version>

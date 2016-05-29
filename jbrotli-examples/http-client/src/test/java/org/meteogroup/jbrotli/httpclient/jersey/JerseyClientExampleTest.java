@@ -14,15 +14,12 @@
  *  limitations under the License.
  */
 
-package org.meteogroup.jbrotli.httpclient.apache;
+package org.meteogroup.jbrotli.httpclient.jersey;
 
 import io.dropwizard.testing.DropwizardTestSupport;
 import io.dropwizard.testing.ResourceHelpers;
 import org.apache.http.HttpException;
-import org.apache.http.HttpResponse;
-import org.apache.http.protocol.HttpContext;
 import org.meteogroup.jbrotli.httpserver.TestServerApplication;
-import org.mockito.ArgumentCaptor;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -32,11 +29,8 @@ import java.io.IOException;
 
 import static io.dropwizard.testing.ConfigOverride.config;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.spy;
 
-public class HttpClientExampleTest {
+public class JerseyClientExampleTest {
 
   protected static final DropwizardTestSupport<TestServerApplication.TestServerConfiguration> SUPPORT =
       new DropwizardTestSupport<>(TestServerApplication.class, ResourceHelpers.resourceFilePath("testserver.yml"), config("server.applicationConnectors[0].port", "0"));
@@ -59,21 +53,13 @@ public class HttpClientExampleTest {
   }
 
   @Test
-  public void brotli_downloads_can_be_decompressed_via_apache_httpclient() throws IOException, HttpException {
-    HttpClientExample clientExample = new HttpClientExample();
-    clientExample.httpResponseInterceptor = spy(clientExample.httpResponseInterceptor);
-    ArgumentCaptor<HttpResponse> httpResponseCaptor = ArgumentCaptor.forClass(HttpResponse.class);
-    doCallRealMethod().when(clientExample.httpResponseInterceptor).process(httpResponseCaptor.capture(), any(HttpContext.class));
+  public void brotli_downloads_can_be_decompressed_via_apache_jerseyclient() throws IOException, HttpException {
+    JerseyClientExample jerseyClient = new JerseyClientExample();
 
-    String text = clientExample.downloadFileAsString(indexHtmlUrl);
+    String text = jerseyClient.downloadFileAsString(indexHtmlUrl);
 
     assertThat(text).contains("Info-ZIP; Zip, UnZip, gzip and zlib co-author; PNG group");
     assertThat(text).contains("<i><b>Audio compression</b></i>");
-    assertBrotliDecompressionWasUsed(httpResponseCaptor);
-  }
-
-  private void assertBrotliDecompressionWasUsed(ArgumentCaptor<HttpResponse> httpResponseCaptor) {
-    assertThat(httpResponseCaptor.getValue().getEntity()).isOfAnyClassIn(BrotliDecompressingEntity.class);
   }
 
 }
