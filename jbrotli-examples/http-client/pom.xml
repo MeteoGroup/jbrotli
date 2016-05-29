@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.meteogroup.jbrotli</groupId>
-  <artifactId>jbrotli-examples-httpcomponents-client</artifactId>
+  <artifactId>jbrotli-examples-http-client</artifactId>
   <version>0.4.1-SNAPSHOT</version>
 
   <properties>
