@@ -164,6 +164,12 @@ byte[] compressed = streamCompressor.compressBuffer(inBuf, doFlush);
 ```
 
 
+##### Clients examples, Apache HttpComponents and Jersey
+
+* [Apache HTTP client](jbrotli-examples/http-client/src/main/java/org/meteogroup/jbrotli/httpclient/apache/HttpClientExample.java)
+* [Jersey HTTP client](jbrotli-examples/http-client/src/main/java/org/meteogroup/jbrotli/httpclient/jersey/JerseyClientExample.java)
+
+
 ## Performance benchmark results
 
 Some results are documented in this spreadsheet
