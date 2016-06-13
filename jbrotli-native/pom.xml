@@ -7,7 +7,7 @@
   <groupId>org.meteogroup.jbrotli</groupId>
   <artifactId>jbrotli-native</artifactId>
   <packaging>pom</packaging>
-  <version>0.4.1-SNAPSHOT</version>
+  <version>0.5.0</version>
 
   <profiles>
 
