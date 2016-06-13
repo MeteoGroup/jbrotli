@@ -22,6 +22,12 @@ for the following operating systems and architectures.
 
 ##### News
 
+###### 2016-06-13
+
+    With version 0.5.0 the compatibility for the Linux binaries was increased.
+    This is a pre-condition, to enable brotli compression in Hadoop, [HADOOP-13126](https://issues.apache.org/jira/browse/HADOOP-13126)
+
+
 ###### 2016-03-20
 
     With version 0.4.0 the Raspberry PI binaries where added as supported platform.
@@ -74,7 +80,7 @@ In order to use, simply add these lines to your project's **pom.xml**
     <dependency>
       <groupId>org.meteogroup.jbrotli</groupId>
       <artifactId>jbrotli</artifactId>
-      <version>0.4.0</version>
+      <version>0.5.0</version>
     </dependency>
   </dependencies>
 
@@ -102,7 +108,7 @@ In order to use BrotliServletFilter, simply add these lines to your project's **
     <dependency>
       <groupId>org.meteogroup.jbrotli</groupId>
       <artifactId>jbrotli-servlet</artifactId>
-      <version>0.4.0</version>
+      <version>0.5.0</version>
     </dependency>
   </dependencies>
 

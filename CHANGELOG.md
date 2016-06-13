@@ -2,8 +2,9 @@
 CHANGELOG jbrotli
 =================
 
-## v0.5.0 (2016-??-??)
+## v0.5.0 (2016-06-13)
 
+* NEW: add example how to use jbrotli with [Apache HttpComponents](https://hc.apache.org/)
 * CHG: adopt pipeline to Concourse CI 1.2.0
 * CHG: using gcc v4.8 for linux build to enhance compatibility (https://github.com/MeteoGroup/jbrotli/issues/4)
 * FIX: the case where Brotli doesn't consume all input (https://github.com/MeteoGroup/jbrotli/pull/3)
