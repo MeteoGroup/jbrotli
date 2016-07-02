@@ -23,6 +23,7 @@ CHANGELOG jbrotli
 * FIX: memory leak in BrotliOutputStream and BrotliInputStream
 * CHG: rename BrotliStreamCompressor array methods to 'compressArray()'
 * CHG: BrotliOutputStream and BrotliInputStream don't auto-flush, because this violates the AutoCloseable contract
+* CHG: remove dependency to "org.scijava/native-lib-loader" in favor of custom BrotliLibraryLoader (enables e.g. Raspberry Pi support)
 
 ## v0.3.0 (2016-01-27)
 
