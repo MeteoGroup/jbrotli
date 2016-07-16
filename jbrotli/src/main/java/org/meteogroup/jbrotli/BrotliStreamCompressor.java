@@ -47,6 +47,7 @@ public final class BrotliStreamCompressor implements Closeable {
   }
 
   /**
+   * Compress a chunk of bytes. The size of this array has to be less or equal than {@link #getMaxInputBufferSize()}.
    * @param in      input byte array
    * @param doFlush do flush
    * @return compressed byte array, never NULL, but maybe length=0
@@ -58,6 +59,7 @@ public final class BrotliStreamCompressor implements Closeable {
   }
 
   /**
+   * Compress a chunk of bytes. The length to compress has to be less or equal than {@link #getMaxInputBufferSize()}.
    * @param in         input byte array
    * @param inPosition position to start compress from
    * @param inLength   length in byte to compress
@@ -74,7 +76,7 @@ public final class BrotliStreamCompressor implements Closeable {
   }
 
   /**
-   * Compressing larger {@link ByteBuffer}s is more easy, because this method
+   * Compressing larger {@link ByteBuffer}s is easier than arrays, because this method
    * automatically compresses the maximum partial buffer. For example, if you have a 10mb buffer and the
    * {@link #getInputBlockSize()} is 2mb, you can call this method
    * 5 times in total. The input {@link ByteBuffer#position(int)} will be set accordingly.
