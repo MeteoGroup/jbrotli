@@ -22,14 +22,14 @@
 
   <groupId>org.meteogroup.jbrotli</groupId>
   <artifactId>jbrotli-examples-dropwizard</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0-SNAPSHOT</version>
 
   <properties>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <version.jbrotli.native>0.5.0</version.jbrotli.native>
+    <version.jbrotli.native>0.6.0-SNAPSHOT</version.jbrotli.native>
     <dropwizard.version>0.9.2</dropwizard.version>
   </properties>
 
