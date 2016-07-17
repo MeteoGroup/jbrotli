@@ -72,7 +72,7 @@ public final class BrotliStreamCompressor implements Closeable {
     if (inPosition + inLength > in.length) {
       throw new IllegalArgumentException("The source position + length must me smaller then the source byte array's length.");
     }
-    return compressBytes(in, inPosition, inLength, doFlush);
+    return compressBytes(in, inPosition, inLength, doFlush, false);
   }
 
   /**
@@ -96,9 +96,9 @@ public final class BrotliStreamCompressor implements Closeable {
 
     ByteBuffer out;
     if (in.isDirect()) {
-      out = compressByteBuffer(in, inPosition, inRemain, doFlush);
+      out = compressByteBuffer(in, inPosition, inRemain, doFlush, true);
     } else if (in.hasArray()) {
-      out = ByteBuffer.wrap(compressBytes(in.array(), inPosition + in.arrayOffset(), inRemain, doFlush));
+      out = ByteBuffer.wrap(compressBytes(in.array(), inPosition + in.arrayOffset(), inRemain, doFlush, false));
     } else {
       throw new UnsupportedOperationException("Not supported ByteBuffer implementation. Use either direct BB or wrapped byte arrays. You may raise an issue on GitHub too ;-)");
     }
@@ -133,8 +133,8 @@ public final class BrotliStreamCompressor implements Closeable {
 
   private native int freeNativeResources();
 
-  private native byte[] compressBytes(byte[] inArray, int inPosition, int inLength, boolean doFlush);
+  private native byte[] compressBytes(byte[] inArray, int inPosition, int inLength, boolean doFlush, boolean isLast);
 
-  private native ByteBuffer compressByteBuffer(ByteBuffer inByteBuffer, int inPosition, int inLength, boolean doFlush);
+  private native ByteBuffer compressByteBuffer(ByteBuffer inByteBuffer, int inPosition, int inLength, boolean doFlush, boolean isLast);
 
 }

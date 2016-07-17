@@ -101,14 +101,15 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_getInp
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamCompressor
  * Method:    compressBytes
- * Signature: ([BIIZ)[B
+ * Signature: ([BIIZZ)[B
  */
 JNIEXPORT jbyteArray JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_compressBytes(JNIEnv *env,
                                                                                               jobject thisObj,
                                                                                               jbyteArray inByteArray,
                                                                                               jint inPosition,
                                                                                               jint inLength,
-                                                                                              jboolean doFlush) {
+                                                                                              jboolean doFlush,
+                                                                                              jboolean isLast) {
 
   if (inPosition < 0 || inLength < 0) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: input array position and length must be greater than zero.");
@@ -136,7 +137,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_
 
   size_t computedOutLength = 0;
   uint8_t *brotliOutBufferPtr;
-  bool writeResult = compressor->WriteBrotliData(doFlush, false, &computedOutLength, &brotliOutBufferPtr);
+  bool writeResult = compressor->WriteBrotliData(isLast, doFlush, &computedOutLength, &brotliOutBufferPtr);
   if (!writeResult) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "Error in native code BrotliCompressor::WriteBrotliData().");
     return NULL;
@@ -157,14 +158,15 @@ JNIEXPORT jbyteArray JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamCompressor
  * Method:    compressByteBuffer
- * Signature: (Ljava/nio/ByteBuffer;IIZ)Ljava/nio/ByteBuffer;
+ * Signature: (Ljava/nio/ByteBuffer;IIZZ)Ljava/nio/ByteBuffer;
  */
 JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_compressByteBuffer(JNIEnv *env,
                                                                                                 jobject thisObj,
                                                                                                 jobject inBuf,
                                                                                                 jint inPosition,
                                                                                                 jint inLength,
-                                                                                                jboolean doFlush) {
+                                                                                                jboolean doFlush,
+                                                                                                jboolean isLast) {
 
   if (inPosition < 0 || inLength < 0 ) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: input ByteBuffer position and length must be greater than zero.");
@@ -194,7 +196,7 @@ JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_com
 
   size_t computedOutLength = 0;
   uint8_t *brotliOutBufferPtr;
-  bool writeResult = compressor->WriteBrotliData(doFlush, false, &computedOutLength, &brotliOutBufferPtr);
+  bool writeResult = compressor->WriteBrotliData(isLast, doFlush, &computedOutLength, &brotliOutBufferPtr);
   if (!writeResult)  {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor got an error while calling WriteBrotliData() method.");
     return NULL;

@@ -35,6 +35,8 @@ static jint getErrorCode(BrotliResult brotliResult) {
       return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
     case BROTLI_RESULT_NEEDS_MORE_OUTPUT:
       return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
+    case BROTLI_RESULT_SUCCESS:
+      // fall through
     default:
       return 0;
   }
@@ -76,11 +78,6 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_init
   return 0;
 }
 
-
-//  BrotliState s;
-//  BrotliStateInit(&s);
-
-
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamDeCompressor
  * Method:    initBrotliDeCompressor
@@ -90,10 +87,9 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_init
                                                                                                 jobject thisObj) {
   BrotliState *brotliState = (BrotliState*) GetLongFieldAsPointer(env, thisObj, brotliDeCompressorStateRefId);
   if (NULL != brotliState) {
-    BrotliStateCleanup(brotliState);
+    BrotliDestroyState(brotliState);
   }
-  brotliState = new BrotliState;
-  BrotliStateInit(brotliState);
+  brotliState = BrotliCreateState(0, 0, NULL);
   SetLongFieldFromPointer(env, thisObj, brotliDeCompressorStateRefId, brotliState);
   return 0;
 }
@@ -107,7 +103,7 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamDeCompressor_free
                                                                                              jobject thisObj) {
   BrotliState *brotliState = (BrotliState*) GetLongFieldAsPointer(env, thisObj, brotliDeCompressorStateRefId);
   if (NULL != brotliState) {
-    BrotliStateCleanup(brotliState);
+    BrotliDestroyState(brotliState);
     brotliState = NULL;
     SetLongFieldFromPointer(env, thisObj, brotliDeCompressorStateRefId, brotliState);
   }

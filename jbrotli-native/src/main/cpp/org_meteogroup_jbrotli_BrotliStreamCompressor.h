@@ -42,18 +42,18 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_freeNa
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamCompressor
  * Method:    compressBytes
- * Signature: ([BIIZ)[B
+ * Signature: ([BIIZZ)[B
  */
 JNIEXPORT jbyteArray JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_compressBytes
-  (JNIEnv *, jobject, jbyteArray, jint, jint, jboolean);
+  (JNIEnv *, jobject, jbyteArray, jint, jint, jboolean, jboolean);
 
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamCompressor
  * Method:    compressByteBuffer
- * Signature: (Ljava/nio/ByteBuffer;IIZ)Ljava/nio/ByteBuffer;
+ * Signature: (Ljava/nio/ByteBuffer;IIZZ)Ljava/nio/ByteBuffer;
  */
 JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_compressByteBuffer
-  (JNIEnv *, jobject, jobject, jint, jint, jboolean);
+  (JNIEnv *, jobject, jobject, jint, jint, jboolean, jboolean);
 
 #ifdef __cplusplus
 }
