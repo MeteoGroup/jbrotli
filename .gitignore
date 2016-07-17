@@ -1,5 +1,6 @@
 /.vagrant
 /.idea
+/.vscode
 target
 build
 *.iml
