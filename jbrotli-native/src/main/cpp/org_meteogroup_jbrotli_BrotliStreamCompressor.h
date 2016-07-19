@@ -50,10 +50,10 @@ JNIEXPORT jbyteArray JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamCompressor
  * Method:    compressByteBuffer
- * Signature: (Ljava/nio/ByteBuffer;IIZZ)Ljava/nio/ByteBuffer;
+ * Signature: (Ljava/nio/ByteBuffer;IIZ)Ljava/nio/ByteBuffer;
  */
 JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_compressByteBuffer
-  (JNIEnv *, jobject, jobject, jint, jint, jboolean, jboolean);
+  (JNIEnv *, jobject, jobject, jint, jint, jboolean);
 
 #ifdef __cplusplus
 }

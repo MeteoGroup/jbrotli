@@ -18,6 +18,7 @@ package org.meteogroup.jbrotli;
 
 import java.io.Closeable;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import static java.lang.Math.min;
 import static org.meteogroup.jbrotli.BrotliErrorChecker.assertBrotliOk;
@@ -96,7 +97,7 @@ public final class BrotliStreamCompressor implements Closeable {
 
     ByteBuffer out;
     if (in.isDirect()) {
-      out = compressByteBuffer(in, inPosition, inRemain, doFlush, true);
+      out = compressByteBuffer(in, inPosition, inRemain, doFlush);
     } else if (in.hasArray()) {
       out = ByteBuffer.wrap(compressBytes(in.array(), inPosition + in.arrayOffset(), inRemain, doFlush, false));
     } else {
@@ -112,6 +113,16 @@ public final class BrotliStreamCompressor implements Closeable {
    */
   public final int getMaxInputBufferSize() throws BrotliException {
     return assertBrotliOk(getInputBlockSize());
+  }
+
+  /**
+   * Every stream must be finished, to create byte byte meta data according to the specification.
+   * If a stream is NOT finished, de-compressors are unable to parse a stream (find the end),
+   * which results in an error.
+   * @return the last bytes, to close the stream.
+   */
+  public final byte[] finishStream() {
+    return compressBytes(new byte[0], 0, 0, false, true);
   }
 
   @Override
@@ -135,6 +146,6 @@ public final class BrotliStreamCompressor implements Closeable {
 
   private native byte[] compressBytes(byte[] inArray, int inPosition, int inLength, boolean doFlush, boolean isLast);
 
-  private native ByteBuffer compressByteBuffer(ByteBuffer inByteBuffer, int inPosition, int inLength, boolean doFlush, boolean isLast);
+  private native ByteBuffer compressByteBuffer(ByteBuffer inByteBuffer, int inPosition, int inLength, boolean doFlush);
 
 }
