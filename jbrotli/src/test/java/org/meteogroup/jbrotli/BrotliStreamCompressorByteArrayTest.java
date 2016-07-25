@@ -48,9 +48,17 @@ public class BrotliStreamCompressorByteArrayTest {
   @Test
   public void compress_with_byte_array_and_flushing() throws Exception {
     byte[] out = compressor.compressArray(A_BYTES, true);
+//    out = concat(out, compressor.finishStream());
 
     assertThat(out).hasSize(10);
     assertThat(out).isEqualTo(A_BYTES_COMPRESSED);
+  }
+
+  private byte[] concat(byte[] bytes1, byte[] bytes2) {
+    byte[] result = new byte[bytes1.length + bytes2.length];
+    System.arraycopy(bytes1, 0, result, 0, bytes1.length);
+    System.arraycopy(bytes2, 0, result, bytes1.length, bytes2.length);
+    return result;
   }
 
   @Test

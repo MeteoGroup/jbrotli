@@ -23,7 +23,7 @@ import static org.meteogroup.jbrotli.BrotliError.DECOMPRESS_BROTLI_RESULT_NEEDS_
 import static org.meteogroup.jbrotli.BrotliError.DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
 import static org.meteogroup.jbrotli.BrotliErrorChecker.assertBrotliOk;
 
-public final class BrotliStreamDeCompressor implements Closeable {
+public final class BrotliStreamDeCompressor implements Closeable, AutoCloseable {
 
   static {
     assertBrotliOk(initJavaFieldIdCache());

@@ -89,4 +89,14 @@ public class BrotliOutputStream extends OutputStream {
   public int getBrotliCompressionBufferSize() throws BrotliException {
     return brotliStreamCompressor.getMaxInputBufferSize();
   }
+
+  /**
+   * Write "finish" stream byte markers into the resulting stream.
+   * This is a mandatory step, to explicitly finish a brotli stream
+   * @throws IOException
+   * @see {@link BrotliStreamCompressor#finishStream()}
+   */
+  public void finish() throws IOException {
+    outputStream.write(brotliStreamCompressor.finishStream());
+  }
 }

@@ -59,7 +59,7 @@ public class BrotliOutputStreamTest {
     for (int i : testBytes) {
       brotliOutputStream.write(i);
     }
-    brotliOutputStream.flush();
+    brotliOutputStream.finish();
 
     // then
     assertThat(decompress(baos.toByteArray(), testBytes.length)).isEqualTo(testBytes);
@@ -70,7 +70,7 @@ public class BrotliOutputStreamTest {
 
     // when
     brotliOutputStream.write(testBytes);
-    brotliOutputStream.flush();
+    brotliOutputStream.finish();
 
     // then
     assertThat(decompress(baos.toByteArray(), testBytes.length)).isEqualTo(testBytes);
@@ -85,7 +85,7 @@ public class BrotliOutputStreamTest {
 
     // when
     brotliOutputStream.write(testBytes);
-    brotliOutputStream.flush();
+    brotliOutputStream.finish();
 
     // then
     assertThat(decompress(baos.toByteArray(), testBytes.length)).isEqualTo(testBytes);
@@ -96,7 +96,7 @@ public class BrotliOutputStreamTest {
 
     // when
     brotliOutputStream.write(testBytes, 10, 100);
-    brotliOutputStream.flush();
+    brotliOutputStream.finish();
 
     // then
     byte[] decompressed = decompress(baos.toByteArray(), testBytes.length);

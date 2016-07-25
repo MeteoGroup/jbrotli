@@ -23,7 +23,7 @@ import java.util.Arrays;
 import static java.lang.Math.min;
 import static org.meteogroup.jbrotli.BrotliErrorChecker.assertBrotliOk;
 
-public final class BrotliStreamCompressor implements Closeable {
+public final class BrotliStreamCompressor implements Closeable, AutoCloseable {
 
   static {
     assertBrotliOk(initJavaFieldIdCache());
@@ -119,10 +119,11 @@ public final class BrotliStreamCompressor implements Closeable {
    * Every stream must be finished, to create byte byte meta data according to the specification.
    * If a stream is NOT finished, de-compressors are unable to parse a stream (find the end),
    * which results in an error.
+   * This method also flushes the stream.
    * @return the last bytes, to close the stream.
    */
   public final byte[] finishStream() {
-    return compressBytes(new byte[0], 0, 0, false, true);
+    return compressBytes(new byte[0], 0, 0, true, true);
   }
 
   @Override
