@@ -18,7 +18,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../../../brotli/enc/encode.h"
 #include "../../../../brotli/enc/compressor.h"
 #include "./type_converters.h"
 #include "./param_converter.h"
