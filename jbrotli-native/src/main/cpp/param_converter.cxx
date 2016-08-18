@@ -15,7 +15,7 @@
  */
 
 #include <jni.h>
-#include "../../../../brotli/enc/encode.h"
+#include "../../../../brotli/enc/compressor.h"
 #include "./param_converter.h"
 
 brotli::BrotliParams mapToBrotliParams(JNIEnv *env, jint mode, jint quality, jint lgwin, jint lgblock) {
