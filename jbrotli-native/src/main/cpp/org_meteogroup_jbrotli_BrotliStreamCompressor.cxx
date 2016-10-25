@@ -29,6 +29,7 @@ extern "C" {
 #endif
 
 static jfieldID brotliCompressorInstanceRefID;
+static jfieldID brotliParamsInstanceRefID;
 
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamCompressor
@@ -38,6 +39,10 @@ static jfieldID brotliCompressorInstanceRefID;
 JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_initJavaFieldIdCache(JNIEnv *env,
                                                                                                jclass cls) {
   brotliCompressorInstanceRefID = env->GetFieldID(cls, "brotliCompressorInstanceRef", "J");
+  if (NULL == brotliCompressorInstanceRefID) {
+    return org_meteogroup_jbrotli_BrotliError_NATIVE_GET_FIELD_ID_ERROR;
+  }
+  brotliParamsInstanceRefID = env->GetFieldID(cls, "brotliParamsInstanceRef", "J");
   if (NULL == brotliCompressorInstanceRefID) {
     return org_meteogroup_jbrotli_BrotliError_NATIVE_GET_FIELD_ID_ERROR;
   }
@@ -55,13 +60,21 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_initBr
                                                                                                jint quality,
                                                                                                jint lgwin,
                                                                                                jint lgblock) {
-  brotli::BrotliParams params = mapToBrotliParams(env, mode, quality, lgwin, lgblock);
+
+  brotli::BrotliParams* params = (brotli::BrotliParams*) GetLongFieldAsPointer(env, thisObj, brotliParamsInstanceRefID);
+  if (NULL != params) {
+    delete params;
+  }
+  params = new brotli::BrotliParams();
+  SetLongFieldFromPointer(env, thisObj, brotliParamsInstanceRefID, params);
+
+  initBrotliParams(params, mode, quality, lgwin, lgblock);
 
   brotli::BrotliCompressor *compressor = (brotli::BrotliCompressor*) GetLongFieldAsPointer(env, thisObj, brotliCompressorInstanceRefID);
   if (NULL != compressor) {
     delete compressor;
   }
-  compressor = new brotli::BrotliCompressor(params);
+  compressor = new brotli::BrotliCompressor(*params);
   SetLongFieldFromPointer(env, thisObj, brotliCompressorInstanceRefID, compressor);
 
   return 0;
@@ -79,6 +92,12 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamCompressor_freeNa
     delete compressor;
     compressor = NULL;
     SetLongFieldFromPointer(env, thisObj, brotliCompressorInstanceRefID, compressor);
+  }
+  brotli::BrotliParams* params = (brotli::BrotliParams*) GetLongFieldAsPointer(env, thisObj, brotliParamsInstanceRefID);
+  if (NULL != params) {
+    delete params;
+    params = NULL;
+    SetLongFieldFromPointer(env, thisObj, brotliParamsInstanceRefID, params);
   }
   return 0;
 }

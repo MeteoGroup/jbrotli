@@ -31,6 +31,7 @@ public final class BrotliStreamCompressor implements Closeable, AutoCloseable {
 
   // will be used from native code to store native compressor object
   private final long brotliCompressorInstanceRef = 0;
+  private final long brotliParamsInstanceRef = 0;
 
   /**
    * Uses {@link Brotli#DEFAULT_PARAMETER}
