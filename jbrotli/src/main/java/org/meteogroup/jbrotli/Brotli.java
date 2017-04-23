@@ -18,7 +18,7 @@ package org.meteogroup.jbrotli;
 
 public class Brotli {
 
-  public static final String BROTLI_VERSION = "HEAD-2016-03-20-commit_f453b1bf363be71a23be9d1eec8bf7975dbcfc4e";
+  public static final String BROTLI_VERSION = "v0.6.0";
 
   public static final Mode DEFAULT_MODE = Mode.GENERIC;
   public static final int DEFAULT_QUALITY = 11;
