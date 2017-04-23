@@ -17,6 +17,6 @@
 #ifndef _Included_param_converter
 #define _Included_param_converter
 
-void initBrotliParams(brotli::BrotliParams* params, jint mode, jint quality, jint lgwin, jint lgblock);
+BrotliEncoderMode asBrotliEncoderMode(jint mode);
 
 #endif

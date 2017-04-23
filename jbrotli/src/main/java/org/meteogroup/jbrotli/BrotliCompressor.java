@@ -23,6 +23,8 @@ import static org.meteogroup.jbrotli.BrotliErrorChecker.assertBrotliOk;
 public final class BrotliCompressor {
 
   /**
+   * Hint: the parameter 'lgblock' is ignored.
+   *
    * @param parameter parameter
    * @param in        input
    * @param out       output
@@ -34,6 +36,8 @@ public final class BrotliCompressor {
   }
 
   /**
+   *  Hint: the parameter 'lgblock' is ignored.
+   *
    * @param parameter   parameter
    * @param in          input
    * @param inPosition  input position
@@ -51,7 +55,7 @@ public final class BrotliCompressor {
     if (outPosition + outLength > out.length) {
       throw new IllegalArgumentException("The output position and length must me smaller then the source byte array's length.");
     }
-    return assertBrotliOk(compressBytes(parameter.getMode().mode, parameter.getQuality(), parameter.getLgwin(), parameter.getLgblock(), in, inPosition, inLength, out, outPosition, outLength));
+    return assertBrotliOk(compressBytes(parameter.getMode().mode, parameter.getQuality(), parameter.getLgwin(), in, inPosition, inLength, out, outPosition, outLength));
   }
 
   /**
@@ -60,6 +64,8 @@ public final class BrotliCompressor {
    * <p>&nbsp;</p>
    * There are two types of ByteBuffer: a) direct ones and b) byte array wrapped ones.
    * This implementation supports both. Both (input and output) buffer has to be of the same type.
+   *
+   * Hint: the parameter 'lgblock' is ignored.
    *
    * @param parameter parameter
    * @param in        input
@@ -82,9 +88,9 @@ public final class BrotliCompressor {
 
     int computedOutLength;
     if (in.isDirect() && out.isDirect()) {
-      computedOutLength = assertBrotliOk(compressByteBuffer(parameter.getMode().mode, parameter.getQuality(), parameter.getLgwin(), parameter.getLgblock(), in, inPosition, inRemain, out, outPosition, outRemain));
+      computedOutLength = assertBrotliOk(compressByteBuffer(parameter.getMode().mode, parameter.getQuality(), parameter.getLgwin(), in, inPosition, inRemain, out, outPosition, outRemain));
     } else if (in.hasArray() && out.hasArray()) {
-      computedOutLength = assertBrotliOk(compressBytes(parameter.getMode().mode, parameter.getQuality(), parameter.getLgwin(), parameter.getLgblock(), in.array(), inPosition + in.arrayOffset(), inRemain, out.array(), outPosition + out.arrayOffset(), outRemain));
+      computedOutLength = assertBrotliOk(compressBytes(parameter.getMode().mode, parameter.getQuality(), parameter.getLgwin(), in.array(), inPosition + in.arrayOffset(), inRemain, out.array(), outPosition + out.arrayOffset(), outRemain));
     } else {
       throw new UnsupportedOperationException("Not supported ByteBuffer implementation. Both (input and output) buffer has to be of the same type. Use either direct BB or wrapped byte arrays. You may raise an issue on GitHub too ;-)");
     }
@@ -94,8 +100,8 @@ public final class BrotliCompressor {
     return computedOutLength;
   }
 
-  private native static int compressBytes(int mode, int quality, int lgwin, int lgblock, byte[] inArray, int inPosition, int inLength, byte[] outArray, int outPosition, int outLength);
+  private native static int compressBytes(int mode, int quality, int lgwin, byte[] inArray, int inPosition, int inLength, byte[] outArray, int outPosition, int outLength);
 
-  private native static int compressByteBuffer(int mode, int quality, int lgwin, int lgblock, ByteBuffer inByteBuffer, int inPosition, int inLength, ByteBuffer outByteBuffer, int outPosition, int outLength);
+  private native static int compressByteBuffer(int mode, int quality, int lgwin, ByteBuffer inByteBuffer, int inPosition, int inLength, ByteBuffer outByteBuffer, int outPosition, int outLength);
 
 }

@@ -10,18 +10,18 @@ extern "C" {
 /*
  * Class:     org_meteogroup_jbrotli_BrotliCompressor
  * Method:    compressBytes
- * Signature: (IIII[BII[BII)I
+ * Signature: (III[BII[BII)I
  */
 JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliCompressor_compressBytes
-  (JNIEnv *, jclass, jint, jint, jint, jint, jbyteArray, jint, jint, jbyteArray, jint, jint);
+  (JNIEnv *, jclass, jint, jint, jint, jbyteArray, jint, jint, jbyteArray, jint, jint);
 
 /*
  * Class:     org_meteogroup_jbrotli_BrotliCompressor
  * Method:    compressByteBuffer
- * Signature: (IIIILjava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)I
+ * Signature: (IIILjava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)I
  */
 JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliCompressor_compressByteBuffer
-  (JNIEnv *, jclass, jint, jint, jint, jint, jobject, jint, jint, jobject, jint, jint);
+  (JNIEnv *, jclass, jint, jint, jint, jobject, jint, jint, jobject, jint, jint);
 
 #ifdef __cplusplus
 }

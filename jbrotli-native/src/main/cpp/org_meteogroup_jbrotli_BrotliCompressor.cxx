@@ -18,7 +18,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../../../brotli/enc/encode.h"
+#include <brotli/encode.h>
+
 #include "./param_converter.h"
 #include "./org_meteogroup_jbrotli_BrotliError.h"
 
@@ -30,14 +31,13 @@ extern "C" {
 /*
  * Class:     org_meteogroup_jbrotli_BrotliCompressor
  * Method:    compressBytes
- * Signature: (IIII[BII[BII)I
+ * Signature: (III[BII[BII)I
  */
 JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliCompressor_compressBytes(JNIEnv *env,
                                                                                jclass thisObj,
                                                                                jint mode,
                                                                                jint quality,
                                                                                jint lgwin,
-                                                                               jint lgblock,
                                                                                jbyteArray inByteArray,
                                                                                jint inPosition,
                                                                                jint inLength,
@@ -58,22 +58,27 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliCompressor_compressByte
   if (inLength == 0) return 0;
 
   size_t computedOutLength = outLength;
-  brotli::BrotliParams params;
-  initBrotliParams(&params, mode, quality, lgwin, lgblock);
 
   uint8_t *inBufCritArray = (uint8_t *) env->GetPrimitiveArrayCritical(inByteArray, 0);
   if (inBufCritArray == NULL || env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_COMPRESS_GetPrimitiveArrayCritical_INBUF;
   uint8_t *outBufCritArray = (uint8_t *) env->GetPrimitiveArrayCritical(outByteArray, 0);
   if (outBufCritArray == NULL || env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_COMPRESS_GetPrimitiveArrayCritical_OUTBUF;
 
-  int ok = brotli::BrotliCompressBuffer(params, inLength, inBufCritArray + inPosition, &computedOutLength, outBufCritArray + outPosition);
+  BROTLI_BOOL ok = BrotliEncoderCompress(
+    quality,
+    lgwin,
+    asBrotliEncoderMode(mode),
+    inLength,
+    inBufCritArray + inPosition,
+    &computedOutLength,
+    outBufCritArray + outPosition);
 
   env->ReleasePrimitiveArrayCritical(outByteArray, outBufCritArray, 0);
   if (env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_COMPRESS_ReleasePrimitiveArrayCritical_OUTBUF;
   env->ReleasePrimitiveArrayCritical(inByteArray, inBufCritArray, 0);
   if (env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_COMPRESS_ReleasePrimitiveArrayCritical_INBUF;
 
-  if (!ok) {
+  if (BROTLI_FALSE == ok) {
     return org_meteogroup_jbrotli_BrotliError_COMPRESS_BrotliCompressBuffer;
   }
 
@@ -83,14 +88,13 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliCompressor_compressByte
 /*
  * Class:     org_meteogroup_jbrotli_BrotliCompressor
  * Method:    compressByteBuffer
- * Signature: (IIIILjava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)I
+ * Signature: (IIILjava/nio/ByteBuffer;IILjava/nio/ByteBuffer;II)I
  */
 JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliCompressor_compressByteBuffer(JNIEnv *env,
                                                                                     jclass thisObj,
                                                                                     jint mode,
                                                                                     jint quality,
                                                                                     jint lgwin,
-                                                                                    jint lgblock,
                                                                                     jobject inBuf,
                                                                                     jint inPosition,
                                                                                     jint inLength,
@@ -109,9 +113,6 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliCompressor_compressByte
 
   if (inLength == 0) return 0;
 
-  brotli::BrotliParams params;
-  initBrotliParams(&params, mode, quality, lgwin, lgblock);
-
   uint8_t *inBufPtr = (uint8_t *) env->GetDirectBufferAddress(inBuf);
   if (inBufPtr == NULL) return org_meteogroup_jbrotli_BrotliError_COMPRESS_ByteBuffer_GetDirectBufferAddress_INBUF;
 
@@ -119,8 +120,10 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliCompressor_compressByte
   if (outBufPtr == NULL) return org_meteogroup_jbrotli_BrotliError_COMPRESS_ByteBuffer_GetDirectBufferAddress_OUTBUF;
 
   size_t computedOutLength = outLength;
-  int ok = brotli::BrotliCompressBuffer(params, inLength, inBufPtr + inPosition, &computedOutLength, outBufPtr + outPosition);
-  if (!ok) {
+  BROTLI_BOOL ok = BrotliEncoderCompress(
+    quality, lgwin, asBrotliEncoderMode(mode),
+    inLength, inBufPtr + inPosition, &computedOutLength, outBufPtr + outPosition);
+  if (BROTLI_FALSE == ok) {
     return org_meteogroup_jbrotli_BrotliError_COMPRESS_ByteBuffer_BrotliCompressBuffer;
   }
 

@@ -15,24 +15,18 @@
  */
 
 #include <jni.h>
-#include "../../../../brotli/enc/encode.h"
+#include <brotli/encode.h>
 #include "./param_converter.h"
 
-void initBrotliParams(brotli::BrotliParams* params, jint mode, jint quality, jint lgwin, jint lgblock) {
+BrotliEncoderMode asBrotliEncoderMode(jint mode) {
   switch (mode) {
     case 0:
-      params->mode = brotli::BrotliParams::MODE_GENERIC;
-      break;
+      return BROTLI_MODE_GENERIC;
     case 1:
-      params->mode = brotli::BrotliParams::MODE_TEXT;
-      break;
+      return BROTLI_MODE_TEXT;
     case 2:
-      params->mode = brotli::BrotliParams::MODE_FONT;
-      break;
+      return BROTLI_MODE_FONT;
     default:
-      params->mode = brotli::BrotliParams::MODE_GENERIC;
+      return BROTLI_MODE_GENERIC;
   }
-  params->quality = quality;
-  params->lgwin = lgwin;
-  params->lgblock = lgblock;
 }
