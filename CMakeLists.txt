@@ -56,7 +56,8 @@ add_library (brotli ${LIB_TYPE}
                 "brotli/enc/utf8_util.c"
                 "jbrotli-native/src/main/cpp/param_converter.cxx"
                 "jbrotli-native/src/main/cpp/org_meteogroup_jbrotli_BrotliCompressor.cxx"
-                # "jbrotli-native/src/main/cpp/org_meteogroup_jbrotli_BrotliStreamCompressor.cxx"
+                "jbrotli-native/src/main/cpp/org_meteogroup_jbrotli_BrotliStreamCompressor.cxx"
+                "jbrotli-native/src/main/cpp/org_meteogroup_jbrotli_BrotliStreamEncoder.cxx"
                 # "jbrotli-native/src/main/cpp/org_meteogroup_jbrotli_BrotliStreamDeCompressor.cxx"
                 "jbrotli-native/src/main/cpp/org_meteogroup_jbrotli_BrotliDeCompressor.cxx"
                 )
