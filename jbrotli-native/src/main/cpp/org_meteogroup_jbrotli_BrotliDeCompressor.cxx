@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../../../brotli/dec/decode.h"
+#include <brotli/decode.h>
 #include "./org_meteogroup_jbrotli_BrotliError.h"
 
 
@@ -57,16 +57,16 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliDeCompressor_deCompress
   if (outBuffer == NULL || env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_GetPrimitiveArrayCritical_OUTBUF;
 
   size_t computedOutLength = outLength;
-  BrotliResult brotliResult = BrotliDecompressBuffer(inLength, encodedBuffer + inPosition, &computedOutLength, outBuffer + outPosition);
+  BrotliDecoderResult brotliResult = BrotliDecoderDecompress(inLength, encodedBuffer + inPosition, &computedOutLength, outBuffer + outPosition);
 
   env->ReleasePrimitiveArrayCritical(outByteArray, outBuffer, 0);
   if (env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ReleasePrimitiveArrayCritical_OUTBUF;
   env->ReleasePrimitiveArrayCritical(encodedByteArray, encodedBuffer, 0);
   if (env->ExceptionCheck()) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ReleasePrimitiveArrayCritical_INBUF;
 
-  if (brotliResult == BROTLI_RESULT_ERROR) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_ERROR;
-  if (brotliResult == BROTLI_RESULT_NEEDS_MORE_INPUT) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
-  if (brotliResult == BROTLI_RESULT_NEEDS_MORE_OUTPUT) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
+  if (brotliResult == BROTLI_DECODER_RESULT_ERROR) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_ERROR;
+  if (brotliResult == BROTLI_DECODER_RESULT_NEEDS_MORE_INPUT) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_INPUT;
+  if (brotliResult == BROTLI_DECODER_RESULT_NEEDS_MORE_OUTPUT) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
 
   return computedOutLength;
 }
@@ -103,11 +103,11 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliDeCompressor_deCompress
   if (outBufPtr==NULL) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ByteBuffer_GetDirectBufferAddress_OUTBUF;
 
   size_t computedOutLength = outLength;
-  BrotliResult brotliResult = BrotliDecompressBuffer(inLength, inBufPtr + inPosition, &computedOutLength, outBufPtr + outPosition);
+  BrotliDecoderResult brotliResult = BrotliDecoderDecompress(inLength, inBufPtr + inPosition, &computedOutLength, outBufPtr + outPosition);
 
-  if (brotliResult == BROTLI_RESULT_ERROR) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ByteBuffer_BROTLI_RESULT_ERROR;
-  if (brotliResult == BROTLI_RESULT_NEEDS_MORE_INPUT) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ByteBuffer_BROTLI_RESULT_NEEDS_MORE_INPUT;
-  if (brotliResult == BROTLI_RESULT_NEEDS_MORE_OUTPUT) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ByteBuffer_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
+  if (brotliResult == BROTLI_DECODER_RESULT_ERROR) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ByteBuffer_BROTLI_RESULT_ERROR;
+  if (brotliResult == BROTLI_DECODER_RESULT_NEEDS_MORE_INPUT) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ByteBuffer_BROTLI_RESULT_NEEDS_MORE_INPUT;
+  if (brotliResult == BROTLI_DECODER_RESULT_NEEDS_MORE_OUTPUT) return org_meteogroup_jbrotli_BrotliError_DECOMPRESS_ByteBuffer_BROTLI_RESULT_NEEDS_MORE_OUTPUT;
 
   return computedOutLength;
 }
