@@ -62,18 +62,23 @@ public final class BrotliStreamEncoder implements Closeable, AutoCloseable {
 
     ByteBuffer out;
     if (in.isDirect()) {
-      out = processNative(in, inPosition, inRemain);
+      int compressedSoFar = processNative(in, inPosition, inRemain);
+      outBuffer.position(0);
+      outBuffer.limit(compressedSoFar);
     } else if (in.hasArray()) {
       throw new UnsupportedOperationException("out = ByteBuffer.wrap(compressBytes(in.array(), inPosition + in.arrayOffset(), inRemain, doFlush, false));");
     } else {
       throw new UnsupportedOperationException("Not supported ByteBuffer implementation. Use either direct BB or wrapped byte arrays. You may raise an issue on GitHub too ;-)");
     }
     in.position(inLimit);
-    return out;
+    return outBuffer;
   }
 
   public final ByteBuffer flush() {
-    return flushNative();
+    int compressedSoFar = flushNative();
+    outBuffer.position(0);
+    outBuffer.limit(compressedSoFar);
+    return outBuffer;
   }
 
   /**
@@ -105,9 +110,9 @@ public final class BrotliStreamEncoder implements Closeable, AutoCloseable {
 
   private native int freeNativeResources();
 
-  private native ByteBuffer processNative(ByteBuffer inByteBuffer, int inPosition, int inLength);
+  private native int processNative(ByteBuffer inByteBuffer, int inPosition, int inLength);
 
-  private native ByteBuffer flushNative();
+  private native int flushNative();
 
   private native ByteBuffer finishNative();
 

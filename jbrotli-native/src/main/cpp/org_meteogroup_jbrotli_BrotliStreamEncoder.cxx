@@ -33,6 +33,22 @@ static jfieldID brotliEncoderStateInstanceRefID;
 static jfieldID outBufferInstanceRefID;
 
 
+// http://normanmaurer.me/blog/2014/01/07/JNI-Performance-Welcome-to-the-dark-side/
+// // Is automatically called once the native code is loaded via System.loadLibary(...);
+// jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+//     JNIEnv* env;
+//     if ((*vm)->GetEnv(vm, (void **) &env, JNI_VERSION_1_6) != JNI_OK) {
+//         return JNI_ERR;
+//     } else {
+//         jclass cls = (*env)->FindClass("java/nio/Buffer");
+//         // Get the id of the Buffer.limit() method.
+//         limitMethodId = (*env)->GetMethodID(env, cls, "limit", "()I");
+
+//         // Get int limit field of Buffer
+//         limitFieldId = (*env)->GetFieldID(env, cls, "limit", "I");
+//     }
+// }
+
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamEncoder
  * Method:    initJavaFieldIdCache
@@ -82,7 +98,7 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_initNativ
  */
 JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_freeNativeResources(JNIEnv *env,
                                                                                            jobject thisObj) {
-BrotliEncoderState* encoderState = (BrotliEncoderState*) GetLongFieldAsPointer(env, thisObj, brotliEncoderStateInstanceRefID);
+  BrotliEncoderState* encoderState = (BrotliEncoderState*) GetLongFieldAsPointer(env, thisObj, brotliEncoderStateInstanceRefID);
   if (NULL != encoderState) {
     BrotliEncoderDestroyInstance(encoderState);
     brotliEncoderStateInstanceRefID = NULL;
@@ -96,11 +112,11 @@ BrotliEncoderState* encoderState = (BrotliEncoderState*) GetLongFieldAsPointer(e
  * Method:    processNative
  * Signature: (Ljava/nio/ByteBuffer;II)Ljava/nio/ByteBuffer;
  */
-JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_processNative(JNIEnv *env,
-                                                                                        jobject thisObj,
-                                                                                        jbyteArray inByteArray,
-                                                                                        jint inPosition,
-                                                                                        jint inLength){
+JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_processNative(JNIEnv *env,
+                                                                                     jobject thisObj,
+                                                                                     jobject inBuf,
+                                                                                     jint inPosition,
+                                                                                     jint inLength){
   if (inPosition < 0 || inLength < 0) {
     env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "Brotli: input array position and length must be greater than zero.");
     return NULL;
@@ -108,70 +124,42 @@ JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_proces
 
   BrotliEncoderState* encoderState = (BrotliEncoderState*) GetLongFieldAsPointer(env, thisObj, brotliEncoderStateInstanceRefID);
   if (NULL == encoderState) {
-    env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor was already closed. You need to create a new object before start compressing.");
+    env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor was already closed (encoderState=null). You need to create a new object before start compressing.");
     return NULL;
   }
 
-  // if ((signed)compressor->input_block_size() < inLength) {
-  //   env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"), "BrotliStreamCompressor, input byte array length is larger than allowed input block size. Slice the input into smaller chunks.");
-  //   return NULL;
-  // }
+  jobject outByteBuffer = (jobject) ((env)->GetObjectField(thisObj, outBufferInstanceRefID));
+  if (NULL == outByteBuffer) {
+    env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor was already closed (outByteBuffer=null). You need to create a new object before start compressing.");
+    return NULL;
+  }
 
-  uint8_t buffer[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-  uint8_t *brotliOutBufferPtr = (uint8_t*)&buffer;
-  size_t available_out = sizeof(buffer);
+  uint8_t *outBufPtr = (uint8_t *) env->GetDirectBufferAddress(outByteBuffer);
+  if (NULL == outBufPtr) {
+    env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor couldn't get direct address of output ByteBuffer.");
+    return NULL;
+  }
 
-  printf("GO\n");
-  printf("PROCESS - inLength: %d\n", inLength);
+  uint8_t *inBufPtr = (uint8_t *) env->GetDirectBufferAddress(inBuf);
+  if (NULL == inBufPtr) {
+    env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor couldn't get direct address of input ByteBuffer.");
+    return NULL;
+  }
+
+  size_t available_out = 32*1024;
+  size_t total_out = 0;
 
   if (inLength > 0) {
-    size_t total_out = 0;
     size_t available_in = as_size_t(inLength);
-    printf("PROCESS before - available_in: %d\n", available_in);
-    printf("PROCESS after - &brotliOutBufferPtr: %d\n", &brotliOutBufferPtr);
-
-    uint8_t *inBufCritArray = (uint8_t *) env->GetPrimitiveArrayCritical(inByteArray, 0);
-    if (inBufCritArray == NULL || env->ExceptionCheck()) return NULL;
-    const uint8_t *next_in = inBufCritArray + inPosition;
-    // printf("PROCESS before - next_in: %d\n", next_in);
-    // compressor->CopyInputToRingBuffer(inLength, inBufCritArray + inPosition);
-    BROTLI_BOOL ok = BrotliEncoderCompressStream(encoderState, BROTLI_OPERATION_PROCESS, &available_in, &next_in, &available_out, &brotliOutBufferPtr, &total_out);
+    const uint8_t *next_in = inBufPtr + inPosition;
+    BROTLI_BOOL ok = BrotliEncoderCompressStream(encoderState, BROTLI_OPERATION_PROCESS, &available_in, &next_in, &available_out, &outBufPtr, &total_out);
     if (BROTLI_FALSE == ok) {
       env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "Error in native code BrotliCompressor::WriteBrotliData().");
       return NULL;
     }
-
-    printf("PROCESS after - available_in: %d\n", available_in);
-    // printf("PROCESS after - next_in: %d\n", next_in);
-    printf("PROCESS after - available_out: %d\n", available_out);
-    printf("PROCESS after - &brotliOutBufferPtr: %d\n", &brotliOutBufferPtr);
-    printf("PROCESS after - total_out: %d\n", total_out);
-    printf("PROCESS after - BrotliEncoderIsFinished: %d\n", BrotliEncoderIsFinished(encoderState));
-
-    ok = BrotliEncoderCompressStream(encoderState, BROTLI_OPERATION_FLUSH, &available_in, &next_in, &available_out, &brotliOutBufferPtr, &total_out);
-    if (BROTLI_FALSE == ok) {
-      env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "Error in native code BrotliCompressor::WriteBrotliData().");
-      return NULL;
-    }
-
-    printf("FLUSH after - available_in: %d\n", available_in);
-    printf("FLUSH after - available_out: %d\n", available_out);
-    printf("FLUSH after - total_out: %d\n", total_out);
-
-    env->ReleasePrimitiveArrayCritical(inByteArray, inBufCritArray, 0);
-    if (env->ExceptionCheck()) return NULL;
   }
 
-  jbyteArray outByteArray = env->NewByteArray(available_out);
-  if (available_out > 0) {
-    uint8_t *outBufCritArray = (uint8_t *) env->GetPrimitiveArrayCritical(outByteArray, 0);
-    if (outBufCritArray == NULL || env->ExceptionCheck()) return NULL;
-    memcpy(outBufCritArray, brotliOutBufferPtr, available_out);
-    env->ReleasePrimitiveArrayCritical(outByteArray, outBufCritArray, 0);
-    if (env->ExceptionCheck()) return NULL;
-  }
-
-  return env->NewDirectByteBuffer(brotliOutBufferPtr, available_out);
+  return jlong_to_jint(size_to_jlong(total_out));
 }
 
 /*
@@ -179,9 +167,38 @@ JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_proces
  * Method:    flushNative
  * Signature: ()Ljava/nio/ByteBuffer;
  */
-JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_flushNative(JNIEnv *env,
+JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_flushNative(JNIEnv *env,
                                                                                       jobject thisObj) {
-  return NULL;
+  BrotliEncoderState* encoderState = (BrotliEncoderState*) GetLongFieldAsPointer(env, thisObj, brotliEncoderStateInstanceRefID);
+  if (NULL == encoderState) {
+    env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor was already closed (encoderState=null). You need to create a new object before start compressing.");
+    return NULL;
+  }
+
+  jobject outByteBuffer = (jobject) ((env)->GetObjectField(thisObj, outBufferInstanceRefID));
+  if (NULL == outByteBuffer) {
+    env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor was already closed (outByteBuffer=null). You need to create a new object before start compressing.");
+    return NULL;
+  }
+
+  uint8_t *outBufPtr = (uint8_t *) env->GetDirectBufferAddress(outByteBuffer);
+  if (NULL == outBufPtr) {
+    env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor couldn't get direct address of output ByteBuffer.");
+    return NULL;
+  }
+
+  size_t available_out = 32*1024;
+  size_t total_out = 0;
+  size_t available_in = 0;
+  uint8_t *inBufPtr = NULL;
+  const uint8_t *next_in = NULL;
+  BROTLI_BOOL ok = BrotliEncoderCompressStream(encoderState, BROTLI_OPERATION_FLUSH, &available_in, &next_in, &available_out, &outBufPtr, &total_out);
+  if (BROTLI_FALSE == ok) {
+    env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "Error in native code BrotliCompressor::WriteBrotliData().");
+    return NULL;
+  }
+
+  return jlong_to_jint(size_to_jlong(total_out));
 }
 
 /*
@@ -210,7 +227,7 @@ JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_Brotli
  * Signature: ()Z;
  */
 JNIEXPORT jboolean JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_brotliEncoderIsFinished(JNIEnv *env,
-                                                                                                  jobject thisObj) {
+                                                                                                   jobject thisObj) {
   BrotliEncoderState* encoderState = (BrotliEncoderState*) GetLongFieldAsPointer(env, thisObj, brotliEncoderStateInstanceRefID);
   if (NULL == encoderState) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor was already closed. You need to create a new object before start compressing.");
@@ -225,7 +242,7 @@ JNIEXPORT jboolean JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_brotl
  * Signature: ()Z;
  */
 JNIEXPORT jboolean JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_brotliEncoderHasMoreOutput(JNIEnv *env,
-                                                                                                     jobject thisObj) {
+                                                                                                      jobject thisObj) {
   BrotliEncoderState* encoderState = (BrotliEncoderState*) GetLongFieldAsPointer(env, thisObj, brotliEncoderStateInstanceRefID);
   if (NULL == encoderState) {
     env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), "BrotliStreamCompressor was already closed. You need to create a new object before start compressing.");

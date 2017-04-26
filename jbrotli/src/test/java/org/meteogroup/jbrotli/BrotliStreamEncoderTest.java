@@ -53,12 +53,13 @@ public class BrotliStreamEncoderTest {
     ByteBuffer in = wrapDirect(createFilledByteArray(1024, 'x'));
 
     // when
-    ByteBuffer out = encoder.process(in);
+    ByteBuffer out;
+    out = encoder.process(in);
+    out = encoder.flush();
 
     // then
     assertThat(in.position()).isEqualTo(1024);
-    assertThat(in.limit()).isEqualTo(1024);
-    assertThat(in.capacity()).isEqualTo(1024);
+    assertThat(out.capacity()).isGreaterThanOrEqualTo(10);
   }
 
 }

@@ -34,17 +34,17 @@ JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_freeNativ
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamEncoder
  * Method:    processNative
- * Signature: (Ljava/nio/ByteBuffer;II)Ljava/nio/ByteBuffer;
+ * Signature: (Ljava/nio/ByteBuffer;II)I
  */
-JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_processNative
+JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_processNative
   (JNIEnv *, jobject, jobject, jint, jint);
 
 /*
  * Class:     org_meteogroup_jbrotli_BrotliStreamEncoder
  * Method:    flushNative
- * Signature: ()Ljava/nio/ByteBuffer;
+ * Signature: ()I
  */
-JNIEXPORT jobject JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_flushNative
+JNIEXPORT jint JNICALL Java_org_meteogroup_jbrotli_BrotliStreamEncoder_flushNative
   (JNIEnv *, jobject);
 
 /*

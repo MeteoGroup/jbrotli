@@ -34,12 +34,14 @@
 
 // *******************************************************
 
-#define GetLongFieldAsPointer(env,obj,id) (jlong_to_ptr((env)->GetLongField((obj),(id))))
-#define SetLongFieldFromPointer(env,obj,id,val) (env)->SetLongField((obj),(id),ptr_to_jlong(val))
+#define GetLongFieldAsPointer(env,obj,id)  (jlong_to_ptr((env)->GetLongField((obj),(id))))
+#define SetLongFieldFromPointer(env,obj,id,val)  (env)->SetLongField((obj),(id),ptr_to_jlong(val))
 
-#define jint_to_jlong(a) ((jlong)(a))
-#define jlong_to_size(a) ((size_t)(a))
-#define as_size_t(i) jlong_to_size(jint_to_jlong(i))
+#define jint_to_jlong(a)  ((jlong)(a))
+#define jlong_to_size(a)  ((size_t)(a))
+#define size_to_jlong(a)  ((jlong)(a))
+#define jlong_to_jint(a)  ((jint)(a))
+#define as_size_t(i)  jlong_to_size(jint_to_jlong(i))
 
 #if defined(ENV64BIT)
   /* 64-bit code here. */
